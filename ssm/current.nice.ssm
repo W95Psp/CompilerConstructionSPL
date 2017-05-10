@@ -1,0 +1,23 @@
+link 3
+	ldc 1
+	stl 1
+	ldc 2
+	stl 2
+	ldc 3
+	stl 3
+link 3
+	ldc 4
+	stl 1
+	ldc 5
+	stl 2
+	ldc 6
+	stl 3
+link 3
+	ldc 7
+	stl 1
+	ldc 8
+	stl 2
+	ldc 9
+	stl 3
+ldl 0
+lda 1

@@ -1,0 +1,3 @@
+bla ( n ) :: a -> a {
+    return 1;
+}

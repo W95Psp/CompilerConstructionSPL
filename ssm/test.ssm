@@ -1,0 +1,12 @@
+bra main
+subroutine link 2
+ldc 1
+ldc 2
+add
+stl 1 ; store in 2nd local
+ldl 1
+str RR
+unlink
+ret
+main: bsr subroutine
+ldr RR

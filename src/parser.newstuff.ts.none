@@ -1,0 +1,364 @@
+
+
+
+
+
+export class Tree<T>{
+	data: Map<T, Tree<T>> = new Map();
+	parent: Tree<T> | undefined;
+
+	constructor(parent?: Tree<T>){
+		this.parent = parent;
+	}
+
+	keys (depth=0) : T[] {
+		if(depth > 3)
+			return [];
+		let list = [...this.data.keys()];
+		return this.parent ? [...new Set(list.concat([...this.parent.keys(depth+1)]))] : list;
+	}
+	get(key: T) : Tree<T> | undefined {
+		let node = this.data.get(key);
+		if(node)
+			return node;
+		let pnode = this.parent ? this.parent.get(key) : undefined;
+		if(pnode){
+			let n = new Tree<T>(pnode);
+			this.data.set(key, n);
+			return n;
+		}
+	}
+	private getPointer(key: T){
+		return this.data.get(key) || (this.parent ? this.parent.get(key) : undefined);
+	}
+	has(key: T) : boolean { // no modification
+		return this.data.has(key) || (!!this.parent && this.parent.has(key));
+	}
+	add(key: T, subtree = new Tree<T>(), callstack = <Set<Tree<T>>>new Set()) : Tree<T>{
+		if(callstack.has(this)) return this; 		callstack.add(this);
+
+		let node = this.get(key);
+		if(node){
+			node.addTree(subtree, callstack);
+			return node;
+		}else{
+			let result;
+			this.data.set(key, result=new Tree<T>(subtree));
+			return result;
+		}
+	}
+	addTree(tree: Tree<T>, callstack = <Set<Tree<T>>>new Set()) : Tree<T>{
+		for(let key of tree.keys())
+			this.add(key, tree.get(key), callstack);
+		return this;
+	}
+	getLeaves(callstack = new Set<Tree<T>>()) : Tree<T>[]{
+		if(callstack.has(this)) return [];
+		callstack.add(this);
+
+		let keys = this.keys();
+		if(keys.length == 0)
+			return [];
+
+		let list: Tree<T>[]= [];
+		for(let o of keys){
+			let x = <Tree<T>>this.getPointer(o);
+			x.getLeaves(callstack).forEach(x => list.push(x));
+		}
+		return list;
+	}
+	inspect(depth: number) : string{
+		let t = (new Array(depth)).fill('--').join('')+'| ';
+		if(depth>4)
+			return t+' /Stop there\n';
+		return [...this.data.entries()].map(([key, value]) => t + key.toString()+'\n'+value.inspect(depth+1)).join('');
+	}
+}
+
+class RecursiveNode {
+	source: Tree<typeof Token>;
+	callbacks: {target: Tree<typeof Token>, otherSource: Tree<typeof Token>}[] = [];
+	compiled = false;
+	constructor(source: Tree<typeof Token>){
+		this.source = source;
+	}
+	attachCallback(target: Tree<typeof Token>, otherSource: Tree<typeof Token>){
+		this.callbacks.push({target, otherSource});
+	}
+	compile(){
+		if(this.callbacks.length){
+			// console.log(s);
+			debugger;
+		}
+		this.compiled = true;
+		this.callbacks.forEach(({target, otherSource}) => {
+			(<any>this).source.SOURCE_JESUIS = true;
+			(<any>otherSource).OTHERSOURCE_JESUIS = true;
+			(<any>target).TARGET_JESUIS = true;
+			if(target.parent){
+				[...this.source.data.entries()].forEach(([k, v]) => target.parent && target.parent.add(k,v));
+			// 	[...otherSource.data.entries()].forEach(([k, v]) => target.parent && target.parent.add(k,v));
+			}else{
+				target.parent = this.source;
+			}
+			// debugger;
+				// target.addTree(otherSource);
+		});
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+export class SimpleTree<T>{
+	data: Map<T, SimpleTree<T>> = new Map();
+	multi: boolean;
+	none: boolean;
+	add(key: T){
+		let node = this.get(key);
+		if(node)
+			return node;
+		node = new SimpleTree<T>();
+		this.data.set(key, node);
+		return node;
+	}
+	constructor(...keys: T[]){
+		for(let key of keys)
+			this.add(key);
+	}
+	keys(){ return [...this.data.keys()]; }
+	import(tree: SimpleTree<T>, depth=0){
+		if(depth>13)
+			return [];
+		let list:SimpleTree<T>[] = [];
+		for(let [key, subtree] of tree.data.entries())
+			this.add(key).import(subtree, depth+1).forEach(o => list.push(o));
+		return list;
+	}
+	get(key: T){ return this.data.get(key); }
+	get leaves() : SimpleTree<T>[]{
+		return this.data.size
+			? [...this.data.values()].map(T => T.leaves).reduce((p,c) => p.concat(c), [])
+			: [this];
+	}
+	clone(){
+		let node = new SimpleTree<T>();
+		node.import(this);
+		debugger;
+		return node;
+	}
+}
+
+
+let getNTh = (nth: number) => (l: ParserRuleStep[]) => {
+	let list = <tokenOrRule[]>[];
+	let i = 0;
+	let dec = 0;
+	let inside = () => (i >= nth && i <= (nth + dec))
+	// let currentIndex = 0;
+	// let current = l[0];
+	// let next = () => (current=l[++currentIndex]);
+	let add = (o: ParserRuleStep) => o.getPossibles().forEach(x => list.push(x));
+	for(let o of l){
+		if(inside())	add(o);
+		if(i>nth + dec) break;
+		if(o instanceof ParserRuleComplexStep){
+			if(o.multiPossible)// if this step is multi, then we can hit it at some point for that nth token
+				add(o);
+			if(o.nonePossible)
+				dec++;
+			i++;
+		}else{
+			i++;
+		}
+	}
+	return list;
+}
+
+export let Has = (...trees: SimpleTree<typeof Token | typeof ParserRule>[]) => {
+	let current = trees.slice().map(t => t.clone());
+	let me = (tok: typeof Token) => {
+		let extendedRules: typeof ParserRule[] = [];
+		let extend = () => {
+			let change = false;
+			for(let aTree of current)
+				for(let key of aTree.keys())
+					if(isChildOf(key, ParserRule) && !extendedRules.includes(key)){
+						console.log('hey');
+						extendedRules.push(key);
+						// aTree.data.delete(key);
+						if(!key.cache)
+							throw "key.cache empty, not possible";
+						current.push(key.cache);
+						change = true;
+					}
+			return change;
+		};
+		while(extend());
+		debugger;
+		current = <SimpleTree<typeof Token | typeof ParserRule>[]>current.map(aTree => aTree.get(tok)).filter(o => o);
+		return  {success: current.length > 0, then: me, current};
+	};
+	return me;
+};
+(<any>global).Has=Has;
+(<any>global).HStr=(t: SimpleTree<typeof Token | typeof ParserRule>) => {
+	let h = Has(t);
+	let f = (s: string) => {
+		let res = h((<any>LexSPL)[s]);
+		return {current: res.current, success: res.success, then: f};
+	};
+	return f;
+};
+
+
+
+
+
+
+
+
+
+
+static cache?: SimpleTree<typeof Token | typeof ParserRule>;
+	static getPPP(f: Function, c=true){
+		let tree = this.getPossibleSequence();
+		type CircRef = {
+			parent: SimpleTree<typeof Token | typeof ParserRule>;
+			fake: SimpleTree<typeof Token | typeof ParserRule>;
+			rule: typeof ParserRule;
+		};
+		f(tree);
+		debugger;
+		let refs:CircRef[] = [];
+		let lookForParserRule = (tree: SimpleTree<typeof Token | typeof ParserRule>) => {
+			for(let [key, subtree] of tree.data){
+				if(isChildOf(key, ParserRule)){
+					console.log('ICI');
+					tree.data.delete(key);
+
+					refs.push({
+						parent: tree,
+						fake: subtree,
+						rule: key
+					});
+				}else
+					lookForParserRule(subtree);
+			}
+		};
+		lookForParserRule(tree);
+
+		for(let ref of refs){
+			let ruleTree = ref.rule.cache;
+			if(!ruleTree)
+				throw "RuleTree cache is empty!";
+
+			let list = ref.parent.import(ruleTree);
+			list.forEach(o => o.import(ref.fake));
+		}
+
+		f(tree);
+		debugger;
+	}
+	static beganProcess = false;
+	static getPossibleSequence(){
+		if(this.cache)
+			return this.cache;
+		this.beganProcess = true;
+
+		let o = new SimpleTree<typeof Token | typeof ParserRule>();
+
+		let leaves = <SimpleTree<typeof Token | typeof ParserRule>[]>[];
+		for(let step of this.steps){
+			let rules = step.getPossiblesParserRules();
+			if(step instanceof ParserRuleComplexStep && step.nonePossible){
+				leaves = leaves.concat(o.leaves);
+			}else
+				leaves = o.leaves;
+
+			step.getPossiblesTokens().forEach(token => leaves.forEach(leaf => leaf.add(token)));
+			
+			for(let rule of rules){
+				if(rule.beganProcess)
+					leaves.forEach(leaf => leaf.add(rule));
+				else{
+					let seqs = rule.getPossibleSequence();
+					leaves.forEach(leaf => leaf.import(seqs));
+				}
+			}
+		}
+
+		return this.cache=o;
+	}
+
+	// static getPossibleSequence(){
+	// 	// let parents = new Map<typeof ParserRule, RecursiveNode>();
+	// 	let r = this._getPossibleSequence();
+	// 	// [...parents].reverse().forEach(([_,p]) => p.compile('????'));
+	// 	return <Tree<typeof Token>>r;
+	// }
+	// static _getPossibleSequence(parents = new Map<typeof ParserRule, RecursiveNode>()) : Tree<typeof Token> | RecursiveNode {
+	// 	let WA = parents.get(this);
+
+	// 	if(WA){
+	// 		if(WA.compiled)
+	// 			return WA.source;
+	// 		else
+	// 			return WA;
+	// 	}
+
+	// 	let wordAccepter = new Tree<typeof Token>();
+	// 	let pointers = [wordAccepter];
+	// 	let steps = <Tree<typeof Token>[][]>[];
+
+	// 	let toResolve = new RecursiveNode(wordAccepter);
+	// 	parents.set(this, toResolve);
+
+	// 	for(let [i, step] of this.steps.entries()){
+	// 		if(step instanceof ParserRuleComplexStep){
+	// 			let possibles = [];
+
+	// 			let oldPointers = pointers.slice();
+	// 			pointers = [];
+	// 			step.getPossiblesTokens().forEach(t => oldPointers.forEach(p => pointers.push(p.add(t))));
+
+	// 			for(let possible of step.getPossiblesParserRules()){
+	// 				let tree = possible._getPossibleSequence(parents);
+
+	// 				if(tree instanceof RecursiveNode){
+	// 					let fakeNode = new Tree<typeof Token>();
+	// 					let recursiveNode = tree;
+	// 					oldPointers.forEach(parentTree => recursiveNode.attachCallback(parentTree, fakeNode))
+						
+	// 					pointers.push(fakeNode);
+	// 				}else{
+	// 					let realTree = tree;
+	// 					oldPointers.forEach(p => {
+	// 						for(let k of realTree.keys()){
+	// 							let o = p.add(k, realTree.get(k));
+	// 							pointers.push(o);
+	// 						}
+	// 					});
+	// 				}
+	// 					// pointers.push()
+	// 					// 
+	// 			}
+	// 			if(pointers.length==0)
+	// 				debugger;
+	// 		}else if(step instanceof ParserRuleIgnoreStep){
+	// 			pointers = Let(step, step => pointers.map(p => p.add(step.token)));	
+	// 		}
+			
+	// 		// pointers.forEach(p => (<any>p).parser = ([...parents].map(([p]) => p.name).join()+':'+i));
+	// 	}
+
+	// 	toResolve.compile();
+	// 	return wordAccepter;
+	// }
