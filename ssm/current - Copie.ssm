@@ -1,0 +1,12 @@
+ldc 6
+ldc 5
+ldc 4
+ldc 3
+ldc 2
+ldc 1
+sth
+sth
+sth
+sth
+str MP
+stl -1

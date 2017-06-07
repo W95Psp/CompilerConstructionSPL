@@ -9,7 +9,7 @@ export class Integer				extends Token {}				SPL_Lexer.register (Integer					, /\
 export class Arrow					extends DeterministicToken {}	SPL_Lexer.registerd(Arrow					, '->');
 export class DoubleColons			extends DeterministicToken {}	SPL_Lexer.registerd(DoubleColons			, '::');
 export class Void					extends DeterministicToken {}	SPL_Lexer.registerd(Void					, 'Void');
-export class BasicType				extends Token {}				SPL_Lexer.register (BasicType				, /\b(Int|Bool|Char)\b/y);
+export class BasicType				extends Token {}				SPL_Lexer.register (BasicType				, /\b(Int|Bool)\b/y);
 export class If						extends DeterministicToken {}	SPL_Lexer.registerd(If						, 'if');
 export class FieldOperators			extends Token {}				SPL_Lexer.register (FieldOperators			, /\b(hd|tl|fst|snd)\b/y);
 export class Else					extends DeterministicToken {}	SPL_Lexer.registerd(Else					, 'else');
@@ -17,6 +17,7 @@ export class While					extends DeterministicToken {}	SPL_Lexer.registerd(While		
 export class Return					extends DeterministicToken {}	SPL_Lexer.registerd(Return					, 'return');
 export class Bool					extends Token {}				SPL_Lexer.register (Bool					, /\b(False|True)\b/y);
 export class Var					extends DeterministicToken {}	SPL_Lexer.registerd(Var						, 'var');
+export class Any					extends DeterministicToken {}	SPL_Lexer.registerd(Any						, 'any');
 export class Id						extends Token {
 	static generateRand(deth=0){
 		let s = 'var'+Math.round(Math.random()*1000+1000);

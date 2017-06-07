@@ -6,7 +6,7 @@ module.exports = function (grunt) {
         let fs = require('fs');
         grunt.file.recurse('build', path => {
             let content = fs.readFileSync(path).toString();
-            let re = /(?:let\s+\w+\s*=\s*)?class .*\{\r?\n?(?:(?:    |\t).*\r?\n?)*\}/g;
+            let re = /(?:let\s+\w+\s*=(?:\s+\w+\s*=)?\s*)?class .*\{\r?\n?(?:(?:    |\t).*\r?\n?)*\}/g;
             // let re = /class .*\{\r?\n?\}/g;
             let classes = (content.match(re)||[]).join('\n');
             let first = true;
@@ -41,6 +41,9 @@ module.exports = function (grunt) {
     grunt.registerTask('launch', '', function() {
         require('child_process').execSync('cd build; node main.js', {stdio:[0,1,2]});
     });
+    grunt.registerTask('launch-test', '', function() {
+        require('child_process').execSync('cd build/tests; node typesTests.js', {stdio:[0,1,2]});
+    });
     grunt.registerTask('browserify', '', function() {
         require('child_process').execSync('cd build; browserify client.js -o bundle.js', {stdio:[0,1,2]});
     });
@@ -60,4 +63,5 @@ module.exports = function (grunt) {
     grunt.registerTask('run', ['copy', 'preCompile', 'ts', 'moveClasses', 'launch']);
     grunt.registerTask('debug', ['copy', 'preCompile', 'ts', 'moveClasses', 'launch-dbg']);
     grunt.registerTask('html', ['copy', 'preCompile', 'ts', 'moveClasses', 'browserify']);
+    grunt.registerTask('test', ['copy', 'preCompile', 'ts', 'moveClasses', 'launch-test']);
 }

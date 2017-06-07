@@ -1,8 +1,9 @@
 import {Token, EOF, DeterministicToken} from './lexer';
 import * as LexSPL from './spl.lexer';
-import {Let,Predicate,rnd,isChildOf, SimpleTree} from './tools';
+import {Let,Tuple,Predicate,rnd,isChildOf, SimpleTree, flatten} from './tools';
 import {TokenDeck} from './tokenDeck';
 import * as Type from './type';
+
 
 export interface ITSAdder{
 	(f: any, name: string) : void;
@@ -77,7 +78,8 @@ let hasProperty = (o:any, p: string) => Object.getOwnPropertyNames(o).includes(p
 
 
 export class ParserRule {
-	ctx: Type.Context;
+	// ctx: Type.Context;
+	parent: ParserRule;
 	static isLeftRecursive(parents = <(typeof ParserRule)[]>[]) : undefined | (typeof ParserRule)[] {
 		let parent = [...parents, this].map(o => o);
 		let list = this.steps[0].getPossiblesParserRules();
@@ -88,26 +90,27 @@ export class ParserRule {
 		let {tokens, rules} = f(this.steps).split((o): o is typeof ParserRule => isChildOf(o, ParserRule), (rules, tokens: (typeof Token)[]) => ({tokens, rules}));
 		return new Set([...tokens, ...rules.filter(r => !parents.has(r)).reduce((p,c) => p.concat([...c.getTokens(f, parents)]), <typeof Token[]>[])]);
 	}
-	typeCache: Map<Type.Context, Type.Type> = new Map();
-	getType(ctx: Type.Context) : Type.Type {
-		this.ctx = ctx;
-		let o = this.typeCache.get(ctx);
-		o || this.typeCache.set(ctx, o = this._getType(ctx));
-		return o;
+	getFirstToken() : Token{
+		let first = Let(this.getValuesDirect()[0], x => x instanceof Array ? x[0] : x);
+		return Let(first, o => o instanceof Token ? o : o.getFirstToken());
 	}
-	clearTypeCaches() {
-		this.typeCache = new Map();
-		this.getValuesDirectFlat().forEach(o => o.clearTypeCaches());
-	}
-	_getType(ctx: Type.Context) : Type.Type {
-		this.getValuesDirectFlat().forEach(o => o.getType(ctx));
-		return new Type.VoidType(this);
-	}
+	// typeCache: Map<Type.Context, Type.Type> = new Map();
+	// getType(ctx: Type.Context) : Type.Type {
+	// 	this.ctx = ctx;
+	// 	let o = this.typeCache.get(ctx);
+	// 	o || this.typeCache.set(ctx, o = this._getType(ctx));
+	// 	return o;
+	// }
+	// clearTypeCaches() {
+	// 	this.typeCache = new Map();
+	// 	this.getValuesDirectFlat().forEach(o => o.clearTypeCaches());
+	// }
+	// _getType(ctx: Type.Context) : Type.Type {
+	// 	this.getValuesDirectFlat().forEach(o => o.getType(ctx));
+	// 	return new Type.VoidType(this);
+	// }
 	error(message: string) : string {
-		let o = this.getValuesDirect()[0];
-		if(o instanceof Array)
-			o = o[0];
-		return o.error(message);
+		return this.getFirstToken().error(message);
 	}
 	extract<M>(predicate: (_: ParserRule) => boolean, ...transformers: ((_:SimpleTree<ParserRule|M>) => void)[]) : SimpleTree<ParserRule|M> | SimpleTree<ParserRule|M>[] {
 		let toArray = <T>(o:T|Array<T>) => o instanceof Array ? o : [o];
@@ -186,6 +189,7 @@ export class ParserRule {
 	set(key: string, obj: undefined | tPart) : undefined | tPart {
 		if(!this.getComplexSteps().find(o => o.name==key && ((o.multiPossible && o instanceof Array) || !(o instanceof Array))))
 			throw "Property "+key+" does not exists (or invalid type) on type "+this.constructor.name;
+		(<ParserRule[]>(obj instanceof Array ? obj : [obj]).filter(o => o instanceof ParserRule)).map(o => o.parent = this);
 		return (<any>this)[key] = obj;
 	}
 	getValuesDirectFlat() : ParserRule[] { // (<any>this)[s.name] can also return undefined, that's why filter is there
@@ -196,6 +200,15 @@ export class ParserRule {
 	}
 	getValues() : (string | tPart)[] { // (<any>this)[s.name] can also return undefined, that's why filter is there
 		return this.getSteps().map(s => s instanceof ParserRuleComplexStep ? this.get(s.name) || '' : (<any>s).content).filter(o => o);
+	}
+	getKeys() {
+		return this.getSteps().map(s => <string>(s instanceof ParserRuleComplexStep ? s.name : undefined)).filter(o => o);
+	}
+	getMapFromValuesToKeys() {
+		let map = this.getKeys().map(k => ({k, v: <tPart>this.get(k)})).filter(({k,v}) => v)
+								.map(o => o.v instanceof Array ? o.v.map(v => ({k:o.k, v})) : [{k:o.k, v: o.v}])
+								.reduce((p, c) => p.concat(c)).map(({v,k}) => Tuple(v, k), []);
+		return new Map(map);
 	}
 	static prettyPrint_indent = false;	static prettyPrint_after = '';
 	static prettyPrint_newLine = false;	static prettyPrint_before = '';

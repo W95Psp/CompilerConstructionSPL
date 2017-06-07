@@ -1,316 +1,503 @@
-import {Let} from './tools';
+import {Let, Tuple, Tuple3, CatTuple, flatten, filterUndef} from './tools';
 import {ParserRule} from './parser';
+import {Token} from './lexer';
+import {Integer, Bool} from './spl.lexer';
+// import * as SPLParser from './spl.parser';
+// import * as ReflectMetadata from 'reflect-metadata';
 
-export class Context {
-	protected idents: Map<string, Type> = new Map();
-	parent?: Context;
-	functionSealed = false;
-	protected numberArgs = 0;
-	protected parentPositionsGetter?: Map<string, [number, number]>;
-	sealFunctions() {
-		this.functionSealed = true;
-	}
-	get(ident: string) : Type | undefined {
-		return this.idents.get(ident) || (this.parent ? this.parent.get(ident) : undefined);
-	}
-	hasLocal(ident: string) {
-		return this.idents.has(ident);
-	}
-	getTypes(){
-		return [...this.idents.values()].map(o => o);
-	}
-	getPositionsGetter(){
-		let vars = [...this.idents.entries()].filter(([name, o]) => !(o instanceof FunctionType));
-		let map = new Map(<[string, [number, number]][]>vars.map(([name, decl], i) => {
-			let position = vars.length - i - 1 - this.numberArgs;
-			if(position >= 0)
-				position += 1; // skip previous MP and ref to parent context
-			else{
-				position = i - vars.length - 1; // skip return address
+// export class Context {
+// 	protected idents: Map<string, Type> = new Map();
+// 	parent?: Context;
+// 	functionSealed = false;
+// 	protected numberArgs = 0;
+// 	protected parentPositionsGetter?: Map<string, [number, number]>;
+// 	sealFunctions() {
+// 		this.functionSealed = true;
+// 	}
+// 	get(ident: string) : Type | undefined {
+// 		return this.idents.get(ident) || (this.parent ? this.parent.get(ident) : undefined);
+// 	}
+// 	hasLocal(ident: string) {
+// 		return this.idents.has(ident);
+// 	}
+// 	getTypes(){
+// 		return [...this.idents.values()].map(o => o);
+// 	}
+// 	getPositionsGetter(){
+// 		let vars = [...this.idents.entries()].filter(([name, o]) => !(o instanceof FunctionType));
+// 		let map = new Map(<[string, [number, number]][]>vars.map(([name, decl], i) => {
+// 			let position = vars.length - i - 1 - this.numberArgs;
+// 			if(position >= 0)
+// 				position += 1; // skip previous MP and ref to parent context
+// 			else{
+// 				position = i - vars.length - 1; // skip return address
+// 			}
+// 			return [name, [position, 0]];
+// 		}));
+// 		if(this.parentPositionsGetter)
+// 			for(let [key, [n, level]] of this.parentPositionsGetter)
+// 				map.has(key) || map.set(key, [n, level + 1]);
+// 		return map;
+// 	}
+// 	getLocalOrder(ident: string) : number {
+// 		let vars = [...this.idents.entries()].filter(([name, o]) => !(o instanceof FunctionType));
+// 		let i = vars.findIndex(([name, o]) => name == ident);
+// 		if(i==-1)
+// 			throw "XXX";
+// 		return vars.length - i - 2;
+// 		// return this.idents.get(ident) || (this.parent ? this.parent.get(ident) : undefined);
+// 	}
+// 	set(ident: string, type: Type, isArg = false) {
+// 		(this.getContext(ident) || this).idents.set(ident, type);
+// 		this.numberArgs += +isArg;
+// 	}
+// 	private getContext(ident: string) : Context | undefined {
+// 		return this.idents.has(ident) ? this : (this.parent ? this.parent.getContext(ident) : undefined);
+// 	}
+// 	constructor(parent?: Context){
+// 		this.parent = parent;
+// 		if(this.parent)
+// 			this.parentPositionsGetter = this.parent.getPositionsGetter();
+// 	}
+// 	child(){
+// 		return new Context(this);
+// 	}
+
+// 	HP: number;
+// 	SP: number;
+// }
+
+// interface TypeChecker {
+// 	(c: ParserRule): boolean
+// }
+// let f:TypeChecker = (c: FunCall) => true;
+
+// Reflect.getMetadata("design:type", f);
+
+
+export type Replacement = [UnknownType|VariableType, Type];
+
+export let applyReplacements = (o: Type, rl: Replacement[]) : Type => {
+	let res = rl.reduce((p,c) => p.replace(c[0], c[1]), o);
+	return res;
+};
+
+// last boolean means ""
+type TypeRule = (o: ParserRule, getType: (_:ParserRule|Token) => Type, ctx: Context) => [Type|undefined, Context|undefined, Replacement[]];
+let emptyTypeRule:TypeRule = (a,b,ctx) => [,, []];
+
+export class TypeSetParserRule {
+	typeRules: Map<typeof ParserRule, TypeRule>;
+	typeTokens: Map<typeof Token, Type> = new Map([
+		[Integer, new IntegerType()],
+		[Bool, new BooleanType()]
+	]);
+	typeOf(o: ParserRule, ctx: Context) : [Type, Context] | undefined {
+		let gt = (_:ParserRule|Token) => {
+			if(_ instanceof Token){
+				let r = this.typeTokens.get(<any>_.constructor);
+				if(!r) throw _.error("Token not typable");
+				return r;
 			}
-			return [name, [position, 0]];
-		}));
-		if(this.parentPositionsGetter)
-			for(let [key, [n, level]] of this.parentPositionsGetter)
-				map.has(key) || map.set(key, [n, level + 1]);
-		return map;
+			let r = ctx.typeOf(_);
+			let ob = r ? (r instanceof Context ? undefined : r) : r;
+			let getPName = () => o.getMapFromValuesToKeys().get(_) || '?';
+			if(!ob)
+				throw _.error("Try to get not existing type {"+o.static.name+":"+getPName()+"}");
+			return ob[0];
+		};
+		let f = (this.typeRules.get(o.static) || emptyTypeRule);
+		let [computedValue, computedContext = ctx, rps] = f(o, gt, ctx);
+		ctx.applyReplacements(rps);
+		o.getValuesDirectFlat().forEach(sub => computedContext.typeOf(sub)); // may fail
+		return computedValue ? Tuple(computedValue, computedContext) : undefined;
 	}
-	getLocalOrder(ident: string) : number {
-		let vars = [...this.idents.entries()].filter(([name, o]) => !(o instanceof FunctionType));
-		let i = vars.findIndex(([name, o]) => name == ident);
-		if(i==-1)
-			throw "XXX";
-		return vars.length - i - 2;
-		// return this.idents.get(ident) || (this.parent ? this.parent.get(ident) : undefined);
+	constructor(...typeRules: [typeof ParserRule, TypeRule][]){
+		this.typeRules = new Map(typeRules);
 	}
-	set(ident: string, type: Type, isArg = false) {
-		(this.getContext(ident) || this).idents.set(ident, type);
-		this.numberArgs += +isArg;
-	}
-	private getContext(ident: string) : Context | undefined {
-		return this.idents.has(ident) ? this : (this.parent ? this.parent.getContext(ident) : undefined);
-	}
-	constructor(parent?: Context){
+}
+
+enum TypeStorage{ Normal, Reference }
+
+export class Context{
+	protected identifiers: Map<string, [ParserRule, number, TypeStorage]> = new Map();
+	protected variableType: Map<string, Type> = new Map();
+	protected typeSPR: TypeSetParserRule;
+
+	protected outsideVariables: Set<string> = new Set();
+	cacheTypeParserRules: Map<ParserRule, [Type, Context] | undefined>;
+
+	protected parent?: Context;
+
+	protected attachedParserRule: ParserRule;
+
+	constructor(attachedParserRule: ParserRule, typeSPR: TypeSetParserRule, parent?: Context, cacheTypeParserRules?: Map<ParserRule, [Type, Context] | undefined>){
+		this.attachedParserRule = attachedParserRule;
+		this.typeSPR = typeSPR;
 		this.parent = parent;
-		if(this.parent)
-			this.parentPositionsGetter = this.parent.getPositionsGetter();
-	}
-	child(){
-		return new Context(this);
+		this.cacheTypeParserRules = cacheTypeParserRules || new Map();
 	}
 
-	HP: number;
-	SP: number;
+	getValue(id: string, from: ParserRule){
+		let ctx = this.getStrictContextOf(true, id);
+		if(!ctx)
+			return undefined;
+		if(ctx != this)
+			this.outsideVariables.add(id);
+		let r = ctx.identifiers.get(id);
+		return r ? r[0] : undefined;
+		// return (<[ParserRule, number, TypeStorage]>ctx.identifiers.get(id))[0];
+	}
+	setValue(id: string, v: ParserRule){
+		this.getContextOf(true,id).setLocalValue(id, v);
+	}
+	hasLocalValue(id: string){					return this.identifiers.has(id);				}
+	setLocalValue(id: string, v: ParserRule){
+		let o = this.identifiers.get(id);
+		if(!o)
+			throw "No value linked to the name "+v;
+		let [decl, position, typeStorage] = o;
+		this.identifiers.set(id, [v, position, typeStorage]);
+	}
+	declareValue(id: string, v: ParserRule, typeStorage: TypeStorage = TypeStorage.Normal, order?: number){
+		let cOrder = order!==undefined ? order : [...this.identifiers.values()]
+						.filter(([,i,ts]) => i>=0 && ts==typeStorage)
+						.reduce((n,[,i,]) => Math.max(i), -1)+1;
+		this.identifiers.set(id, [v, cOrder, typeStorage]);
+	}
+
+	getVType(id: string){						return this.variableType.get(id);				}
+	declareVType(id: string, t:Type){			this.variableType.set(id,t);					}
+
+	typeOf(o: ParserRule) : [Type, Context] | undefined{
+		if(this.cacheTypeParserRules.has(o))
+			return this.cacheTypeParserRules.get(o);
+		let r = this.typeSPR.typeOf(o, this);
+		this.cacheTypeParserRules.set(o, r);
+		return r;
+	}
+
+	applyReplacements(rs: Replacement[]){
+		for(let r of rs)
+			this.applyReplacement(r);
+	}
+	applyReplacement([fromType, toType]: Replacement){
+		let ctx = this.getStrictContextOf(false, fromType.name);
+		// if(!ctx)
+		// 	throw "Cannot find variable type named \""+fromType.name+"\"";
+		if(!ctx){
+			let gParent = (o:Context) : Context => o.parent ? gParent(o.parent) : o;
+			ctx = gParent(this);
+		}
+		let applyToSub = (o: Context | ParserRule, force=false) : void => {
+			if(force || !(o instanceof Context && o.getVType(fromType.name))){
+				if(o instanceof ParserRule) {
+					let r = this.cacheTypeParserRules.get(o);
+					if(r){
+						let [type, context] = r;
+						if(o instanceof Context && context!=o)
+							applyToSub(context);
+						this.cacheTypeParserRules.set(o, Tuple(applyReplacements(type, [[fromType, toType]]), context));
+					}
+				}
+				(o instanceof Context ? o.attachedParserRule : o)
+					.getValuesDirectFlat().forEach(v => applyToSub(v));
+			}
+		};
+		applyToSub(ctx, true);
+		for(let [k,v] of this.variableType.entries())
+			this.variableType.set(k, applyReplacements(v, [[fromType, toType]]));
+	}
+
+	getContextOf(isValue: boolean, id: string) : Context{
+		return this.getStrictContextOf(isValue, id) || this;
+	}
+	getStrictContextOf(isValue: boolean, id: string) : Context | undefined{
+		if((isValue ? this.identifiers : this.variableType).has(id))
+			return this;
+		return this.parent ? this.parent.getContextOf(isValue, id) : undefined;
+	}
+	child(attachedParserRule: ParserRule, ...localVTypes: string[]){
+		localVTypes.forEach(tname => this.declareVType(tname, new UnknownType(tname)));
+		return new Context(attachedParserRule, this.typeSPR, this, this.cacheTypeParserRules);
+	}
 }
 
-export enum ForceSealState {
-	ActLikeItWasSealed,
-	AvoidSeal,
-	Nothing
-}
+
+let ordLexOrder = ([a1,a2]: [number, number], [b1,b2]: [number, number]) => 
+	a1==b1 && a2==b2 ? 0 : (a1 > b1 || (a1==b1 && a2 < b2)) ? 1 : -1;
+let maxLexOrder = (a: [number, number], b: [number, number]) =>
+	ordLexOrder(a,b)>0 ? a : b;
+let maxsLexOrder = (l: [number, number][]) => {
+	if(!l.length)
+		return Tuple(Infinity, 1);
+	return l.reduce((p, c) => maxLexOrder(p,c), l[0]);
+};
+let incrLexOrder = ([a,b]: [number, number]) => Tuple(a+1, b);
+
+export class ErrorUnifying{
+	path: [Type, Type, string|undefined][] = [];
+	constructor(from: Type, to: Type, message:string|undefined=undefined){
+		this.comesFrom(from, to, message);
+	}
+	comesFrom(from: Type, to: Type, message:string|undefined=undefined){
+		this.path.push([from, to, message]);
+		return this;
+	}
+};
 
 export abstract class Type {
-	attachedNode: ParserRule;
-	abstract clone() : Type;
-	constructor(attachedNode: ParserRule){
-		this.attachedNode = attachedNode;
+	//instanciateVT is used on function calls
+	abstract internalUnifyWith(type: Type, instanciateVT?: Boolean) : ErrorUnifying | Replacement[]; //If 'this' is more specialized than 'type', undefined
+																		//else return replacements to make this like type
+	unifyWith(type: Type) {
+		let rp = this.internalUnifyWith(type);
+		return rp instanceof ErrorUnifying ? undefined : applyReplacements(this, rp);
 	}
-	unifyWith(type: Type, forceSeal: ForceSealState) : boolean {
-		if(type instanceof VariableType)
-			return this._unifyWith(type, forceSeal) || type._unifyWith(this, ForceSealState.ActLikeItWasSealed);
-		return this._unifyWith(type, forceSeal);
-	};
-	protected abstract _unifyWith(type: Type, forceSeal: ForceSealState) : boolean;
-	abstract extractVariableType(shallow?: boolean) : VariableType[];
-	abstract dependOnNotResolvedYet() : boolean;
+	// abstract extractVariableType(shallow?: boolean) : VariableType[];
+	// abstract dependOnNotResolvedYet() : boolean;
+	get cons_name() : string {
+		return (<any>this).constructor.name;
+	}
+	abstract equal(type: Type) : boolean;
+	abstract replace(needle: Type, replace: Type) : Type;
+	abstract lexOrder() : [number, number];
+	abstract search(f: (_: Type) => boolean): Type[];
 }
-export class BasicType extends Type {
-	isInteger: boolean;
-	clone(){return new BasicType(this.attachedNode, this.isInteger)};
-	_unifyWith(type: Type, forceSeal: ForceSealState) : boolean{
-		return (type instanceof BasicType) && this.isInteger==type.isInteger;
+
+let flattenFilterUndef = <T>(l: ((T[])|undefined)[]) => flatten(filterUndef(l));
+
+export abstract class CombinedType extends Type {
+	readonly inside: Type[] = [];
+	constructor(...inside: Type[]){
+		super();
+		this.inside.push(...inside);
 	}
-	constructor(attachedNode: ParserRule, isInteger: boolean){
-		super(attachedNode);
-		this.isInteger = isInteger;
+	search(f: (_: Type) => boolean) : Type[]{
+		return [...f(this) ? [this] : [], ...flatten(this.inside.map(o => o.search(f)))];
 	}
-	extractVariableType(shallow = false) {return []};
-	toString(){
-		return this.isInteger ? 'Integer' : 'Boolean';
-	}
-	dependOnNotResolvedYet(){return false};
-}
-export class VoidType extends Type {
-	clone(){return new VoidType(this.attachedNode)};
-	_unifyWith(type: Type, forceSeal: ForceSealState) : boolean{return (type instanceof VoidType);}
-	constructor(attachedNode: ParserRule){super(attachedNode);}
-	extractVariableType(shallow = false) {return []};
-	toString(){
-		return 'Void';
-	}
-	dependOnNotResolvedYet(){return false};
-}
-export abstract class ComposedType extends Type {}
-export class TupleType extends ComposedType {
-	left:	Type;
-	right:	Type;
-	clone(){return new TupleType(this.attachedNode, this.left.clone(), this.right.clone())};
-	_unifyWith(type: Type, forceSeal: ForceSealState) : boolean{
-		return (type instanceof TupleType) && this.left.unifyWith(type.left, forceSeal) && this.right.unifyWith(type.right, forceSeal);
-	}
-	constructor(attachedNode: ParserRule, left: Type, right: Type){
-		super(attachedNode);
-		this.left = left;
-		this.right = right;
-	}
-	extractVariableType(shallow = false) {return [...this.left.extractVariableType(), ...this.right.extractVariableType()]};
-	toString(){
-		return '('+this.left.toString()+', '+this.right.toString()+']';
-	}
-	dependOnNotResolvedYet(){return this.left.dependOnNotResolvedYet() || this.right.dependOnNotResolvedYet()};
-}
-export class ListType extends ComposedType  {
-	inner: Type;
-	clone(){return new ListType(this.attachedNode, this.inner.clone())};
-	_unifyWith(type: Type, forceSeal: ForceSealState) : boolean{
-		return (type instanceof ListType) && this.inner.unifyWith(type.inner, forceSeal);
-	}
-	constructor(attachedNode: ParserRule, inner: Type){
-		super(attachedNode);
-		this.inner = inner;
-	}
-	extractVariableType(shallow = false) {return this.inner.extractVariableType()};
-	toString(){
-		return '['+this.inner.toString()+']';
-	}
-	dependOnNotResolvedYet(){return this.inner.dependOnNotResolvedYet()};
-}
-export class FunDefType extends ComposedType  {
-	inputs: Type[];
-	output: Type;
-	native?: (_: ParserRule[]) => string[];
-	clone(){return new FunDefType(this.attachedNode, this.inputs.map(o => o.clone()), this.output.clone(), this.native)};
-	_unifyWith(type: Type, forceSeal: ForceSealState) : boolean{
-		return (type instanceof FunDefType) 	&& this.inputs.length==type.inputs.length 
-												&& this.output.unifyWith(type.output, forceSeal)
-												&& this.inputs.every((t,k) => t.unifyWith(type.inputs[k], forceSeal));
-	}
-	getMark() : number {
-		return this.inputs.filter(o => o instanceof VariableType).length;
-	}
-	getOutputType(inputs: Type[], avoidSeal = ForceSealState.Nothing) : Type | undefined {
-		if(inputs.length != this.inputs.length)
-			return undefined;
-		if(inputs.some(o => o instanceof NotResolvedYet))
-			return new NotResolvedYet(this.attachedNode);
-		let i = this.inputs.map(o => o.clone());
-		if(!i.every((i,k) => inputs[k].unifyWith(i, avoidSeal)))
-			return undefined;
-		let out = this.output;
-		if(out instanceof VariableType){
-			let oo = out;
-			return inputs[i.findIndex(o => (o instanceof VariableType) && o.name==oo.name)];
+	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+		if(!(type instanceof CombinedType && this instanceof type.constructor) || this.inside.length != type.inside.length)
+			return new ErrorUnifying(this, type, 'Not same kind of CombinedType (cannot unify '+this.cons_name+' and '+type.cons_name+')');
+
+		let mapBef = flatten(this.inside.map((o,i) => Tuple(o, type.inside[i])).map(([a,b],i) => {
+			let c =  a.internalUnifyWith(b, instanciateVT);
+			if(c instanceof Array)
+				return c.map(o => Tuple(i,o));
+			return [];
+		}))
+		let map = new Map<UnknownType | VariableType, [number, Type]>();
+		for(let [i,[m,d]] of mapBef){
+			let o = map.get(m);
+			if(!o)
+				map.set(m, [i,d]);
+			else{
+				let [index, type] = o;
+				map.set(m, ordLexOrder(type.lexOrder(), d.lexOrder())<0 ? o : [i,d]);
+			}
 		}
-		return out.clone();
-	}
-	constructor(attachedNode: ParserRule, inputs: Type[], output: Type, native?: (_: ParserRule[]) => string[]){
-		super(attachedNode);
-		this.inputs = inputs;
-		this.output = output;
-		this.native = native;
-	}
-	extractVariableType(shallow = false) {return [...this.inputs, this.output].map(o => o.extractVariableType()).reduce((p, c) => p.concat(c), [])};
-	toString(){
-		return '( ' + this.inputs.map(i => i.toString()).join(', ') + ' -> '+ this.output.toString() +' )'
-	}
-	dependOnNotResolvedYet(){return false;};
-}
+		let order = [...map.values()].map(([i]) => i);
+		let list = [...order, ...this.inside.map((o,i) => i).filter(i => !order.includes(i))].map(i => Tuple(this.inside[i], type.inside[i]));
 
-let uniqueId = 0;
-export class FunctionType extends ComposedType {
-	funDefs: FunDefType[];
-	clone(){
-		return new FunctionType(this.attachedNode, this.funDefs.map(o => o.clone()));
+		let allReplacers = [];
+		for(let [a, b] of list) {
+			let replacers = a.internalUnifyWith(b, instanciateVT);
+			if(replacers instanceof ErrorUnifying)
+				return replacers.comesFrom(this, type);
+			allReplacers.push(...replacers);
+			for(let i in list)
+				list[i] = [applyReplacements(list[i][0], replacers), list[i][1]];
+		}
+		return allReplacers;
 	}
-	_unifyWith(type: Type, forceSeal: ForceSealState) : boolean{
-		(() => {throw "TODO uniftWith fun type"}).call(null);
-		return false;
+	lexOrder(){ return incrLexOrder(maxsLexOrder(this.inside.map(o => o.lexOrder()))); }
+	replace(needle: Type, replace: Type) : Type {
+		if(this.equal(needle))
+			return replace;
+		return new (<any>this.constructor)(...this.inside.map(o => o.replace(needle, replace)));
 	}
-	getBestFunction_len(inputs: Type[]) : FunDefType[] {
-		let defs = this.funDefs.filter(o => o.inputs.length == inputs.length).sort((a, b) => Let([a.getMark(), b.getMark()], ([ma, mb]) => ma == mb ? 0 : (ma > mb ? 1 : -1)));
-		if(!defs.length)
-			throw "No overloading of "+this.attachedNode+" with "+inputs.length+" arguments exists";
-		return defs;
-	}
-	getBestFunction(inputs: Type[]) : {funDef: FunDefType | FunDefType[], outputType: Type} {
-		let defs = this.getBestFunction_len(inputs);
-		let typeTrace = inputs.map(o => o.toString()).join(', ');
-		let goodDefs = <{def: FunDefType, type: Type}[]>defs.map(def => ({def, type: def.getOutputType(inputs, ForceSealState.AvoidSeal)})).filter(o => o.type);
-		inputs.forEach(d => d.extractVariableType(true).forEach(d => d.seal()));
-
-		if(!goodDefs.length)
-			throw this.attachedNode.error("No overloading of "+((<any>this.attachedNode).name || (<any>this.attachedNode).funName)+" with types "+typeTrace);
-		if(goodDefs.length==1)
-			return {outputType: goodDefs[0].type, funDef: goodDefs[0].def};
-
-		let T = new VariableType(this.attachedNode, 't_'+(++uniqueId));
-		let subTypes = goodDefs.map(o => o.def instanceof VariableType ? o.def.possibles : [o.def]).reduce((p, c) => p.concat(c));
-		T.possibles = subTypes;
-
-		return {outputType: T, funDef: goodDefs.map(o => o.def)};
-	}
-	getTypeDef(inputs: Type[]) : NotResolvedYet | FunDefType | FunDefType[] {
-		if(this instanceof NotResolvedYet)
-			return this;
-		return this.getBestFunction(inputs).funDef;
-	}
-	getOutputType(inputs: Type[]) : Type {
-		return this.getBestFunction(inputs).outputType;
-	}
-	constructor(attachedNode: ParserRule, funDefs: FunDefType[]){
-		super(attachedNode);
-		this.funDefs = funDefs;
-	}
-	extractVariableType(shallow = false) {return this.funDefs.map(o => o.extractVariableType()).reduce((p, c) => p.concat(c), [])};
-
-	toString(){
-		return '[Function either: ' + this.funDefs.map(d => d.toString()).join(', ') + ']';
-	}
-	dependOnNotResolvedYet(){return false;};
-}
-export class NotResolvedYet extends FunctionType {
-	ressourceName: string;
-	clone() { return new NotResolvedYet(this.attachedNode); }
-	extractVariableType() {return <VariableType[]>[];}
-	_unifyWith() {return true;}
-	dependOnNotResolvedYet(){return false;};
-	constructor(attachedNode: ParserRule){ super(attachedNode, []); }
-
-	getTypeDef(_: Type[]) : NotResolvedYet {
-		return this;
-	}
-	getOutputType(_: Type[]) : Type {
-		return this;
-	}
-	toString(){
-		return '[NotResolvedYet]';
+	equal(type: Type) : type is CombinedType {
+		return  (type instanceof CombinedType) && this.constructor == type.constructor
+				&& this.inside.length == type.inside.length 
+				&& this.inside.every((o, i) => o.equal(type.inside[i]));
 	}
 }
-export class VariableType extends Type {
-	private sealed:		boolean;
-	possibles:	(BasicType | ComposedType)[] = [];
-	id= 		Symbol();
-
-	name: string;
-	clone(){
-		let o = new VariableType(this.attachedNode, this.name);
-		o.possibles = this.possibles.map(o => o.clone());
-		return o;
-	};
-	// DO NOT USE FOLLOWING (adaptembt to do, sealing thing)
-	// unifyWithMultiple(types: Type[], forceSeal: ForceSealState) : boolean{
-	// 	let result = types.every(type => this._unifyWithOne(type, forceSeal));
-	// 	this.seal();
-	// 	return result;
-	// }
-	_unifyWith(type: Type, forceSeal: ForceSealState) : boolean{
-		let doNotSeal = forceSeal==ForceSealState.AvoidSeal;
-		let result = this._unifyWithOne(type, doNotSeal ? ForceSealState.Nothing : forceSeal);
-		debugger;
-		doNotSeal || this.seal();
-		debugger;
-		return result;
+export class TupleType extends CombinedType {
+	constructor(left: Type, right: Type){
+		super(left, right);
 	}
-	_unifyWithOne(type: Type, forceSeal: ForceSealState) : boolean{
-		if(type instanceof VariableType)
-			return type.possibles.length == 0 || (this.possibles.length == type.possibles.length && this.possibles.every((p,k) => p.unifyWith(type.possibles[k], forceSeal)));
-		let alreadyThere = this.possibles.some(o => o.unifyWith(type, ForceSealState.ActLikeItWasSealed));
-		if(this.sealed || forceSeal==ForceSealState.ActLikeItWasSealed){
-			if(this.possibles.length==0)
+}
+export class ListType extends CombinedType {
+	constructor(inner: Type){
+		super(inner);
+	}
+}
+class FunctionType_UnderlyingType extends CombinedType {}
+
+export class FunctionType extends Type {
+	readonly inputs: Type[];
+	readonly output: Type;
+	readonly ctFull: CombinedType;
+	readonly ctInputs: CombinedType;
+	outputErrorFlag: boolean = false;
+	search(f: (_: Type) => boolean) : Type[]{
+		return [...this.ctFull.search(f), ...f(this) ? [this] : []];
+	}
+	lexOrder(){ return this.ctFull.lexOrder(); }
+	constructor(inputs: Type[], output: Type){
+		super();
+		[this.inputs, this.output] = [inputs, output];
+		this.ctFull = new FunctionType_UnderlyingType(...this.inputs, this.output);
+		this.ctInputs = new FunctionType_UnderlyingType(...this.inputs);
+	}
+	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[]{
+		this.outputErrorFlag = false;
+		if(!(type instanceof FunctionType))
+			return new ErrorUnifying(this, type, 'Not FunctionType');
+		// first: get replacements for inputs, apply them on outputs
+		let rps = type.ctInputs.internalUnifyWith(this.ctInputs, instanciateVT);
+		if(rps instanceof ErrorUnifying)
+			return rps.comesFrom(this, type);
+		let out = applyReplacements(type.output, rps);
+		if(out.equal(type.output) && type.output.lexOrder()[0] != Infinity)
+			return new ErrorUnifying(this, type, 'Wasn\'t able to figure out the type');
+		let unifiedOne = new FunctionType_UnderlyingType(...this.inputs, out);
+		let rpsNew = this.ctFull.internalUnifyWith(unifiedOne, instanciateVT);
+		if(rpsNew instanceof ErrorUnifying){
+			this.outputErrorFlag = true;
+			return rpsNew.comesFrom(this, type);
+		}
+		return [...new Set([...rps, ...rpsNew])];
+	}
+	equal(type: Type) : type is FunctionType {
+		return this.ctFull.equal(type);
+	}
+	replace(needle: Type, replace: Type) : Type {
+		if(this.equal(needle))
+			return replace;
+		return new FunctionType(
+					this.inputs.map(o => o.replace(needle, replace)),
+					this.output.replace(needle, replace)
+				);
+	}
+}
+export class IntegerType extends CombinedType {
+	constructor(){super();}
+}
+export class BooleanType extends CombinedType {
+	constructor(){super();}
+}
+let idCounter = 0;
+export class UnknownType extends Type {
+	search(f: (_: Type) => boolean) : Type[]{
+		return f(this) ? [this] : [];
+	}
+	lexOrder(){ return Tuple(1, Infinity); }
+	readonly name: string;
+	constructor(name?: string){
+		super();
+		this.name = name || 'v'+(idCounter++);
+	}
+	equal(type: Type) : boolean{
+		return (type instanceof UnknownType) && type.name == this.name;
+	}
+	replace(needle: Type, replace: Type) : Type {
+		return this.equal(needle) ? replace : this;
+	}
+	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+		if(type.equal(this))
+			return [];
+		return [[this, type]];
+	}
+}
+export class UnknownTypeLimited extends UnknownType {
+	lexOrder(){ return Tuple(1, this.possibles.length - 0.1); }
+	readonly name: string;
+	readonly possibles: Type[];
+	
+	search(f: (_: Type) => boolean) : Type[]{
+		return [...flatten(this.possibles.map(o => o.search(f))), ...f(this) ? [this] : []];
+	}
+	constructor(possibles: Type[], name?: string){
+		super(name);
+		this.possibles = possibles;
+	}
+	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+		if(type instanceof UnknownType)
+			return [[this, type]];
+		if(type instanceof UnknownTypeLimited){ // we want to take the types in common and 
+			let replacers: Replacement[] = [];
+			let intersection 	= this.possibles.filter(o => type.possibles.some(x => {
+				let r = o.internalUnifyWith(x, instanciateVT);
+				if(r instanceof ErrorUnifying)
+					return false;
+				replacers.push(...r);
 				return true;
-			this.possibles = this.possibles.filter(o => o.unifyWith(type, ForceSealState.ActLikeItWasSealed));
-			return alreadyThere;
-		}else{
-			if(!alreadyThere)
-				this.possibles.push(type);
-			return true;
+			}));	//intersection by internalUnifyWith
+			if(!intersection.length)
+				return new ErrorUnifying(this, type);
+			intersection = intersection.map(o => applyReplacements(o, replacers));
+			let	o		= new UnknownTypeLimited(intersection, this.name);
+			return [[this, o], [type, o], ...replacers];
 		}
+		if(type instanceof VariableType){
+			let err = <ErrorUnifying | undefined>flatten(this.possibles.map(i => type.possibles.map(j => Tuple(i,j)))).map(([i,j]) => i.internalUnifyWith(j)).find(o => o instanceof ErrorUnifying);
+			if(err)
+				return err.comesFrom(this, type);
+			return [[this, type]];
+		}
+		if(type instanceof CombinedType){
+			let replacers = this.possibles.map(possible => ({possible, replacers: <Replacement[]>possible.internalUnifyWith(type)})).filter(o => o.replacers).pop();
+			if(!replacers)
+				return new ErrorUnifying(this, type);
+			return [[this, replacers.possible], ...replacers.replacers]
+		}
+		throw "Should not be here";
 	}
-	constructor(attachedNode: ParserRule, name: string){
-		super(attachedNode);
-		this.name = name;
-	}
-	seal(){
-		this.sealed=true;
-	}
-	extractVariableType(shallow = false) {return shallow ? [this] : [this, ...this.possibles.map(o => o.extractVariableType()).reduce((p,c) => p.concat(c), [])]};
+}
 
-	toString(){
-		if(this.possibles.length==0)
-			return '[Variable Type '+this.name+']';
-		if(this.possibles.length==1)
-			return this.possibles[0].toString();
-		return '[Either: '+this.possibles.map(o => o.toString()).join(', ')+']';
+export class VariableType extends Type {
+	lexOrder(){ return Tuple(1, this.possibles.length); }
+	readonly possibles: CombinedType[];
+	readonly name: string;
+	search(f: (_: Type) => boolean) : Type[]{
+		return [...flatten(this.possibles.map(o => o.search(f))), ...f(this) ? [this] : []];
 	}
-	dependOnNotResolvedYet(){return this.possibles.some(o => o.dependOnNotResolvedYet());};
+	constructor(possibles: CombinedType[], name?: string){
+		super();
+		this.name = name || 'v'+(idCounter++);
+		this.possibles = possibles;
+	}
+	equal(type: Type) : boolean {
+		return (type instanceof VariableType) && this.name==type.name;
+	}
+	replace(needle: Type, replace: Type) : Type {
+		return this.equal(needle) ? replace : this;
+	}
+	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+		if(instanciateVT){
+			if(this.possibles.some.length){
+				let o = this.possibles.find(x => x.internalUnifyWith(type) instanceof Array);
+				if(!o)
+					return new ErrorUnifying(this, type);
+			}
+			return [[this, type]];
+		}
+		if(!(type instanceof VariableType) || type.possibles.length != this.possibles.length)
+			return new ErrorUnifying(this, type);
+		let list = this.possibles.map((o,i) => Tuple(o as Type, type.possibles[i]));
+		let allReplacers = [];
+		for(let [a, b] of list) {
+			let replacers = a.internalUnifyWith(b, instanciateVT);
+			if(replacers instanceof ErrorUnifying)
+				return replacers.comesFrom(this, type);
+			allReplacers.push(...replacers);
+			for(let i in list)
+				list[i] = Tuple(applyReplacements(list[i][0], replacers), list[i][1]);
+		}
+		// let result = this.possibles.map((o, i) => o.internalUnifyWith(type) || [undefined]).reduce((p, c) => p.concat(c), <(undefined | Replacement)[]>[]);
+		// if(result.some(o => !o))
+		// 	return undefined;
+		return allReplacers;
+	}
 }
