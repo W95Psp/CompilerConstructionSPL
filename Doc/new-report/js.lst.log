@@ -1,0 +1,3702 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6300 64-bit) (preloaded format=pdflatex 2017.5.15)  15 JUN 2017 15:28
+entering extended mode
+**C:/Users/wpsp/Desktop/CompilerConstructionNew/Doc/new-report/js.lst.tex
+(C:/Users/wpsp/Desktop/CompilerConstructionNew/Doc/new-report/js.lst.tex
+LaTeX2e <2017-04-15>
+Babel <3.9r> and hyphenation patterns for 75 language(s) loaded.
+
+! LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 \usepackage{
+                listings}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+! LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2 \usepackage{
+                color}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+! LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3 \usepackage{
+                textcomp}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+! LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4 \usepackage[T1]{
+                    fontenc}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+! LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.5 \usepackage{
+                caption}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+! LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.6 \usepackage{
+                hyperref}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+! Undefined control sequence.
+l.8 \definecolor
+                {jskeywords}{HTML}{8E44AD}% JavaScript keywords
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.8 \definecolor{j
+                  skeywords}{HTML}{8E44AD}% JavaScript keywords
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no j in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no A in font nullfont!
+Missing character: There is no D in font nullfont!
+! Undefined control sequence.
+l.9 \definecolor
+                {jsextkeywords}{HTML}{006700}% JavaScript extended keywords
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no j in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no x in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 8--10
+[] 
+ []
+
+! Undefined control sequence.
+l.11 \definecolor
+                 {identifiers}{HTML}{645452} % identfiers
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.11 \definecolor{i
+                   dentifiers}{HTML}{645452} % identfiers
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+! Undefined control sequence.
+l.12 \definecolor
+                 {string}{HTML}{B57281} % string literals
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no B in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+! Undefined control sequence.
+l.13 \definecolor
+                 {allcomment}{HTML}{808080} % comment
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 11--14
+[]
+ []
+
+! Undefined control sequence.
+l.15 \definecolor
+                 {nodejs}{HTML}{629755} % Nodejs keywords
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.15 \definecolor{n
+                   odejs}{HTML}{629755} % Nodejs keywords
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no j in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+! Undefined control sequence.
+l.16 \definecolor
+                 {testing}{HTML}{4169E1} % Node.js assert, jasmine
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no 1 in font nullfont!
+! Undefined control sequence.
+l.17 \definecolor
+                 {express}{HTML}{FF8C69} % Express.js
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no e in font nullfont!
+Missing character: There is no x in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no F in font nullfont!
+Missing character: There is no F in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no C in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+! Undefined control sequence.
+l.18 \definecolor
+                 {linenumber}{HTML}{996515} % line number
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+! Undefined control sequence.
+l.19 \definecolor
+                 {apricot}{HTML}{98777B} % numbers
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no B in font nullfont!
+! Undefined control sequence.
+l.20 \definecolor
+                 {linenofill}{HTML}{BEBEBE} % line number fill color
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no B in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no B in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no B in font nullfont!
+Missing character: There is no E in font nullfont!
+! Undefined control sequence.
+l.21 \definecolor
+                 {antiquefuchsia}{HTML}{915C83} % braces
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no q in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no C in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no 3 in font nullfont!
+! Undefined control sequence.
+l.22 \definecolor
+                 {ballblue}{HTML}{21ABCD} % braces
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no b in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no L in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no A in font nullfont!
+Missing character: There is no B in font nullfont!
+Missing character: There is no C in font nullfont!
+Missing character: There is no D in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 15--23
+[]
+ []
+
+! Undefined control sequence.
+l.24 \definecolor
+                 {captioncolor}{rgb}{0.39, 0.33, 0.32} % caption color
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.24 \definecolor{c
+                   aptioncolor}{rgb}{0.39, 0.33, 0.32} % caption color
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+! Undefined control sequence.
+l.25 \captionsetup
+                  [lstlisting]{font={color=captioncolor, small,tt}}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no [ in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 24--26
+[]
+ []
+
+! Undefined control sequence.
+l.27 \captionsetup
+                  [lstlisting]{font={color=captioncolor, small, tt}}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.27 \captionsetup[
+                   lstlisting]{font={color=captioncolor, small, tt}}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no [ in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+! Undefined control sequence.
+l.28 \DeclareCaptionFormat
+                          {listing}{\rule{\dimexpr\textwidth+17pt\relax}{0.4...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 27--28
+[]
+ []
+
+
+Overfull \hbox (8208.99998pt too wide) in paragraph at lines 27--28
+[] 
+ []
+
+! You can't use `macro parameter character #' in vertical mode.
+<recently read> ##
+                  
+l.28 ...xpr\textwidth+17pt\relax}{0.4pt}\vskip1pt#
+                                                  1#2#3}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.28 ...pr\textwidth+17pt\relax}{0.4pt}\vskip1pt#1
+                                                  #2#3}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 1 in font nullfont!
+! You can't use `macro parameter character #' in horizontal mode.
+l.28 ...r\textwidth+17pt\relax}{0.4pt}\vskip1pt#1#
+                                                  2#3}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+Missing character: There is no 2 in font nullfont!
+! You can't use `macro parameter character #' in horizontal mode.
+l.28 ...textwidth+17pt\relax}{0.4pt}\vskip1pt#1#2#
+                                                  3}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+Missing character: There is no 3 in font nullfont!
+! Undefined control sequence.
+l.29 \captionsetup
+                  [lstlisting]{format=listing,singlelinecheck=false, margin=...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no [ in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no f in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 28--30
+[]
+ []
+
+! Undefined control sequence.
+l.31 \lstdefinelanguage
+                       {JavaScript}{
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.31 \lstdefinelanguage{J
+                         avaScript}{
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no J in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no S in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no x in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no x in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no = in font nullfont!
+! Undefined control sequence.
+l.34   keywordstyle=\color
+                          {jskeywords}\bfseries,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no j in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.35 ...ath.sin, Math.sinh, Math.sqrt, Math.SQRT1_
+                                                  2, Math.SQRT2, Math.tan, M...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 35.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 35.
+! Extra }, or forgotten $.
+l.36   }
+        , % JavaScript extended keywords
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+l.37   ndkeywordstyle=\color
+                            {jsextkeywords}\bfseries,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Command \bfseries invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.37 ...eywordstyle=\color{jsextkeywords}\bfseries
+                                                  ,
+Please use the math alphabet \mathbf instead of the \bfseries command. 
+
+! Undefined control sequence.
+l.38   identifierstyle=\color
+                             {identifiers},
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.40   stringstyle=\color
+                         {string}\ttfamily,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Command \ttfamily invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.40   stringstyle=\color{string}\ttfamily
+                                          ,
+Please use the math alphabet \mathtt instead of the \ttfamily command. 
+
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 40.
+! Undefined control sequence.
+l.43   morestring=[s][\color
+                            {string}\ttfamily]{`}{`},
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Command \ttfamily invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.43   morestring=[s][\color{string}\ttfamily
+                                             ]{`}{`},
+Please use the math alphabet \mathtt instead of the \ttfamily command. 
+
+! Undefined control sequence.
+l.44   commentstyle=\color
+                          {red}\itshape,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Command \itshape invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.44   commentstyle=\color{red}\itshape
+                                       ,
+Please use the math alphabet \mathit instead of the \itshape command. 
+
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/it' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/it' tried instead on input line 44.
+! Undefined control sequence.
+l.45   morecomment=[l][\color
+                             {allcomment}]{//},
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.46   morecomment=[s][\color
+                             {allcomment}]{/*}{*/},
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.47   morecomment=[s][\color
+                             {allcomment}]{/**}{*/},
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Missing { inserted.
+<to be read again> 
+                   _
+l.49 ...nflateSync, zlib.unzip, zlib.unzipSync, __
+                                                  dirname, __filename}, % No...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing { inserted.
+<to be read again> 
+                   _
+l.49 ... zlib.unzip, zlib.unzipSync, __dirname, __
+                                                  filename}, % Node.js keywords
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.52 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.52 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 31--52
+[] 
+ []
+
+
+Overfull \hbox (3.19443pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ,
+ []
+
+
+Overfull \hbox (16.61102pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 nd-
+ []
+
+
+Overfull \hbox (20.92351pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 key-
+ []
+
+
+Overfull \hbox (59.90382pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 words=add,
+ []
+
+
+Overfull \hbox (15.8124pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ap-
+ []
+
+
+Overfull \hbox (17.8888pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ply,
+ []
+
+
+Overfull \hbox (23.8068pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 args,
+ []
+
+
+Overfull \hbox (17.26381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ar-
+ []
+
+
+Overfull \hbox (18.3124pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ray,
+ []
+
+
+Overfull \hbox (17.26381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ar-
+ []
+
+
+Overfull \hbox (45.09004pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ray.from,
+ []
+
+
+Overfull \hbox (17.26381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ar-
+ []
+
+
+Overfull \hbox (57.78578pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ray.isArray,
+ []
+
+
+Overfull \hbox (17.26381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ar-
+ []
+
+
+Overfull \hbox (27.57623pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ray.of
+ []
+
+
+Overfull \hbox (3.19443pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ,
+ []
+
+
+Overfull \hbox (17.26381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ar-
+ []
+
+
+Overfull \hbox (70.80519pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ray.prototype,
+ []
+
+
+Overfull \hbox (17.26381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ar-
+ []
+
+
+Overfull \hbox (19.9096pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ray-
+ []
+
+
+Overfull \hbox (34.479pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Buffer,
+ []
+
+
+Overfull \hbox (25.55542pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 bind,
+ []
+
+
+Overfull \hbox (43.63864pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Boolean,
+ []
+
+
+Overfull \hbox (20.28459pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 call,
+ []
+
+
+Overfull \hbox (37.5484pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 charAt,
+ []
+
+
+Overfull \hbox (25.34013pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 char-
+ []
+
+
+Overfull \hbox (42.07617pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 CodeAt,
+ []
+
+
+Overfull \hbox (27.09708pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 clear,
+ []
+
+
+Overfull \hbox (26.67348pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 code-
+ []
+
+
+Overfull \hbox (43.06921pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 PointAt,
+ []
+
+
+Overfull \hbox (21.08322pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 con-
+ []
+
+
+Overfull \hbox (18.36794pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 cat,
+ []
+
+
+Overfull \hbox (21.08322pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 con-
+ []
+
+
+Overfull \hbox (29.07762pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 struc-
+ []
+
+
+Overfull \hbox (18.1527pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 tor,
+ []
+
+
+Overfull \hbox (26.83319pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 copy-
+ []
+
+
+Overfull \hbox (38.72202pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Within,
+ []
+
+
+Overfull \hbox (53.13162pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 DataView,
+ []
+
+
+Overfull \hbox (27.34706pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Date,
+ []
+
+
+Overfull \hbox (50.66638pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Date.now,
+ []
+
+
+Overfull \hbox (57.06355pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Date.parse,
+ []
+
+
+Overfull \hbox (79.83986pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Date.prototype,
+ []
+
+
+Overfull \hbox (55.69412pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Date.UTC,
+ []
+
+
+Overfull \hbox (15.49298pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 de-
+ []
+
+
+Overfull \hbox (47.8678pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 codeURI,
+ []
+
+
+Overfull \hbox (15.49298pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 de-
+ []
+
+
+Overfull \hbox (48.50668pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 codeURI-
+ []
+
+
+Overfull \hbox (27.47208pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Com-
+ []
+
+
+Overfull \hbox (16.29158pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 po-
+ []
+
+
+Overfull \hbox (25.3957pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 nent,
+ []
+
+
+Overfull \hbox (15.49298pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 en-
+ []
+
+
+Overfull \hbox (47.8678pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 codeURI,
+ []
+
+
+Overfull \hbox (15.49298pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 en-
+ []
+
+
+Overfull \hbox (48.50668pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 codeURI-
+ []
+
+
+Overfull \hbox (27.47208pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Com-
+ []
+
+
+Overfull \hbox (16.29158pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 po-
+ []
+
+
+Overfull \hbox (25.3957pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 nent,
+ []
+
+
+Overfull \hbox (51.72333pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 endsWith,
+ []
+
+
+Overfull \hbox (15.49298pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 en-
+ []
+
+
+Overfull \hbox (25.40404pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 tries,
+ []
+
+
+Overfull \hbox (16.12492pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Er-
+ []
+
+
+Overfull \hbox (18.4166pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ror,
+ []
+
+
+Overfull \hbox (16.12492pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Er-
+ []
+
+
+Overfull \hbox (70.9094pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ror.prototype,
+ []
+
+
+Overfull \hbox (37.89561pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 EvalEr-
+ []
+
+
+Overfull \hbox (18.4166pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ror,
+ []
+
+
+Overfull \hbox (15.17354pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ev-
+ []
+
+
+Overfull \hbox (18.31242pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ery,
+ []
+
+
+Overfull \hbox (25.29984pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 false,
+ []
+
+
+Overfull \hbox (15.97214pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 fill,
+ []
+
+
+Overfull \hbox (13.4166pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 fil-
+ []
+
+
+Overfull \hbox (17.67354pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ter,
+ []
+
+
+Overfull \hbox (22.361pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 find,
+ []
+
+
+Overfull \hbox (22.99988pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 find-
+ []
+
+
+Overfull \hbox (14.58325pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 In-
+ []
+
+
+Overfull \hbox (20.92351pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 dex,
+ []
+
+
+Overfull \hbox (69.48572pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Float32Array,
+ []
+
+
+Overfull \hbox (69.48572pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Float64Array,
+ []
+
+
+Overfull \hbox (25.38876pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 forE-
+ []
+
+
+Overfull \hbox (19.96515pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ach,
+ []
+
+
+Overfull \hbox (19.69434pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ful-
+ []
+
+
+Overfull \hbox (16.61102pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 fill-
+ []
+
+
+Overfull \hbox (44.12616pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Promise,
+ []
+
+
+Overfull \hbox (27.99985pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Func-
+ []
+
+
+Overfull \hbox (22.99988pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 tion,
+ []
+
+
+Overfull \hbox (27.99985pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Func-
+ []
+
+
+Overfull \hbox (57.65942pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 tion.length,
+ []
+
+
+Overfull \hbox (18.68741pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (27.34706pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Date,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (22.39569pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Day,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (19.69434pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ful-
+ []
+
+
+Overfull \hbox (29.72206pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 lYear,
+ []
+
+
+Overfull \hbox (28.32625pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getH-
+ []
+
+
+Overfull \hbox (24.60542pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ours,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (21.13878pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Mil-
+ []
+
+
+Overfull \hbox (25.14014pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 lisec-
+ []
+
+
+Overfull \hbox (26.25818pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 onds,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (24.3332pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Min-
+ []
+
+
+Overfull \hbox (23.86237pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 utes,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (36.79147pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Month,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (20.60406pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Sec-
+ []
+
+
+Overfull \hbox (26.25818pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 onds,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (29.2429pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Time,
+ []
+
+
+Overfull \hbox (19.3263pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 get-
+ []
+
+
+Overfull \hbox (29.88179pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Time-
+ []
+
+
+Overfull \hbox (14.69437pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 zo-
+ []
+
+
+Overfull \hbox (15.49298pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ne-
+ []
+
+
+Overfull \hbox (19.18045pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Off-
+ []
+
+
+Overfull \hbox (17.47351pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 set,
+ []
+
+
+Overfull \hbox (44.47893pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTC-
+ []
+
+
+Overfull \hbox (27.34706pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Date,
+ []
+
+
+Overfull \hbox (44.47893pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTC-
+ []
+
+
+Overfull \hbox (22.39569pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Day,
+ []
+
+
+Overfull \hbox (44.47893pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTC-
+ []
+
+
+Overfull \hbox (19.69434pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Ful-
+ []
+
+
+Overfull \hbox (29.72206pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 lYear,
+ []
+
+
+Overfull \hbox (74.25099pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTCHours,
+ []
+
+
+Overfull \hbox (61.7844pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTCMil-
+ []
+
+
+Overfull \hbox (25.14014pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 lisec-
+ []
+
+
+Overfull \hbox (26.25818pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 onds,
+ []
+
+
+Overfull \hbox (64.97882pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTCMin-
+ []
+
+
+Overfull \hbox (23.86237pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 utes,
+ []
+
+
+Overfull \hbox (44.47893pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTC-
+ []
+
+
+Overfull \hbox (36.79147pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Month,
+ []
+
+
+Overfull \hbox (44.47893pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 getUTC-
+ []
+
+
+Overfull \hbox (20.60406pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Sec-
+ []
+
+
+Overfull \hbox (26.25818pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 onds,
+ []
+
+
+Overfull \hbox (81.53835pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 has,hasInstance,
+ []
+
+
+Overfull \hbox (15.8124pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ha-
+ []
+
+
+Overfull \hbox (31.70259pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 sOwn-
+ []
+
+
+Overfull \hbox (28.5693pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Prop-
+ []
+
+
+Overfull \hbox (22.46518pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 erty,
+ []
+
+
+Overfull \hbox (12.77771pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ig-
+ []
+
+
+Overfull \hbox (25.97905pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 nore-
+ []
+
+
+Overfull \hbox (26.89705pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Case,
+ []
+
+
+Overfull \hbox (13.4166pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 in-
+ []
+
+
+Overfull \hbox (34.08453pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 cludes,
+ []
+
+
+Overfull \hbox (13.4166pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 in-
+ []
+
+
+Overfull \hbox (33.07622pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 dexOf,
+ []
+
+
+Overfull \hbox (13.4166pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 in-
+ []
+
+
+Overfull \hbox (33.07622pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 dexOf,
+ []
+
+
+Overfull \hbox (14.58325pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 In-
+ []
+
+
+Overfull \hbox (16.61102pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 fin-
+ []
+
+
+Overfull \hbox (15.6527pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ity,
+ []
+
+
+Overfull \hbox (52.39555pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Int8Array,
+ []
+
+
+Overfull \hbox (58.14552pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Int16Array,
+ []
+
+
+Overfull \hbox (58.14552pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Int32Array,
+ []
+
+
+Overfull \hbox (11.56381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 is-
+ []
+
+
+Overfull \hbox (24.27765pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Con-
+ []
+
+
+Overfull \hbox (19.00682pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 cat-
+ []
+
+
+Overfull \hbox (38.59702pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Spread-
+ []
+
+
+Overfull \hbox (23.63875pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 able,
+ []
+
+
+Overfull \hbox (11.56381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 is-
+ []
+
+
+Overfull \hbox (14.26381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Fi-
+ []
+
+
+Overfull \hbox (22.52072pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 nite,
+ []
+
+
+Overfull \hbox (11.56381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 is-
+ []
+
+
+Overfull \hbox (26.78456pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 NaN,
+ []
+
+
+Overfull \hbox (12.73047pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Is-
+ []
+
+
+Overfull \hbox (44.12616pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Promise,
+ []
+
+
+Overfull \hbox (11.56381pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 is-
+ []
+
+
+Overfull \hbox (22.18045pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Pro-
+ []
+
+
+Overfull \hbox (14.05548pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 to-
+ []
+
+
+Overfull \hbox (37.54842pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 typeOf,
+ []
+
+
+Overfull \hbox (12.6666pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 It-
+ []
+
+
+Overfull \hbox (13.84023pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 er-
+ []
+
+
+Overfull \hbox (23.63875pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 able,
+ []
+
+
+Overfull \hbox (11.49994pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 it-
+ []
+
+
+Overfull \hbox (13.84023pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 er-
+ []
+
+
+Overfull \hbox (9.42354pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 a-
+ []
+
+
+Overfull \hbox (18.1527pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 tor,
+ []
+
+
+Overfull \hbox (22.04155pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 join,
+ []
+
+
+Overfull \hbox (33.16649pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 JSON,
+ []
+
+
+Overfull \hbox (62.88298pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 JSON.parse,
+ []
+
+
+Overfull \hbox (77.25792pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 JSON.stringify,
+ []
+
+
+Overfull \hbox (24.8207pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 keys,
+ []
+
+
+Overfull \hbox (32.37617pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 lastIn-
+ []
+
+
+Overfull \hbox (33.07622pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 dexOf,
+ []
+
+
+Overfull \hbox (32.37617pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 lastIn-
+ []
+
+
+Overfull \hbox (33.07622pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 dexOf,
+ []
+
+
+Overfull \hbox (34.65955pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 length,
+ []
+
+
+Overfull \hbox (12.77771pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 lo-
+ []
+
+
+Overfull \hbox (22.99986pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 cale-
+ []
+
+
+Overfull \hbox (27.47208pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Com-
+ []
+
+
+Overfull \hbox (25.18042pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 pare,
+ []
+
+
+Overfull \hbox (24.75679pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 map,
+ []
+
+
+Overfull \hbox (26.09012pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Map,
+ []
+
+
+Overfull \hbox (34.02063pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 match,
+ []
+
+
+Overfull \hbox (34.02063pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 match,
+ []
+
+
+Overfull \hbox (30.56232pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math,
+ []
+
+
+Overfull \hbox (47.07747pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.abs
+ []
+
+
+Overfull \hbox (3.19443pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 ,
+ []
+
+
+Overfull \hbox (54.7441pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.acos,
+ []
+
+
+Overfull \hbox (61.13295pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.acosh,
+ []
+
+
+Overfull \hbox (53.46632pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.asin,
+ []
+
+
+Overfull \hbox (59.85518pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.asinh,
+ []
+
+
+Overfull \hbox (55.79825pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.atan,
+ []
+
+
+Overfull \hbox (61.54822pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.atan2,
+ []
+
+
+Overfull \hbox (62.1871pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.atanh,
+ []
+
+
+Overfull \hbox (54.46498pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.cbrt,
+ []
+
+
+Overfull \hbox (50.5275pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.ceil,
+ []
+
+
+Overfull \hbox (58.67328pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.clz32,
+ []
+
+
+Overfull \hbox (49.15387pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.cos,
+ []
+
+
+Overfull \hbox (55.54272pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.cosh,
+ []
+
+
+Overfull \hbox (41.31226pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.E,
+ []
+
+
+Overfull \hbox (51.48582pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.exp,
+ []
+
+
+Overfull \hbox (66.81908pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.expm1,
+ []
+
+
+Overfull \hbox (56.70108pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.floor,
+ []
+
+
+Overfull \hbox (66.92325pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.fround,
+ []
+
+
+Overfull \hbox (62.82603pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.hypot,
+ []
+
+
+Overfull \hbox (55.7983pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.imul,
+ []
+
+
+Overfull \hbox (55.4233pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.LN2,
+ []
+
+
+Overfull \hbox (61.17326pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.LN10,
+ []
+
+
+Overfull \hbox (48.45111pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.log,
+ []
+
+
+Overfull \hbox (60.58994pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.log1p,
+ []
+
+
+Overfull \hbox (54.20108pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.log2,
+ []
+
+
+Overfull \hbox (71.6593pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.LOG2E,
+ []
+
+
+Overfull \hbox (59.95105pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.log10,
+ []
+
+
+Overfull \hbox (77.40927pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.LOG10E,
+ []
+
+
+Overfull \hbox (54.99966pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.max,
+ []
+
+
+Overfull \hbox (52.92331pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.min,
+ []
+
+
+Overfull \hbox (45.9789pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.PI,
+ []
+
+
+Overfull \hbox (54.20108pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.pow,
+ []
+
+
+Overfull \hbox (72.19403pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.random,
+ []
+
+
+Overfull \hbox (63.40938pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.round,
+ []
+
+
+Overfull \hbox (53.62607pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.sign,
+ []
+
+
+Overfull \hbox (47.8761pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.sin,
+ []
+
+
+Overfull \hbox (54.26495pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.sinh,
+ []
+
+
+Overfull \hbox (53.57053pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.sqrt,
+ []
+
+
+Overfull \hbox (12240.60455pt too wide) in paragraph at lines 31--52
+\OT1/cmr/bx/n/10 Math.SQRT1$[]\OML/cmm/m/it/10 ; Math:SQRT\OT1/cmr/m/n/10 2\OML
+/cmm/m/it/10 ; Math:tan; Math:tanh; Math:trunc; message; multiline; name; NaN; 
+NewPromiseCapability; next; normalize; null; Number; Number:EPSILON; Number:isF
+inite; Number:isInteger; Number:isNaN; Number:isSafeInteger; Number:MAX[]AFE[]N
+TEGER; Number:MAX[]ALUE; Number:MIN[]AFE[]NTEGER; Number:MIN[]ALUE; Number:NaN;
+ Number:NEGATIVE[]NFINITY; Number:parseFloat; Number:parseInt; Number:POSITIVE[
+]NFINITY; Number:prototype; Object; Object; Object:assign; Object:create; Objec
+t:defineProperties; Object:defineProperty; Object:freeze; Object:getOwnProperty
+Descriptor; Object:getOwnPropertyNames; Object:getOwnPropertySymbols; Object:ge
+tPrototypeOf; Object:is; Object:isExtensible; Object:isFrozen; Object:isSealed;
+ Object:keys; Object:preventExtensions; Object:prototype; Object:seal; Object:s
+etPrototypeOf; of; parseFloat; parseInt; pop; Promise; Promise:all; Promise:rac
+e; Promise:reject; Promise:resolve; PromiseReactionJob; propertyIsEnumerable; p
+rototype; Proxy; Proxy:revocable; push; RangeError; reduce; reduceRight; Refere
+nceError; Reflect; Reflect:apply; Reflect:construct; Reflect:defineProperty; Re
+flect:deleteProperty; Reflect:enumerate; Reflect:get; Reflect:getOwnPropertyDes
+criptor; Reflect:getPrototypeOf; Reflect:has; Reflect:isExtensible; Reflect:own
+Keys; Reflect:preventExtensions; Reflect:set; Reflect:setPrototypeOf; Reflectio
+n; RegExp; RegExp; RegExp:prototype; repeat; replace; replace; reverse; search;
+ search; Set; set; setDate; setFullYear; setHours; setMilliseconds; setMinutes;
+ setMonth; setSeconds; setTime; setUTCDate; setUTCFullYear; setUTCHours; setUTC
+Milliseconds; setUTCMinutes; setUTCMonth; setUTCSeconds; shift; slice; slice; s
+ome; sort; species; splice; split; split; startsWith; String; String:fromCharCo
+de; String:fromCodePoint; String:raw; substring; Symbol; Symbol:for; Symbol:has
+Instance; Symbol:isConcatSpreadable; Symbol:iterator; Symbol:keyFor; Symbol:mat
+ch; Symbol:prototype; Symbol:replace; Symbol:replace; Symbol:search; Symbol:spe
+cies; Symbol:split; Symbol:toPrimitive; Symbol:toStringTag; Symbol:unscopables;
+ SyntaxError; then; toDateString; toExponential; toFixed; toISOString; toJSON; 
+toLocaleDateString; toLocaleLowerCase; toLocaleString; toLocaleString; toLocale
+String; toLocaleString; toLocaleTimeString; toLocaleUpperCase; toLowerCase; toP
+recision; toPrimitive; toString; toStringTag; toTimeString; toUpperCase; toUTCS
+tring; TriggerPromiseReactions; trim; true; TypeError; Uint\OT1/cmr/m/n/10 8\OM
+L/cmm/m/it/10 Array; Uint\OT1/cmr/m/n/10 8\OML/cmm/m/it/10 ClampedArray; Uint\O
+T1/cmr/m/n/10 16\OML/cmm/m/it/10 Array; Uint\OT1/cmr/m/n/10 32\OML/cmm/m/it/10 
+Array; undefined; unscopables; unshift; URIError; valueOf; WeakMap; WeakSet; nd
+keywordstyle \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (147.38141pt too wide) in paragraph at lines 31--52
+[]\OML/cmm/m/it/10 ; identifierstyle \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (105.31256pt too wide) in paragraph at lines 31--52
+[]\OML/cmm/m/it/10 ; sensitive \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (82.84222pt too wide) in paragraph at lines 31--52
+\OML/cmm/m/it/10 true; stringstyle \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (93.40077pt too wide) in paragraph at lines 31--52
+[]\OML/cmm/m/it/10 ; morestring \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (80.58409pt too wide) in paragraph at lines 31--52
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 b\OT1/cmr/m/n/10 ]"\OML/cmm/m/it/10 ; morestr
+ing \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (79.30284pt too wide) in paragraph at lines 31--52
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 d\OT1/cmr/m/n/10 ][]\OML/cmm/m/it/10 ; morest
+ring \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (125.86435pt too wide) in paragraph at lines 31--52
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 ][[]]\\OML/cmm/m/it/10 ; com
+mentstyle \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (93.72821pt too wide) in paragraph at lines 31--52
+[]\OML/cmm/m/it/10 ; morecomment \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (156.02129pt too wide) in paragraph at lines 31--52
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 l\OT1/cmr/m/n/10 ][[]][]\OML/cmm/m/it/10 ; mo
+recomment \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (167.52824pt too wide) in paragraph at lines 31--52
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 ][[]][][]\OML/cmm/m/it/10 ; 
+morecomment \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (137.12404pt too wide) in paragraph at lines 31--52
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 ][[]][][]\OML/cmm/m/it/10 ; 
+emph \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (4230.6552pt too wide) in paragraph at lines 31--52
+[]\OML/cmm/m/it/10 ; emph \OT1/cmr/m/n/10 =
+ []
+
+
+! LaTeX Error: The font size command \normalsize is not defined:
+               there is probably something wrong with the class file.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.52 
+     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[1{C:/Users/wpsp/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+! Undefined control sequence.
+l.53   \lstset
+              {
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.54    b
+         asicstyle=\normalsize\linespread{1.1}\footnotesize\ttfamily,
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: The font size command \normalsize is not defined:
+               there is probably something wrong with the class file.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.54    basicstyle=\normalsize
+                              \linespread{1.1}\footnotesize\ttfamily,
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Undefined control sequence.
+l.54 ...e=\normalsize\linespread{1.1}\footnotesize
+                                                  \ttfamily,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.62    numberstyle=\tiny
+                         ,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 74.
+
+LaTeX Font Info:    No file OMScmtt.fd. on input line 74.
+
+LaTeX Font Warning: Font shape `OMS/cmtt/bx/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 74.
+
+! Undefined control sequence.
+l.74             *{\{}{{\textcolor
+                                  {antiquefuchsia}{\{}}}{1}% punctuators
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.75             {\}}{{\textcolor
+                                 {antiquefuchsia}{\}}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.76             {(}{{\textcolor
+                                {antiquefuchsia}{(}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.77             {)}{{\textcolor
+                                {antiquefuchsia}{)}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.78             {[}{{\textcolor
+                                {antiquefuchsia}{[}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.79             {]}{{\textcolor
+                                {antiquefuchsia}{]}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.80             {...}{{\textcolor
+                                  {ballblue}{...}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.81             {;}{{\textcolor
+                                {antiquefuchsia}{;}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.82             {,}{{\textcolor
+                                {antiquefuchsia}{,}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.83             {>}{{\textcolor
+                                {ballblue}{>}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.84             {<}{{\textcolor
+                                {ballblue}{<}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.85             {<=}{{\textcolor
+                                 {ballblue}{<=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.86             {>=}{{\textcolor
+                                 {ballblue}{>=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.87             {==}{{\textcolor
+                                 {ballblue}{==}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.88             {!=}{{\textcolor
+                                 {ballblue}{!=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.89             {===}{{\textcolor
+                                  {ballblue}{===}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.90             {!==}{{\textcolor
+                                  {ballblue}{!==}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.91             {+}{{\textcolor
+                                {ballblue}{+}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.92             {-}{{\textcolor
+                                {ballblue}{-}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.93             {*}{{\textcolor
+                                {ballblue}{*}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.94             {\%}{{\textcolor
+                                 {ballblue}{\%}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.95             {++}{{\textcolor
+                                 {ballblue}{++}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.96             {--}{{\textcolor
+                                 {ballblue}{--}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.97             {<<}{{\textcolor
+                                 {ballblue}{<<}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.98             {>>}{{\textcolor
+                                 {ballblue}{>>}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.99             {>>>}{{\textcolor
+                                  {ballblue}{>>>}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.100             {=}{{\textcolor
+                                 {ballblue}{=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.101             {&
+                    }{{\textcolor{ballblue}{&}}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.101             {&}{{\textcolor
+                                 {ballblue}{&}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.101             {&}{{\textcolor{ballblue}{&
+                                             }}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.102             {|}{{\textcolor
+                                 {ballblue}{|}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.103             {^
+                    }{{\textcolor{ballblue}{^}}}1%
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing { inserted.
+<to be read again> 
+                   }
+l.103             {^}
+                     {{\textcolor{ballblue}{^}}}1%
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Undefined control sequence.
+l.103             {^}{{\textcolor
+                                 {ballblue}{^}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Missing { inserted.
+<to be read again> 
+                   }
+l.103             {^}{{\textcolor{ballblue}{^}
+                                              }}1%
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Undefined control sequence.
+l.104             {!}{{\textcolor
+                                 {ballblue}{!}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.105             {~}{{\textcolor
+                                 {ballblue}{~}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.106             {&
+                    &}{{\textcolor{ballblue}{&&}}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.106             {&&
+                     }{{\textcolor{ballblue}{&&}}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.106             {&&}{{\textcolor
+                                  {ballblue}{&&}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.106             {&&}{{\textcolor{ballblue}{&
+                                              &}}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.106             {&&}{{\textcolor{ballblue}{&&
+                                               }}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.107             {||}{{\textcolor
+                                  {ballblue}{||}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.108             {?}{{\textcolor
+                                 {ballblue}{?}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.109             {:}{{\textcolor
+                                 {ballblue}{:}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.110             {=}{{\textcolor
+                                 {ballblue}{=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.111             {+=}{{\textcolor
+                                  {ballblue}{+=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.112             {-=}{{\textcolor
+                                  {ballblue}{-=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.113             {*=}{{\textcolor
+                                  {ballblue}{*=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.114             {\%=}{{\textcolor
+                                   {ballblue}{\%=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.115             {<<=}{{\textcolor
+                                   {ballblue}{<<=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.116             {>>=}{{\textcolor
+                                   {ballblue}{>>=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.117             {>>>=}{{\textcolor
+                                    {ballblue}{>>>=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.118             {&
+                    =}{{\textcolor{ballblue}{&=}}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.118             {&=}{{\textcolor
+                                  {ballblue}{&=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.118             {&=}{{\textcolor{ballblue}{&
+                                              =}}}1%
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.119             {|=}{{\textcolor
+                                  {ballblue}{|=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.120             {^=}{{\textcolor
+                                  {ballblue}{^=}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.121             {=>}{{\textcolor
+                                  {ballblue}{=>}}}1%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.122             {\\b}{{\textcolor
+                                   {ballblue}{\textbackslash{}b}}}1% escape ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 122.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 122.
+
+! Undefined control sequence.
+l.123             {\\t}{{\textcolor
+                                   {apricot}{\textbackslash{}t}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 123.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 123.
+
+! Undefined control sequence.
+l.124             {\\n}{{\textcolor
+                                   {apricot}{\textbackslash{}n}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 124.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 124.
+
+! Undefined control sequence.
+l.125             {\\v}{{\textcolor
+                                   {apricot}{\textbackslash{}v}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 125.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 125.
+
+! Undefined control sequence.
+l.126             {\\f}{{\textcolor
+                                   {apricot}{\textbackslash{}f}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 126.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 126.
+
+! Undefined control sequence.
+l.127             {\\r}{{\textcolor
+                                   {apricot}{\textbackslash{}r}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 127.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 127.
+
+! Undefined control sequence.
+l.128             {\\"}{{\textcolor
+                                   {apricot}{\textbackslash{}"}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 128.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 128.
+
+! Undefined control sequence.
+l.129             {\\'}{{\textcolor
+                                   {apricot}{\textbackslash{}'}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 129.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 129.
+
+! Undefined control sequence.
+l.130             {\\}{{\textcolor
+                                  {apricot}{\textbackslash{}}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 130.
+
+
+LaTeX Warning: Command \textbackslash invalid in math mode on input line 130.
+
+! Undefined control sequence.
+l.131             {0}{{\textcolor
+                                 {apricot}{0}}}{1}% numbers
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.132             {1}{{\textcolor
+                                 {apricot}{1}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.133             {2}{{\textcolor
+                                 {apricot}{2}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.134             {3}{{\textcolor
+                                 {apricot}{3}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.135             {4}{{\textcolor
+                                 {apricot}{4}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.136             {5}{{\textcolor
+                                 {apricot}{5}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.137             {6}{{\textcolor
+                                 {apricot}{6}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.138             {7}{{\textcolor
+                                 {apricot}{7}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.139             {8}{{\textcolor
+                                 {apricot}{8}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.140             {9}{{\textcolor
+                                 {apricot}{9}}}{1}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.141             {.0}{{\textcolor
+                                  {apricot}{.0}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.142             {.1}{{\textcolor
+                                  {apricot}{.1}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.143             {.2}{{\textcolor
+                                  {apricot}{.2}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.144             {.3}{{\textcolor
+                                  {apricot}{.3}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.145             {.4}{{\textcolor
+                                  {apricot}{.4}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.146             {.5}{{\textcolor
+                                  {apricot}{.5}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.147             {.6}{{\textcolor
+                                  {apricot}{.6}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.148             {.7}{{\textcolor
+                                  {apricot}{.7}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.149             {.8}{{\textcolor
+                                  {apricot}{.8}}}{2}%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.150             {.9}{{\textcolor
+                                  {apricot}{.9}}}{2},%
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.151    emphstyle={\color
+                          {express}}, % express
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.152    emphstyle={[2]\color
+                             {nodejs}}, % node.js
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.153    emphstyle={[3]\color
+                             {testing}}, % jasmine ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.154    numberstyle=\normalfont\tiny
+                                     \textcolor{linenumber} % line number
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.154    numberstyle=\normalfont\tiny\textcolor
+                                               {linenumber} % line number
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+)
+*
+! Emergency stop.
+<*> ...erConstructionNew/Doc/new-report/js.lst.tex
+                                                  
+(That makes 100 errors; please try again.) 
+Here is how much of TeX's memory you used:
+ 29 strings out of 493328
+ 530 string characters out of 3139127
+ 115761 words of memory out of 3000000
+ 3655 multiletter control sequences out of 15000+200000
+ 4284 words of font info for 17 fonts, out of 3000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 18i,6n,13p,6843b,126s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+!  ==> Fatal error occurred, no output PDF file produced!

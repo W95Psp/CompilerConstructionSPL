@@ -184,6 +184,10 @@ export class FunDecl extends ParserRule{
 		if(!this._args) return [];
 		return this._args.args;
 	}
+	get argsParserRules() {
+		if(!this._args) return [];
+		return this._args.argsParserRules;
+	}
 	getReturnPaths() {
 		type X = {maybe: Ret[], concl: Ret[]};
 		let compose = (A:X, B: X) =>
@@ -298,6 +302,9 @@ export class FArgs extends ParserRule{
 	@SPL_Parser.addStep() 		name: LexSPL.Id;
 	get args() {
 		return [...this._args.map(o => o.name), this.name];
+	}
+	get argsParserRules() : (FArgsOpt | FArgs)[] {
+		return [...this._args.map(o => o), this];
 	}
 }
 @ppNewLine

@@ -1,0 +1,56 @@
+\BOOKMARK [1][-]{section.1}{Language choice}{}% 1
+\BOOKMARK [1][-]{section.2}{Global design}{}% 2
+\BOOKMARK [1][-]{section.3}{Lexer}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{How it works}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Error management}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Token and deterministic token}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Paired token}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Parser}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{Architecture}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{Declaring a rule}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.3}{Pretty printer}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.4}{Random program generator}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.5}{Parsing}{section.4}% 13
+\BOOKMARK [3][-]{subsubsection.4.5.1}{TokenDeck}{subsection.4.5}% 14
+\BOOKMARK [3][-]{subsubsection.4.5.2}{Parser internal parsing}{subsection.4.5}% 15
+\BOOKMARK [2][-]{subsection.4.6}{Grammar analysis \046 optimization}{section.4}% 16
+\BOOKMARK [3][-]{subsubsection.4.6.1}{Left recursion}{subsection.4.6}% 17
+\BOOKMARK [3][-]{subsubsection.4.6.2}{Determine the n-th token to be accepted by a rule}{subsection.4.6}% 18
+\BOOKMARK [3][-]{subsubsection.4.6.3}{First token}{subsection.4.6}% 19
+\BOOKMARK [3][-]{subsubsection.4.6.4}{Paired tokens or how to have easy multiple errors handling}{subsection.4.6}% 20
+\BOOKMARK [3][-]{subsubsection.4.6.5}{Paired token optimization}{subsection.4.6}% 21
+\BOOKMARK [3][-]{subsubsection.4.6.6}{Same thing without pairing: getInsideTokens}{subsection.4.6}% 22
+\BOOKMARK [2][-]{subsection.4.7}{Grammar pretty-print: SPL example}{section.4}% 23
+\BOOKMARK [1][-]{section.5}{Type inference}{}% 24
+\BOOKMARK [2][-]{subsection.5.1}{Architecture}{section.5}% 25
+\BOOKMARK [2][-]{subsection.5.2}{Dealing with ParserRule}{section.5}% 26
+\BOOKMARK [2][-]{subsection.5.3}{Context}{section.5}% 27
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Variable declaration}{subsection.5.3}% 28
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Get a variable by name}{subsection.5.3}% 29
+\BOOKMARK [2][-]{subsection.5.4}{Types}{section.5}% 30
+\BOOKMARK [3][-]{subsubsection.5.4.1}{Type class}{subsection.5.4}% 31
+\BOOKMARK [3][-]{subsubsection.5.4.2}{Unknown type}{subsection.5.4}% 32
+\BOOKMARK [3][-]{subsubsection.5.4.3}{CombinedType}{subsection.5.4}% 33
+\BOOKMARK [3][-]{subsubsection.5.4.4}{TupleType}{subsection.5.4}% 34
+\BOOKMARK [3][-]{subsubsection.5.4.5}{ListType}{subsection.5.4}% 35
+\BOOKMARK [3][-]{subsubsection.5.4.6}{FunctionType}{subsection.5.4}% 36
+\BOOKMARK [3][-]{subsubsection.5.4.7}{Integer/Boolean type}{subsection.5.4}% 37
+\BOOKMARK [3][-]{subsubsection.5.4.8}{Type order}{subsection.5.4}% 38
+\BOOKMARK [3][-]{subsubsection.5.4.9}{Type unification}{subsection.5.4}% 39
+\BOOKMARK [3][-]{subsubsection.5.4.10}{Combined type unification}{subsection.5.4}% 40
+\BOOKMARK [2][-]{subsection.5.5}{Add typing logic to the different ParserRules}{section.5}% 41
+\BOOKMARK [3][-]{subsubsection.5.5.1}{Function declaration}{subsection.5.5}% 42
+\BOOKMARK [2][-]{subsection.5.6}{Note}{section.5}% 43
+\BOOKMARK [1][-]{section.6}{SSM Code generation}{}% 44
+\BOOKMARK [2][-]{subsection.6.1}{Scopes}{section.6}% 45
+\BOOKMARK [2][-]{subsection.6.2}{Closure support}{section.6}% 46
+\BOOKMARK [2][-]{subsection.6.3}{Function pointer structure}{section.6}% 47
+\BOOKMARK [2][-]{subsection.6.4}{Declaring a variable}{section.6}% 48
+\BOOKMARK [2][-]{subsection.6.5}{Setting a variable}{section.6}% 49
+\BOOKMARK [3][-]{subsubsection.6.5.1}{Lifted variable}{subsection.6.5}% 50
+\BOOKMARK [3][-]{subsubsection.6.5.2}{Not lifted variable}{subsection.6.5}% 51
+\BOOKMARK [2][-]{subsection.6.6}{Consulting a variable}{section.6}% 52
+\BOOKMARK [2][-]{subsection.6.7}{Declaring a function}{section.6}% 53
+\BOOKMARK [2][-]{subsection.6.8}{Calling a function}{section.6}% 54
+\BOOKMARK [2][-]{subsection.6.9}{Global scope}{section.6}% 55
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 56

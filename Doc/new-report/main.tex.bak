@@ -1,0 +1,213 @@
+\documentclass{article}
+\usepackage{indentfirst}
+\usepackage{titling}
+\usepackage{textpos}
+\usepackage{tikz}
+\usepackage{fancyhdr,graphicx,xcolor,colortbl}
+\usepackage[explicit]{titlesec}
+\usepackage{changepage}
+\usepackage[toc,page]{appendix} 
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lstautogobble}
+\usepackage{soul}
+\input{js.lst}
+
+\lstset{language=JavaScript}
+\lstset{autogobble=true}
+
+
+\title{Compiler Construction}
+
+\date{\today}
+\author{Lucas Franceschino}
+
+\newcommand\cc[1]{\lstinline{#1}}
+\newcommand\todo{\begin{center}\textbf{»»»»»» ~~~~~ICI - TODO~~~~~ ««««««}\end{center}}
+
+	
+\begin{document}
+	\maketitle
+	\section{Language choice}
+		I choose to implement my compiler in \textbf{TypeScript}, which is a super-set of JavaScript. It offer ES6 support\footnote{ES6 is the new version of JS, support \cc{let}, \cc{arrow functions}, \cc{destructuring}, \cc{full class support}\dots. For more details, see \url{http://es6-features.org} }, static typing, generic typing, interfaces, union types\dots : it makes JavaScript much stricter and safe.
+
+		The choice of that language is motivated mainly by the fact I actually use a lot JS for projects these days. It is a very flexible and nice to use language\footnote{\url{http://bdcampbell.net/javascript/book/javascript_the_good_parts.pdf} and \url{http://javascript.crockford.com/javascript.html}}. It has some "bad parts", but ES6 plus TypeScript make them disappear.
+	\section{Global design}
+		This compiler is intended to be generic and not linked to SPL. Everything is split in two part: the generic part and the SPL implementation. These statements are more or less true: for example, code generation jumps from the asbrtact syntax tree to SSM. Then, here no absraction part is built, a direct SSM builder is used.
+	\section{Lexer}
+		The lexer is very simple: it process the whole file and build up a list of token. It does not support streams.
+		
+		In order to have a generic lexer, I have few classes that the user need to extends to implement an actual language:
+		\begin{itemize}
+			\item \textbf{Lexer:} is the base of a lexer. Basically, you extends that class it, let's say, \cc{SPL\_Lexer}, and then you link tokens to it.
+			\item \textbf{Token:} take care of everything related to tokens. When implementing a language, you extends Token as much as you have differents token to be recognize.
+			\item \textbf{DeterministicToken:}\label{detToken} a specific kind of \cc{Token}.
+		\end{itemize}
+
+		\subsection{How it works}
+		The lexer takes a input string, then ask to every registered tokens to try to match against the string, one by one by order of regristration. If a token match a string, then it is saved and the operation is repeated. Otherwise, we try an other token. If no token matches, then, we raise an error.
+
+		\subsection{Error managment}
+		When an error is raised, it is first constructed by a method in the \cc{Lexer} class: it takes in parameter some position in the original file, some length and a message, and format nicely a colored error.
+
+		\subsection{Token and deterministric token}\label{explainToken}
+		When adding a kind of Token, you provide just a regular expression, and optionally a paired token (for instance \cc{(} is paired to \cc{)} and \textit{vice versa}). Example of token declaration (supposing \cc{SPL_Lexer} is a defined lexer):
+
+		\begin{lstlisting}
+			export class Integer extends Token {}
+			SPL_Lexer.register (Integer, /\b\d+\b/y);
+		\end{lstlisting}
+
+		Token provide the following methods:
+		\begin{itemize}
+			\item \cc{match}: as seen previously it try to match against a string.
+			\item \cc{generateRand}: generate a random string matching the regular expression of the token. This will be very useful to generate random programs.
+			\item \cc{error}: it takes in parameter a message and display an error using the previously described \cc{Lexer} function.
+		\end{itemize}
+
+		\cc{DeterministicToken} is a normal token, but instead of having a regular expression, it has just a string, that's why it's qualified of deterministic. That is useful for pretty printing.
+
+		An \cc{EOF} (\textit{end of file}) token is predefined and append to the list of produced tokens by the Lexer. Then, when implementing a language, there is an standart way of representing \textit{end of file}.
+
+
+		\subsection{Paired token}\label{pairedToken}
+			Since a token can be declared as being a pair, the lexer also check and links automatically paired tokens. Then, it avoid doing it later on when the parser will need it.
+
+	\section{Parser}
+		Again, the parser is general, and work for any given grammar.
+		\subsection*{Note}
+			What I presented in my slides durings the first two presentations is "outdated": I rebuild from the bottom my compiler. Indeed, before, the grammar was defined by a file using a intuitive representation looking like:
+			 \begin{lstlisting}
+			 	SPL			Decl+, 'eof'
+			 	Decl		VarDecl | FunDecl as content
+			 	VarDecl 	'var' | Type as type, 'id' as name, i '=', Exp as exp, i ';'
+			 	FunDeclT	i '::', FunType
+			 	RetType		Type | 'Void' #drop
+			 	 ...
+			 \end{lstlisting}
+			But I choosed to drop it, because it built some non typed data. Now every rule as its own class, and everything is typed checked, hence everything is much more stable and exploitable. 
+		\subsection{Architecture}
+			Basically, everything is run by 3 classes:
+			\begin{itemize}
+				\item \cc{Parser}: global parser class.
+				\item \cc{ParserRule}: represent a grammar rule. Each grammar rulex is represented by extending that class. 
+				\item \cc{ParserRuleStep}: reprensent a step of a grammar rule.
+			\end{itemize}
+		\subsection{Declaring a rule}
+			Here is the declaration of \cc{VarType}, with \cc{SPL_Parser} a class extending \cc{Parser}:
+			\label{VarTypeDef}\begin{lstlisting}
+				export class VarDecl extends ParserRule{
+					@SPL_Parser.addStep() 		type: LexSPL.Var | Type;
+					@SPL_Parser.addStep() 		name: LexSPL.Id;
+					@SPL_Parser.addIgnoreTokenStep( LexSPL.Equal )
+							       .addStep() 		exp: Exp;
+					@SPL_Parser.addIgnoreTokenStep( LexSPL.Semicolon )
+				}
+			\end{lstlisting}
+
+			The decorators \cc{@SPL_Parser.add*} are there to declare that a attribute is intended to receive some tokens or some constructs. This way, it is easy to define a grammar rule, and to use it later on. Moreover, TypeScript is able to typecheck everything, and also to auto complete while dealing with such entities.
+
+			One can define optionnal step or repeated steps the following way:
+			
+			\begin{lstlisting}
+				@SPL_Parser.addStep() statements: Stmt[]; // one or more Stmt
+				@SPL_Parser.addStep() statements?: Stmt[]; // any number of Stmt
+				@SPL_Parser.addStep() annotation?: Annot; // zero or one annotation
+			\end{lstlisting}
+
+			It rely on TypeScript type annotation, but the sad thing is that Type reflexion at runtime is not completely supported by TypeScript\footnote{\href{http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-4}{blog.wolksoftware.com/decorators...}}. Bascially, TypeScript can generate (on compilation time) some decorators to give runtime information about types, but only for basic build-in ones: that library is not mature at all, so I made a little tweak to get it work. I use Grunt (an JavaScript task runner) to pre compile all my files, spot where \cc{addStep} is used and add type information explicitly.
+
+			From a \cc{Parser}, it is possible to add steps using either \cc{addStep} or \cc{addIgnoreTokenStep} decorator\footnote{https://www.typescriptlang.org/docs/handbook/decorators.html}. A step can be a Token or a instance of some ParserRule. An IgnoreTokenStep take in parameter a \cc{DeterministicToken} (as defined in section \ref{detToken}).
+
+			You can notice that \cc{addIgnoreTokenStep} is not bind to a class attribute. It makes sense: we don't want to have to name a field for recognizing \cc{;} for instance: \cc{;} is just a separator. Such a token does not contains any information, whereas a integer token would actually contain actual important information.
+
+			Here comes the notion \cc{DeterministicToken}: it is deterministic, so that is useless to store any information about any instance of such a token. But, while pretty-printing, we need to write something: there is a reason to as for a semi-colon in a grammar, for instance.
+
+		\subsection{Pretty printer}
+			To pretty print a instance of a certain \cc{ParserRule}, it just need to print the \cc{DeterministicToken}, to print the content of other tokens, and to recursively apply the same process to contained instances of \cc{ParserRule} (if any).
+
+			There is the default way of generating the string representation of some \cc{ParserRule}, but it can be overrided. Moreover, the indentation is managed using two decorators: \cc{@ppIdent} and \cc{@ppNewLine}. \cc{@ppIdent} say that the string should be indented by one lever more, while \cc{@ppNewLine} say the string have to treated as a "block" more than as a inline thing.
+		\subsection{Random program generator}
+			A \cc{ParserRule} contains every information needed to generate a random string corresponding to it. To do so, we just browse all declared steps, and generate random strings for each of them, and create an instance of that rule with the newly generated sub-rules or sub-tokens. If a step is optionnal, then we decide randomly to generate something or not, same thing if a step can be repeated.
+
+			When all of that is done, it suffice to pretty print the resulting \cc{ParserRule}.
+
+
+		\subsection{Parsing}
+			As previously described, implementing a parser means :
+			\begin{enumerate}
+				\item have a class extending \cc{Parser}, say \cc{SPL_Parser};
+				\item have one class per rule extending \cc{ParserRule}.  
+			\end{enumerate}
+			The parsing is initiated by \cc{SPL_Parser} from a token list. It get the first declared rule, and make it parse the token list. The token list is actually a \cc{TokenDeck}.
+			\subsubsection{TokenDeck}
+				A \cc{TokenDeck} contains a list of tokens. It have a list-like behaviour, but always keep the whole list. It just keeps track of the position of the current token. The idea is to pass this \cc{TokenDeck} from \cc{TokenRule} to \cc{TokenRule}, and in the same time, keep the track of the attempts.
+				If the main rule can't match something, then it is very easy to find the most advanced attempts and display it.
+
+			\subsubsection{\cc{Parser} internal parsing}
+				Parsing a \cc{TokenDeck} $deck$ from a \cc{ParserRule} $pr$ means that we want $deck$ to "fit in" $pr$. $deck$ being recognized by $pr$ means that each steps of $pr$ can parse sequencialy $deck$. 
+
+				A step is a list of possible things to recongnize. If any of them can recognize $deck$, then $deck$ is recognized by the step.
+
+		\subsection{Grammar analysis \& optimization}
+			Using the previously described method to parse a \cc{TokenDeck} is not very efficent: indeed, since it's all about recusive finding and backtracking, there are some situations where parsing is very inefficient.
+
+			In order to speed up the process, we optimize the grammar rules.
+
+			\subsubsection{Left recursivity}
+			Since left recursivity leads to probable infinite loop, we need to detect it and avoid it.
+
+			Before actually optimizing the grammar, we check for left recursivity. If such a rule is found, the parser throws an exepection.
+
+			\subsubsection{Determine the n-th token to be accepted by a rule}
+			I tried to make a function determining what tokens can be accepted by a parser at the n-th position, just by looking at the rule definitions, and I actually spent quite a lot of time on it.
+
+			The idea was to use a tree, with all the possible acceptable tokens on the n-th level of that tree. I used a sort of shadow tree: it was actually updating subtrees only when necessary, and keeping everything as references, to handle recursivity (since the rule are themselves recursive).
+
+			But after few days of full work on that idea, I just got some almost working algorithms, but I always end up having issues, like some tokens are missing from some places in the tree.
+
+			I eventually decided to stop this experiment there, since it took me too much time already.  
+
+			\subsubsection{First token}
+			Instead of being able to predict the n-th possible tokens, I choose just to lookup for the first possible tokens, which is very straighforward.
+
+			Then, instead of trying each differents possibility in a rule, it is now possible to test only the one with a matching first token.
+
+			To optimize that, I use hashtables from token kinds to possible rules for each steps of each rules. Then, given a token, we get a list of possible rules to apply, and then we avoid testing anything but necessary things.
+
+			\subsubsection{Paired tokens or how to have easy multiple errors handling}
+			As explained in section \ref{explainToken}, a Token can be linked to another one to declare a pair. Since then, the parser treat theses token as pair, hence, a opening something has to match with a closing something. The parser actually use that fact.
+
+			Indeed, when trying to parse in the context of some \cc{ParserRule} $pr$, if the parser detects a pair token, it match its closing token, extract\footnote{The extraction is immediate and in linear time, as explained in section \ref{pairedToken}, the matching is done previously by the lexer} the section and parse it independantly.
+
+			This happens only if - in the context of $pr$ - there is only one possible grammar rule that can recognize the pair expression.
+
+			For instance, parsing \texttt{(3) + 4} when the only rule that can apply is \texttt{Parenthesis = '(' Exp ')'}, \texttt{(3)} is extracted and parsed independantly. Here, we know it has to match. If it doesn't match, we know that what was inside the parenthesis is wrong. Then, we raise an error, without stoping parsing. 
+
+			\subsubsection{Paired tokens optimization}
+			Consider the following expression \texttt{((\dots(3)\dots))}: we don't want the parser to do the usual backtracking thing here. Indeed, the rule \texttt{Parenthesis = '(' Exp ')'} consist of exactly 3 steps : opening, inside rule, closing. If the inside rule is not of this "opening inside closing" form, then we can just parse the expression a linear way, but extracting \texttt{3}.
+
+			\subsubsection{Same thing wihtout pairing: \cc{getInsideTokens}}
+			A \cc{ParserRule} implements a method \cc{getInsideTokens} that list all the possible tokens possible inside it, but the one on the sides.
+
+			Using this information, in some context where some rules $r_1, r_2, \dots, r_n$ could apply on one "entry" token $t_1$, and where all of theses rules ends with a token $t_2$, 
+
+			Then, if some rules $r_1, r_2, \dots, r_n$ have $o$ as opening tokens, and $c$ as closing token, but without $c$ being in the set of the \cc{insideTokens}, then we can extract the value and "bootstrap" the parsing operation just as described previously.
+
+			Again, error occuring inside this extracted tokens will be reported without stopping the parser.
+
+			Hence, no misleading parsing error are generated: we never assume anything about failing rules. 
+
+		\section{Type inference}
+			The type inference system was designed to be fully independant from SPL, but I had to make some compromise, and then it is oriented to make it work well later on for generating SSM code. Some behaviours are influenced by SSM.
+
+			\subsection{Architecture}
+				The type inference rely on two concepts: Contextes and Types.
+
+			\subsection{Context}
+				A context represents - more or less - a scope. Hence, we have a list of identifier (strings) that points to some \cc{ParserRule}.
+
+	% \begin{appendix}
+	% \end{appendix}
+\end{document}

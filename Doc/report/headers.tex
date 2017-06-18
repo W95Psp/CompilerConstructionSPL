@@ -1,0 +1,365 @@
+% Loads of (useful ?) packages
+\usepackage[french,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage[shortlabels]{enumitem}
+\usepackage[a4paper]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{url}
+\usepackage{mathenv}
+\usepackage{xstring}
+\usepackage{array}
+\usepackage[babel=true]{csquotes}
+\usepackage{ifthen}
+\usepackage{frcursive}
+\usepackage{framed}
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{amsmath}
+% \usepackage{amsthm}
+\geometry{hscale=0.75,vscale=0.75,centering}
+% \newtheorem{mdtheorem}{Theorem}
+
+% Define natural-ways to name sets
+\newcommand{\reals}{\mathbb{R}} 
+\newcommand{\realsSSup}{\mathbb{R^*_+}} 
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\irrationals}{\mathbb{I}}
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\relatives}{\mathbb{Z}}
+\newcommand{\complexes}{\mathbb{C}}
+\renewcommand{\implies}{\Rightarrow}
+\newcommand{\doubleK}{\mathbb{K}}
+\newcommand{\doubleR}{\mathbb{R}}
+\newcommand{\doubleC}{\mathbb{C}}
+\newcommand{\doubleZ}{\mathbb{Z}}
+\newcommand{\equival}{\Leftrightarrow}
+
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+
+
+% Changing ugly-standart-sqrt function by a new one (src http://tex.stackexchange.com/questions/214368/sqrt-sign-with-sharp-or-rounded-corner)
+\let\oldsqrt\sqrt
+\def\sqrt{\mathpalette\DHLhksqrt}
+\def\DHLhksqrt#1#2{%
+\setbox0=\hbox{$#1\oldsqrt{#2\,}$}\dimen0=\ht0
+\advance\dimen0-0.2\ht0
+\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+{\box0\lower0.4pt\box2}}
+
+% qq is a command to quick quote (qq)
+%	 usage: \qq{Bla} produce \og Bla \fg{}
+\newcommand{\qq}[1]{\og #1\fg{}}
+
+% pSc
+\newcommand{\pSc}[1]{\left\langle #1\right\rangle}
+
+% To write a "quick lim"
+\newcommand{\quickLim}[1]{_{\vv{~~#1~~}}~}
+
+% \defF allow you to note functions the following way :
+%	f:	E -> F
+%		x -> f(x)
+% 	 usage: {1: function name, 2:fromSet, 3:toSet, 4:variable, 5:expression}
+\newcommand{\defF}[5]{%
+	\begin{array}{ccccl}%
+		#1 & : & #2 & \to & #3 \\%
+		 & & #4 & \mapsto & #1(#4)=#5 \\%
+	\end{array}%
+}
+
+
+
+\newcommand{\vectN}[2][n]{\ensuremath{\left(#2_1, ..., #2_#1\right)}}
+
+\let\oldsup\sup
+
+
+\newcommand\subrel[2]{\mathrel{\mathop{#2}\limits_{#1}}}
+
+% \renewcommand{\sup}[1]{%
+% 	\(\stackrel{\mbox{\small sup}}{\mbox{\tiny #1}}\)
+% }
+
+
+\newcommand{\superpose}[2]{%
+	\ensuremath{%
+		\subrel{^{\mbox{\tiny $#2$}}}{\mbox{\normalfont #1}}%
+	}%
+}
+\renewcommand{\sup}[1]{%
+	\superpose{sup}{#1}%
+}
+
+\renewcommand{\inf}[1]{%
+	\superpose{inf}{#1}%
+}
+
+
+
+\newcommand{\norme}[1]{\left\Vert #1\right\Vert}
+\newcommand{\extendreals}[1]{\displaystyle{\reals}}
+
+
+\newcommand{\accol}[1]{\left\{#1\right\}}
+\newcommand{\T}{\perp}
+
+\newcommand{\Id}{Id}
+
+
+
+\newcommand{\vTwo}[2]{
+	\left( \begin{array}{c}
+	#1 \\
+	#2
+	\end{array} \right)
+}
+\newcommand{\vThree}[3]{
+	\left( \begin{array}{c}
+	#1 \\
+	#2 \\
+	#3
+	\end{array} \right)
+}
+\newcommand{\vFour}[4]{
+	\left( \begin{array}{c}
+	#1 \\
+	#2 \\
+	#3 \\
+	#4
+	\end{array} \right)
+}
+\newcommand{\vFive}[5]{
+	\left( \begin{array}{c}
+	#1 \\
+	#2 \\
+	#3 \\
+	#4 \\
+	#5
+	\end{array} \right)
+}
+
+\newcommand{\B}[1]{\textbf{#1}}
+
+\newcommand{\vTwoDots}[2]{
+	\left( \begin{array}{c}
+	#1 \\
+	\vdots \\
+	#2
+	\end{array} \right)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newcommand{\missingStuff}{
+	~\\~\\~\\
+	\begin{center}
+		\textbf{\Large{Manque des choses ICI !!}}
+	\end{center}
+	~\\~\\~\\
+}
+
+
+
+
+
+
+
+
+\theorembodyfont{\normalfont}
+
+
+
+\definecolor{grayLight}{HTML}{ECF0F1}
+\definecolor{asbestos}{HTML}{7F8C8D}
+\definecolor{peterRiver}{HTML}{3498DB}
+\definecolor{alizarin}{HTML}{E74C3C}
+\definecolor{carrot}{HTML}{E67E22}
+\definecolor{ermerald}{HTML}{2ECC71}
+\definecolor{turquoise}{HTML}{1ABC9C}
+\definecolor{orangeColor}{HTML}{F39C12}
+
+
+\theoremstyle{nonumberplain}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight,
+	  linecolor=peterRiver,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{Remarque}{Remarque :}
+
+\theoremstyle{nonumberbreak}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight,
+	  linecolor=alizarin,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{Demonstration}{Démonstration :}
+
+\theoremstyle{nonumberbreak}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight,
+	  linecolor=ermerald,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{Definition}{Définition :}
+
+\theoremstyle{nonumberbreak}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight,
+	  linecolor=ermerald,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{Technique}{Technique:}
+
+
+
+\theoremstyle{nonumberbreak}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight,
+	  linecolor=turquoise,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{Proposition}{Proposition :}
+
+
+\theoremstyle{nonumberbreak}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight,
+	  linecolor=turquoise,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{Rappel}{Rappel :}
+
+\theoremstyle{nonumberbreak}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight,
+	  linecolor=orangeColor,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{Theoreme}{Théorème :}
+
+
+\newcommand{\insideDemo}{
+	\normalfont
+	\vspace{3mm}\\
+	\textbf{Démonstration :}\\
+	\itshape
+}
+
+\newcommand{\bItem}{\item[$\bullet$]}
+
+\theoremstyle{nonumberplain}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight!30,
+	  linecolor=asbestos!80,
+	  linewidth=2pt,
+	  topline=true,
+	  rightline=false,
+	  leftline=false,
+	  bottomline=true
+  ]{apart}{}
+
+\theoremstyle{nonumberplain}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight!100,
+	  linecolor=asbestos!80,
+	  linewidth=1pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=false,
+	  bottomline=false
+  ]{ExemplesCore}{Exemples :}
+
+\theoremstyle{nonumberplain}
+\newmdtheoremenv[%
+	  backgroundcolor=grayLight!0,
+	  linecolor=asbestos!80,
+	  linewidth=2pt,
+	  topline=false,
+	  rightline=false,
+	  leftline=true,
+	  bottomline=false
+  ]{WhiteBlock}{}
+
+\newenvironment{Exemples}{
+	\begin{ExemplesCore}
+	~
+	\begin{WhiteBlock}
+	\normalfont~\\
+	\vspace{-6mm}
+	\begin{itemize}
+	\setlength{\leftmargin}{0pt}
+}{
+	\end{itemize}
+	\end{WhiteBlock}
+	\vspace{2mm}
+	\end{ExemplesCore}
+}
+
+\newenvironment{Exemple}{
+	\begin{ExemplesCore}
+	~
+	\begin{WhiteBlock}
+	\normalfont
+	\setlength{\leftmargin}{0pt}
+}{
+	\end{WhiteBlock}
+	\vspace{2mm}
+	\end{ExemplesCore}
+}
+
+
+
+\newenvironment{Algo}[3]{
+	~\\
+	\textbf{Données :} #1
+	\\
+	\textbf{Résultat :} #2\\
+	\textbf{Variables :} #3\\
+	\textbf{Début algo}\\
+	\begin{WhiteBlock}
+}{
+	\end{WhiteBlock}
+	\vspace{2mm}
+	\textbf{FinAlgo}\\
+}

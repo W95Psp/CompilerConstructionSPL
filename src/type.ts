@@ -117,19 +117,20 @@ export class TypeSetParserRule {
 	}
 }
 
-enum TypeStorage{ Normal, Reference }
+export enum TypeStorage{ Normal, Reference }
 
 export class Context{
 	protected identifiers: Map<string, [ParserRule, number, TypeStorage]> = new Map();
 	protected variableType: Map<string, Type> = new Map();
 	protected typeSPR: TypeSetParserRule;
 
-	protected outsideVariables: Set<string> = new Set();
+	outsideVariables: Set<string> = new Set();
 	cacheTypeParserRules: Map<ParserRule, [Type, Context] | undefined>;
 
-	protected parent?: Context;
+	parent?: Context;
+	numArgs: number = 0;
 
-	protected attachedParserRule: ParserRule;
+	attachedParserRule: ParserRule;
 
 	constructor(attachedParserRule: ParserRule, typeSPR: TypeSetParserRule, parent?: Context, cacheTypeParserRules?: Map<ParserRule, [Type, Context] | undefined>){
 		this.attachedParserRule = attachedParserRule;
@@ -137,16 +138,39 @@ export class Context{
 		this.parent = parent;
 		this.cacheTypeParserRules = cacheTypeParserRules || new Map();
 	}
-
+	maxPositionOf (typeStorage: TypeStorage) {
+		return [...this.identifiers.values()]
+								.filter(([,i,ts]) => i>=0 && ts==typeStorage)
+								.reduce((n,[,i,]) => Math.max(i), -1)+1;
+	}
 	getValue(id: string, from: ParserRule){
+		let r = this.getValue_raw(id, from);
+		return r ? r[0] : undefined;
+	}
+	getValue_raw(id: string, from: ParserRule){
 		let ctx = this.getStrictContextOf(true, id);
 		if(!ctx)
 			return undefined;
-		if(ctx != this)
-			this.outsideVariables.add(id);
 		let r = ctx.identifiers.get(id);
-		return r ? r[0] : undefined;
-		// return (<[ParserRule, number, TypeStorage]>ctx.identifiers.get(id))[0];
+		if(ctx != this){
+			this.outsideVariables.add(id);
+			if(r && r[2]==TypeStorage.Normal)
+				ctx.identifiers.set(id, [r[0], r[1], TypeStorage.Reference]);
+		}
+		return r;
+	}
+	getValuePosition(id: string, from: ParserRule){
+		let r = this.getValue_raw(id, from);
+		let ctx = this.getStrictContextOf(true, id);
+		if(!r || !ctx)
+			throw "Cannot fetch variable "+id;
+		let [rule, num, storage] = r;
+		if(ctx==this){ // either local either param (=local, kind of)
+			// we make some room for outside variables !
+			return num>=0 ? num + 2 /* MP and PC */ : num - this.outsideVariables.size /*  */;
+		}else{ // external scope value
+			return [...this.outsideVariables].indexOf(id) - this.outsideVariables.size; // nth inserted value
+		}
 	}
 	setValue(id: string, v: ParserRule){
 		this.getContextOf(true,id).setLocalValue(id, v);
@@ -159,11 +183,13 @@ export class Context{
 		let [decl, position, typeStorage] = o;
 		this.identifiers.set(id, [v, position, typeStorage]);
 	}
-	declareValue(id: string, v: ParserRule, typeStorage: TypeStorage = TypeStorage.Normal, order?: number){
-		let cOrder = order!==undefined ? order : [...this.identifiers.values()]
-						.filter(([,i,ts]) => i>=0 && ts==typeStorage)
-						.reduce((n,[,i,]) => Math.max(i), -1)+1;
+	declareValue(id: string, v: ParserRule, typeStorage: TypeStorage = TypeStorage.Normal, order?: number, type?: Type){
+		let cOrder = order!==undefined ? order : this.maxPositionOf(typeStorage);
+		if(cOrder<0 && !this.identifiers.has(id))
+			this.numArgs++;
 		this.identifiers.set(id, [v, cOrder, typeStorage]);
+		if(type)
+			this.cacheTypeParserRules.set(v, [type, this]);
 	}
 
 	getVType(id: string){						return this.variableType.get(id);				}
@@ -172,6 +198,7 @@ export class Context{
 	typeOf(o: ParserRule) : [Type, Context] | undefined{
 		if(this.cacheTypeParserRules.has(o))
 			return this.cacheTypeParserRules.get(o);
+		console.log(o.print());
 		let r = this.typeSPR.typeOf(o, this);
 		this.cacheTypeParserRules.set(o, r);
 		return r;
@@ -277,6 +304,8 @@ export abstract class CombinedType extends Type {
 		return [...f(this) ? [this] : [], ...flatten(this.inside.map(o => o.search(f)))];
 	}
 	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+		if(type instanceof UnknownType)
+			return type.internalUnifyWith(this);
 		if(!(type instanceof CombinedType && this instanceof type.constructor) || this.inside.length != type.inside.length)
 			return new ErrorUnifying(this, type, 'Not same kind of CombinedType (cannot unify '+this.cons_name+' and '+type.cons_name+')');
 
@@ -352,6 +381,8 @@ export class FunctionType extends Type {
 	}
 	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[]{
 		this.outputErrorFlag = false;
+		if(type instanceof UnknownType)
+			return type.internalUnifyWith(this);
 		if(!(type instanceof FunctionType))
 			return new ErrorUnifying(this, type, 'Not FunctionType');
 		// first: get replacements for inputs, apply them on outputs

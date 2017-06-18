@@ -1,0 +1,38 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Choice of JavaScript}{2}{section.1}
+\contentsline {section}{\numberline {2}Lexer and Parser}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Global design}{2}{subsection.2.1}
+\contentsline {paragraph}{}{2}{paragraph*.1}
+\contentsline {subsection}{\numberline {2.2}Lexer}{2}{subsection.2.2}
+\contentsline {paragraph}{}{2}{paragraph*.2}
+\contentsline {paragraph}{}{2}{paragraph*.3}
+\contentsline {subsubsection}{\numberline {2.2.1}Rules}{2}{subsubsection.2.2.1}
+\contentsline {paragraph}{}{2}{paragraph*.4}
+\contentsline {paragraph}{}{2}{paragraph*.5}
+\contentsline {subsubsection}{\numberline {2.2.2}Functionning}{2}{subsubsection.2.2.2}
+\contentsline {paragraph}{}{2}{paragraph*.6}
+\contentsline {paragraph}{}{2}{paragraph*.7}
+\contentsline {subsubsection}{\numberline {2.2.3}Error handling}{2}{subsubsection.2.2.3}
+\contentsline {paragraph}{}{2}{paragraph*.8}
+\contentsline {paragraph}{}{2}{paragraph*.9}
+\contentsline {paragraph}{}{2}{paragraph*.10}
+\contentsline {subsubsection}{\numberline {2.2.4}Debuging}{3}{subsubsection.2.2.4}
+\contentsline {subsection}{\numberline {2.3}Grammar}{3}{subsection.2.3}
+\contentsline {paragraph}{}{3}{paragraph*.11}
+\contentsline {paragraph}{Sublime text highlight definition}{3}{paragraph*.12}
+\contentsline {subsubsection}{\numberline {2.3.1}Syntax}{3}{subsubsection.2.3.1}
+\contentsline {paragraph}{}{3}{paragraph*.13}
+\contentsline {paragraph}{Tree manipulation}{3}{paragraph*.14}
+\contentsline {paragraph}{}{3}{paragraph*.15}
+\contentsline {paragraph}{}{3}{paragraph*.16}
+\contentsline {subsubsection}{\numberline {2.3.2}Parser}{3}{subsubsection.2.3.2}
+\contentsline {subsection}{\numberline {2.4}Program generator}{4}{subsection.2.4}
+\contentsline {paragraph}{}{4}{paragraph*.17}
+\contentsline {paragraph}{}{4}{paragraph*.18}
+\contentsline {paragraph}{}{4}{paragraph*.19}
+\contentsline {paragraph}{State}{4}{paragraph*.20}
+\contentsline {paragraph}{Issue}{4}{paragraph*.21}
+\contentsline {paragraph}{Issue}{4}{paragraph*.22}
+\contentsline {subsection}{\numberline {2.5}Parser}{4}{subsection.2.5}
+\contentsline {subsubsection}{\numberline {2.5.1}Optimization}{4}{subsubsection.2.5.1}
+\contentsline {paragraph}{}{4}{paragraph*.23}

@@ -60,6 +60,9 @@ export class Parser {
 		return F;
 	}
 	static optimize() { this.rules.forEach(o => o.optimize()); }
+	static prettyPrintGrammarRule() {
+		return this.rules.map(o => o.prettyPrintGrammarRule()).join('\n');
+	}
 }
 
 let getSide = (mode: boolean) => (l_: ParserRuleStep[]) => {
@@ -93,6 +96,13 @@ export class ParserRule {
 	getFirstToken() : Token{
 		let first = Let(this.getValuesDirect()[0], x => x instanceof Array ? x[0] : x);
 		return Let(first, o => o instanceof Token ? o : o.getFirstToken());
+	}
+	static prettyPrintGrammarRule() : string {
+		return this.name+':\t'+this.steps.map(o => 
+						o.getPossibles().map(o => 
+							isChildOf(o, DeterministicToken) ? "'"+o.content+"'" : o.name
+						).join(' | ').trim()
+					).join(', ').trim();
 	}
 	// typeCache: Map<Type.Context, Type.Type> = new Map();
 	// getType(ctx: Type.Context) : Type.Type {
@@ -175,7 +185,12 @@ export class ParserRule {
 		if(steps.matchingItem) return {deck: steps.matchingItem.r.deck.preserveError(input_tokens.noMatchWith(this))}
 		result = result || new this();
 		steps.listNotMatching.forEach(({s,r}) => s instanceof ParserRuleComplexStep && (typeof r.result=='boolean' || (<ParserRule>result).set(s.name, r.result)));
+		console.log(result);
 		return parser.setCache(this, bpos, {deck: input_tokens.clone(), result});
+	}
+
+	get prettyPrintString () {
+		return this.print();
 	}
 	get static(){ return <typeof ParserRule>this.constructor; }
 	getSteps() { return this.static.steps; }
@@ -193,10 +208,11 @@ export class ParserRule {
 		return (<any>this)[key] = obj;
 	}
 	getValuesDirectFlat() : ParserRule[] { // (<any>this)[s.name] can also return undefined, that's why filter is there
-		return <ParserRule[]>this.getValuesDirect().map(o => o instanceof Array ? o : [o]).reduce((p,c) => p.concat(c), []).filter(o => !(o instanceof Token))
+		return <ParserRule[]>this.getValuesDirect().map(o => o instanceof Array ? o : [o]).reduce((p,c) => p.concat(c), [])
+						.filter(o => !(o instanceof Token))
 	}
 	getValuesDirect() : tPart[] { // (<any>this)[s.name] can also return undefined, that's why filter is there
-		return this.getSteps().map(s => <tPart>(s instanceof ParserRuleComplexStep ? this.get(s.name) : undefined)).filter(o => o);
+		return this.getSteps().map(s => <tPart>(s instanceof ParserRuleComplexStep ? this.get(s.name) : undefined)).filter(o => o && !(o instanceof Array && !o.length));
 	}
 	getValues() : (string | tPart)[] { // (<any>this)[s.name] can also return undefined, that's why filter is there
 		return this.getSteps().map(s => s instanceof ParserRuleComplexStep ? this.get(s.name) || '' : (<any>s).content).filter(o => o);

@@ -13,20 +13,6 @@ import {
 import * as T from './type';
 import * as ParserSPL from './spl.parser';
 
-
-let O = {
-	ErrorUnifying,applyReplacements,Type,UnknownType,FunctionType,ListType,TupleType,UnknownTypeLimited,VariableType, IntegerType, BooleanType,Context,CombinedType,TypeSetParserRule
-};
-for(let k in O)
-	(<any>global)[k] = (<any>O)[k];
-
-// let a = ParserSPL.Exp.getPossibleSequence(new Map());
-
-declare var $:any;
-
-(<any>global).ParserSPL = ParserSPL;
-(<any>global).LexSPL = LexSPL;
-
 ParserSPL.SPL_Parser.optimize();
 
 let xxxx = new VariableType([new IntegerType(), new BooleanType()], 'xxxx');
@@ -72,8 +58,6 @@ type SSM_Function = (o: Parser.ParserRule, g: SSM_resolver, ctx: Context) => str
 type SSM_Functions = Map<typeof Parser.ParserRule, SSM_Function>;
 
 let MM = (_: [typeof Parser.ParserRule, SSM_Function][]) => new Map(_);
-
-/* TODO : use direct instructio to store MP into RR (not here, somewhere else) */
 
 let SSM_getVar =(ref: Parser.ParserRule, id: string, ctx: Context, fetch=true) => {
 	let pos = ctx.getValuePosition(id, ref);
@@ -527,14 +511,7 @@ let TSPR = new TypeSetParserRule(
 		}
 	]
 );
-// let l = new LexSPL.SPL_Lexer(`
-// 	var v = 1;
-// 	f(nn) :: Int -> Int {
-// 		v = v + 1;
-// 		return nn;
-// 	}
-// 	var a = f(254);
-// `);
+
 let l = new LexSPL.SPL_Lexer(`
 	mul(n, m) {
 		return n * m;
@@ -547,157 +524,23 @@ let l = new LexSPL.SPL_Lexer(`
 	}
 	var a = f(5, mul);
 `);
-// let l = new LexSPL.SPL_Lexer(`
-// 	f(nn) :: (var n :: Int Bool) -> ( -> Int) {
-// 		a(s) { return b(2); }
-// 		d(s) { return 0; }
-// 		b(s) { return c(1); }
-// 		c(s) { return 3 + s; }
-// 		hey(){ return 12; } 
-// 		a = 2;
-// 		return hey;
-// 	}
-// `);
 
-console.log(ParserSPL.SPL_Parser.prettyPrintGrammarRule());
+let StdLib = new Map([
+	['print', []]
+]);
 
-let p = new ParserSPL.SPL_Parser(l.tokenDeck);
-if(p.result){
+// console.log(ParserSPL.SPL_Parser.prettyPrintGrammarRule());
+export let SPL_compile = (source: string):string => {
+	let p = new ParserSPL.SPL_Parser(l.tokenDeck);
+
+	if(!p.result)
+		throw "Some errors occured.";
+		
 	let o = <ParserSPL.SPL>p.result;
 	let ctx = new Context(o, TSPR);
-	let xx = ctx.typeOf(o);
-	console.log({p,o,ctx,xx});
-	console.log(ctx.cacheTypeParserRules);
-	for(let [key, value] of ctx.cacheTypeParserRules.entries()){
-		console.log(key.print());
-		console.log(value);
-		console.log('');
-		console.log('');
-	}
-	SSM.printConsole(ResolveSSM(o, ctx));
-	console.log('--------');
+	// let xx = ctx.typeOf(o);
 
-	console.log(SSM.toString(ResolveSSM(o, ctx)));
-	// console.log(prog);
-}
+	let SSM_output = ResolveSSM(o, ctx);
 
-// let f = (s:any) => new ParserSPL.SPL_Parser((new LexSPL.SPL_Lexer(s)).tokenDeck);
-// let g = (n:any,s:any) => (new Array(n)).fill('(').join('') + s.toString() + (new Array(n)).fill(')').join('');
-
-
-// let F = (s:any) => (<any>f(s)).result.decls.filter((o:any) => o && o.content instanceof ParserSPL.FunDecl)[0].content.getType(new T.Context());
-
-
-// (<any>global).f = f;
-// (<any>global).F = F;
-// (<any>global).g = g;
-
-
-// function TEST(){
-// 	// f(((<any>global).document).getElementById('inp').value).computeTypes();
-// 	let R = f(((<any>global).document).getElementById('inp').value);
-// 	console.log(R.result);
-// 	R.computeTypes();
-// 	if(R.result)
-// 		console.log('\n\n'+R.result.SSM().join('\n')+'\n\n');
-// }
-// (<any>global).TEST = TEST;
-
-function keyHandler(e: any) {
-	var TABKEY = 9;
-	if (e.keyCode == 9) {
-	e.preventDefault();
-	var start = $(this).get(0).selectionStart;
-	var end = $(this).get(0).selectionEnd;
-
-	// set textarea value to: text before caret + tab + text after caret
-	$(this).val($(this).val().substring(0, start)
-				+ "\t"
-				+ $(this).val().substring(end));
-
-	// put caret at right position again
-	$(this).get(0).selectionStart =
-	$(this).get(0).selectionEnd = start + 1;
-  }
-}
-(<any>global).document.getElementById('inp').onkeydown = keyHandler;
-// (<any>global).TEST = TEST;
-
-let document = (<any>global).document;
-
-function createCookie(name: string,value:string,days=100) {
-	var expires = "";
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime() + (days*24*60*60*1000));
-		expires = "; expires=" + date.toUTCString();
-	}
-	document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-function readCookie(name: string) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	}
-	return null;
-}
-
-let localStorage = (<any>global).localStorage;
-
-document.getElementById('inp').value = localStorage.getItem('prog') || 'hey(a){}';
-document.getElementById('inp').onkeyup = () => localStorage.setItem('prog', document.getElementById('inp').value);
-
-
-
-// F(`
-// 	hey(a){
-// 		a = 3;
-// 		if(a){
-// 			if(a){
-// 				return 23;
-// 			}else{
-// 				if(a){
-// 					return 099;
-// 				}else{
-// 					if(a){
-// 						return 199;
-// 					}else{
-// 						return 299;
-// 					}
-// 				}
-// 			}
-// 		}else{
-// 			if(a){
-// 				return 1;
-// 			}else{
-// 				if(a){
-// 					return 0;
-// 				}else{
-// 					if(a){
-// 						return 1;
-// 					}else{
-// 						return 2;
-// 					}
-// 				}
-// 			}
-// 		}
-// 	}
-// `);
-
-// let b = root.add(2);
-// let c = root.add(3);
-// let d = root.add(4);
-// a.add(2, root);
-// a.add('hey');
-
-// (<any>root).get(1).get(1).get(1).add(145); representNum(root);
-// (<any>root).get(1).get(1).get(1).add(145, root); representNum(root);
-
-// representNum(root);
-
-// console.log('ROOT=',root);
-
+	return SSM.toString(SSM_output);
+};

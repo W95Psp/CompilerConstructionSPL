@@ -12,7 +12,7 @@
         "emitDecoratorMetadata": true,
         "importHelpers": true,
         "outDir": "build",
-        "lib": ["es2017"],
+        "lib": ["es2017", "DOM"],
         "moduleResolution": "Node"
     }
 }
