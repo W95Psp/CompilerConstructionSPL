@@ -104,7 +104,7 @@ export let GetSSM: SSM_Functions = MM([
 
 		let type = ctx.cacheTypeParserRules.get(pr);
 		if(!type)
-			throw o.error("Err (internal:SSM:Assign:type)");
+			throw o.error("It looks like you trying assign a native object.\nHint: if you want to reimplement a native object, just redeclare it. Native functions cannot be used as values.");
 			
 		let pos = ctx.getValuePosition(name, o);
 		if(storage==TypeStorage.Normal)

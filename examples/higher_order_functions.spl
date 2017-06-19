@@ -15,7 +15,7 @@ main() {
 	    return f(list.hd) : map(f, list.tl);
 	}
 
-	foldl(f, z, list) :: (a b -> b) b [a] -> b
+	foldl(f, z, list) :: (b a -> b) b [a] -> b
 	{
 	  if( empty(list) )
 	    return z;

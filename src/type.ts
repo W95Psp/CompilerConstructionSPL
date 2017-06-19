@@ -53,6 +53,8 @@ export class Context{
 	variableType: Map<string, Type> = new Map();
 	protected typeSPR: TypeSetParserRule;
 
+	replacements: Replacement[] = [];
+
 	standartLibrary: Map<string, [Type, (..._: Type[]) => string[][]]> = new Map();
 
 	outsideVariables: Set<string> = new Set();
@@ -162,6 +164,7 @@ export class Context{
 			this.applyReplacement(r);
 	}
 	applyReplacement([fromType, toType]: Replacement){
+		this.replacements.push([fromType, toType]);
 		let ctx = this.getStrictContextOf(false, fromType.name);
 		// if(toType instanceof IntegerType)
 		// 	debugger;
@@ -214,7 +217,7 @@ export class Context{
 }
 
 
-let ordLexOrder = ([a1,a2]: [number, number], [b1,b2]: [number, number]) => 
+export let ordLexOrder = ([a1,a2]: [number, number], [b1,b2]: [number, number]) => 
 	a1==b1 && a2==b2 ? 0 : (a1 > b1 || (a1==b1 && a2 < b2)) ? 1 : -1;
 let maxLexOrder = (a: [number, number], b: [number, number]) =>
 	ordLexOrder(a,b)>0 ? a : b;
@@ -267,7 +270,7 @@ let flattenFilterUndef = <T>(l: ((T[])|undefined)[]) => flatten(filterUndef(l));
 export abstract class CombinedType extends Type {
 	readonly inside: Type[] = [];
 	toString() {
-		return this.constructor.name + this.inside ? ('{'+this.inside.map(o => o.toString()).join(' ; ')+'}') : '';
+		return this.constructor.name.replace('Type', '') + (this.inside.length ? ('{'+this.inside.map(o => o.toString()).join(' ; ')+'}') : '');
 	}
 	constructor(...inside: Type[]){
 		super();
@@ -342,7 +345,7 @@ class FunctionType_UnderlyingType extends CombinedType {}
 
 export class FunctionType extends Type {
 	toString() {
-		return this.inputs.map(o => o.toString()).join(' ')+' -> '+this.output.toString();
+		return ' ( '+this.inputs.map(o => o.toString()).join(' ')+' -> '+this.output.toString()+' ) ';
 	}
 	readonly inputs: Type[];
 	readonly output: Type;
@@ -475,7 +478,9 @@ export class UnknownTypeLimited extends UnknownType {
 
 export class VariableType extends Type {
 	toString() {
-		return 'VT:'+this.name+':{'+this.possibles.map(o => o.toString()).join(' ; ')+'}';
+		if(this.possibles.length)
+			return this.name+':{'+this.possibles.map(o => o.toString()).join(' ; ')+'}';
+		return this.name;
 	}
 	lexOrder(){ return Tuple(1, this.possibles.length); }
 	readonly possibles: CombinedType[];

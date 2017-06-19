@@ -63,7 +63,7 @@ export class Lexer {
 		let currentLineBefore = (prev.pop() || "").replace(/\t/g, ' ');
 		let currentLine = currentLineBefore + colors.red(currentLineNext.substr(0, len)) + colors.reset(currentLineNext.substr(len))
 							+ "\n\t" + currentLineBefore.replace(/./g, ' ') + '^';
-		return "Error: l" + line + ":" + currentLineBefore.length + " in : \n\t"+currentLine+'\n\t'+message;
+		return "Error: l" + line + ":" + currentLineBefore.length + " in : \n\t"+currentLine+'\n\t'+message.replace(/\n/g, '\n\t');
 	}
 }
 

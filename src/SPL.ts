@@ -40,6 +40,23 @@ export let SPL_compile = (source: string):string => {
 		
 	let o = <ParserSPL.SPL>p.result;
 	let ctx = new Context(o, TSPR, StdLib);
+
+	let patch = (o: Parser.ParserRule) => {
+		let getOr = <T>(_: ((f: [Type, Context]) => T), x: T) => Let(ctx.cacheTypeParserRules.get(o), y => y ? _(y) : x);
+		Object.defineProperty(o, 'TYPE', {
+			get: () => getOr(([a]) => a.toString(), '!! not found'),
+			enumerable: true,
+			set: () => {}
+		});
+		Object.defineProperty(o, 'CTX', {
+			get: () => getOr(([,a]) => a, <any>'!! not found'),
+			enumerable: true,
+			set: () => {}
+		});
+		o.getValuesDirectFlat().forEach(patch);
+	}
+	patch(o);
+
 	// let xx = ctx.typeOf(o);
 	ctx.typeOf(o); // compute all types before
 
@@ -50,6 +67,7 @@ export let SPL_compile = (source: string):string => {
 		let types = decls.map(o => <[Type, Context]>ctx.cacheTypeParserRules.get(o)).filter(o => o).map(o => o[0])
 		return types;
 	};
+
 
 	let SSM_output = ResolveSSM(o, ctx);
 

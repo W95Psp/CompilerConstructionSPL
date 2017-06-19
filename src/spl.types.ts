@@ -7,7 +7,7 @@ import * as SSM from './SSM_spec';
 
 // import * as Types from './type';
 import {
-	TypeStorage, ErrorUnifying,Replacement,applyReplacements,Type,UnknownType,FunctionType,ListType,TupleType,UnknownTypeLimited,VariableType, IntegerType, BooleanType,Context,CombinedType,TypeSetParserRule
+	TypeStorage, ordLexOrder, ErrorUnifying,Replacement,applyReplacements,Type,UnknownType,FunctionType,ListType,TupleType,UnknownTypeLimited,VariableType, IntegerType, BooleanType,Context,CombinedType,TypeSetParserRule
 } from './type';
 
 import * as T from './type';
@@ -23,7 +23,7 @@ let callFunction = (from: Parser.ParserRule, funSignature: Type, call: FunctionT
 			errEnt = from.getArgs()[call.ctInputs.inside.findIndex(o => o==path[0][1])] || from;
 		else
 			errEnt = from;
-		throw errEnt.error("Function call not compatible with function signature\n"+rps.path[0][2]);
+		throw errEnt.error("No such function signature. "+funSignature+" expected, "+call+" given.\nMore specific error: "+rps.path[0][2]);
 	}
 	let fOutput = applyReplacements(output, rps);
 	let rps_filtered = rps;
@@ -115,9 +115,7 @@ export let TSPR = new TypeSetParserRule(
 			throw "Void return not supported yet";
 		return [new FunctionType(o.inputs.map(g), g(o.output.type)),, []];
 	}],
-	[ParserSPL.LambdaType, (o: ParserSPL.LambdaType, g, ctx) => {
-		return [g(o.fun),, []];
-	}],
+	[ParserSPL.LambdaType, (o: ParserSPL.LambdaType, g, ctx) => [g(o.fun),, []]],
 	[ParserSPL.Assign, (o: ParserSPL.Assign, g, ctx) => {
 		let name = o.ident.content;
 		let v = ctx.getValue(name, o); /* important: getValue put outside variable if needed */
@@ -177,110 +175,123 @@ export let TSPR = new TypeSetParserRule(
 		return callFunction(o, t, new FunctionType(inputsType, new UnknownType()));
 	}],
 	[ParserSPL.FunDecl, (o: ParserSPL.FunDecl, g, ctx) => {
-			if(o.name.content=='sum')
-				debugger;
-			ctx.declareValue(o.name.content, o); // TODO
-			let t = o.type ? g(o.type) as FunctionType
-					: new FunctionType(o.args.map(o => new UnknownType('?'+o.content)), new UnknownType(o.name.content+'_output'));
-			let unknownsNames = new Set((<UnknownType[]>t.search(x => x instanceof UnknownType || x instanceof VariableType)).map(o => o.name));
-			let nctx = ctx.child(o, ...unknownsNames.values());
+			// we declare the identifier and link it to the FunDecl entity
+			ctx.declareValue(o.name.content, o);
 
+			let t = o.type ?
+					  g(o.type) as FunctionType
+					: new FunctionType(o.args.map(o => new UnknownType('?'+o.content)), new UnknownType(o.name.content+'_output'));
+
+			// fetch all variableTypes
+			let localVarTypes = new Set((<UnknownType[]>t.search(x => x instanceof UnknownType || x instanceof VariableType)).map(o => o.name));
+			// create a new context
+			let nctx = ctx.child(o, ...localVarTypes.values());
+
+			// declare the type and context
 			ctx.cacheTypeParserRules.set(o, [t, nctx]);
 
+			// declare fun parameters (with types)
 			o.argsParserRules.map((j,i) =>
 					nctx.declareValue(j.name.content, j, TypeStorage.Normal, i - o.args.length, t.ctInputs.inside[i])
 				);
+
+			debugger;
 			
-			let args = o.args.map(o => o.content);
+			// ************************************ (Non nctx altering part /begin)
+				// get args
+				let args = o.args.map(o => o.content);
 
-			if(t.ctInputs.inside.length > args.length)
-				throw o.name.error('Got '+t.ctInputs.inside.length+' annotations but only '+args.length+' arguments');
-			if(t.ctInputs.inside.length < args.length)
-				throw o.name.error('Got '+args.length+' arguments but only '+t.ctInputs.inside.length+' annotations');
+				// check args consistency
+				if(t.ctInputs.inside.length > args.length)
+					throw o.name.error('Got '+t.ctInputs.inside.length+' annotations but only '+args.length+' arguments');
+				if(t.ctInputs.inside.length < args.length)
+					throw o.name.error('Got '+args.length+' arguments but only '+t.ctInputs.inside.length+' annotations');
 
-			let dupError = (t:Lexer.Token[]) => {
-				let dup = t.map(o => o.content).duplicates();
-				if(!dup.length)
-					return;
-				let [i,n] = dup[0];
-				let others = dup.slice(1).map(([,n]) => n).join(', ');
-				throw t[i].error(others ? 'Duplicate indentifiers '+n+', '+others : 'Duplicate indentifier '+n);
-			}
-			o.varDecls.forEach(nctx.typeOf, nctx); // eval type and store type informations in context
-			dupError([...[...o.funDecls, ...o.varDecls].map(o => o.name), ...o.args]); // make sure no var/fun have same name
+				let dupError = (t:Lexer.Token[]) => {
+					let dup = t.map(o => o.content).duplicates();
+					if(!dup.length)
+						return;
+					let [i,n] = dup[0];
+					let others = dup.slice(1).map(([,n]) => n).join(', ');
+					throw t[i].error(others ? 'Duplicate indentifiers '+n+', '+others : 'Duplicate indentifier '+n);
+				}
+				dupError([...[...o.funDecls, ...o.varDecls].map(o => o.name), ...o.args]); // make sure no var/fun have same name
 
-			let dtree = new Map(o.funDecls.map(o => Tuple(o.name.content, o.getReturnPaths())));
-			let indexNoReturns = [...dtree.values()].findIndex(t => !t);
-			if(indexNoReturns!=-1)
-				throw o.funDecls[indexNoReturns].name.error('No return statements found');
-			let dtreeNE = <{maybe: ParserSPL.Ret[], concl: ParserSPL.Ret[]}[]>[...dtree.values()];
-			let indexNoSureReturn = dtreeNE.findIndex(t => !t.concl.length);
-			if(indexNoSureReturn!=-1)
-				throw o.funDecls[indexNoSureReturn].name.error('Not every path leads to a return');
 
-			let findVarsUsed = (o: Parser.ParserRule) : (ParserSPL.ExpVar | ParserSPL.FunCall)[] => 
-				flatten(o.getValuesDirectFlat().map(o => [...(o instanceof ParserSPL.FunCall || o instanceof ParserSPL.ExpVar) ? [o] : [], ...findVarsUsed(o)]));
+				// check return consistency
+				let dtree = new Map(o.funDecls.map(o => Tuple(o.name.content, o.getReturnPaths())));
+				let indexNoReturns = [...dtree.values()].findIndex(t => !t);
+				if(indexNoReturns!=-1)
+					throw o.funDecls[indexNoReturns].name.error('No return statements found');
+				let dtreeNE = <{maybe: ParserSPL.Ret[], concl: ParserSPL.Ret[]}[]>[...dtree.values()];
+				let indexNoSureReturn = dtreeNE.findIndex(t => !t.concl.length);
+				if(indexNoSureReturn!=-1)
+					throw o.funDecls[indexNoSureReturn].name.error('Not every path leads to a return');
 
-			let display = (o: SimpleUniqueTree<ParserSPL.FunDecl>, level: number = 0) => {
-				let tabs = () => new Array(level).fill('\t').join('');
-				[...o.data.entries()].forEach(([a,b]) => {
-					display(b, level+1);
+				let findVarsUsed = (o: Parser.ParserRule) : (ParserSPL.ExpVar | ParserSPL.FunCall)[] => 
+					flatten(o.getValuesDirectFlat().map(o => [...(o instanceof ParserSPL.FunCall || o instanceof ParserSPL.ExpVar) ? [o] : [], ...findVarsUsed(o)]));
+
+				let listFunDecls = o.funDecls;
+
+				let findByName = (n: string) => listFunDecls.find(o => o.name.content==n);
+				let anyCycle = (o: ParserSPL.FunDecl, parent: SimpleUniqueTree<ParserSPL.FunDecl>, tree: SimpleUniqueTree<ParserSPL.FunDecl>) => {
+					if(tree.find(o))
+						return;
+					let nParent = parent.addChild(o); // link sub tree if o found (see tools.ts)
+					if(parent.getParents().includes(o))
+						throw o.getFirstToken().error('Cycle detected' + (o.name.content ? ' ('+
+									nParent.getParents().getPairwise().map(([b,a]) => a.name.content+' needs '+b.name.content).join(', ')+')' : '')
+								+ ' : cannot resolve type, please add annotations.');
+					filterUndef(findVarsUsed(o).map(x => x instanceof ParserSPL.FunCall ? findByName(x.name.content) : undefined))
+											   .forEach(x => anyCycle(x, nParent, tree));
+				};
+				(listFunDecls = listFunDecls.sort((a,b) => {
+								let treeA = new SimpleUniqueTree<ParserSPL.FunDecl>();
+								anyCycle(a, treeA, treeA);
+								let treeB = new SimpleUniqueTree<ParserSPL.FunDecl>();
+								anyCycle(b, treeB, treeB);
+								let [la, lb] = [treeA.getOrderedItems().length, treeB.getOrderedItems().length];
+								return la==lb ? 0 : la>lb ? -1 : 1;
+							}));
+				let map = new Map(listFunDecls.map((a) => {
+					let treeA = new SimpleUniqueTree<ParserSPL.FunDecl>();
+					anyCycle(a, treeA, treeA);
+					return Tuple(a, treeA.getOrderedItems());
+				}));// b in map[a] means 'a' needs to be before 'b'
+
+				listFunDecls = listFunDecls.sort((a,b) => {
+					let [A, B] = [map.get(a),map.get(b)];
+					if(!A || !B) throw "NOPE";
+					return A.includes(b) ? 1 : B.includes(a) ? -1 : 0;
 				});
-			}
+			// ************************************ (Non nctx altering part /end)
 
-			let listFunDecls = o.funDecls;
-			let tree = new SimpleUniqueTree<ParserSPL.FunDecl>();
+			debugger;
+			// ************ type and declare everything (fun decl, var decl, statements)
+				o.varDecls.forEach(nctx.typeOf, nctx);
+				listFunDecls.reverse().forEach(d => {
+					nctx.typeOf(d);
+					nctx.declareValue(d.name.content, d);
+				});
+				o.Stmt.forEach(nctx.typeOf, nctx); // eval type of statements
+			// ************ end type and delcare...
+			debugger;
 
-			let findByName = (n: string) => listFunDecls.find(o => o.name.content==n);
-			let anyCycle = (o: ParserSPL.FunDecl, parent: SimpleUniqueTree<ParserSPL.FunDecl>, tree: SimpleUniqueTree<ParserSPL.FunDecl>) => {
-				if(tree.find(o))
-					return;
-				let nParent = parent.addChild(o); // link sub tree if o found (see tools.ts)
-				if(parent.getParents().includes(o))
-					throw o.getFirstToken().error('Cycle detected' + (o.name.content ? ' ('+
-								nParent.getParents().getPairwise().map(([b,a]) => a.name.content+' needs '+b.name.content).join(', ')+')' : '')
-							+ ' : cannot resolve type, please add annotations.');
-				filterUndef(findVarsUsed(o).map(x => x instanceof ParserSPL.FunCall ? findByName(x.name.content) : undefined))
-										   .forEach(x => anyCycle(x, nParent, tree));
-			};
-			(listFunDecls = listFunDecls.sort((a,b) => {
-							let treeA = new SimpleUniqueTree<ParserSPL.FunDecl>();
-							anyCycle(a, treeA, treeA);
-							let treeB = new SimpleUniqueTree<ParserSPL.FunDecl>();
-							anyCycle(b, treeB, treeB);
-							let [la, lb] = [treeA.getOrderedItems().length, treeB.getOrderedItems().length];
-							return la==lb ? 0 : la>lb ? -1 : 1;
-						}));
-			let map = new Map(listFunDecls.map((a) => {
-				let treeA = new SimpleUniqueTree<ParserSPL.FunDecl>();
-				anyCycle(a, treeA, treeA);
-				return Tuple(a, treeA.getOrderedItems());
-			}));// b in map[a] means 'a' needs to be before 'b'
-
-			listFunDecls = listFunDecls.sort((a,b) => {
-				let A = map.get(a);
-				let B = map.get(b);
-				if(!A || !B)
-					throw "NOPE";
-				if(A.includes(b)) // a needs b
-					return 1;
-				if(B.includes(a)) // b needs a
-					return -1;
-				return 0;
-			});
-			listFunDecls.reverse().forEach(d => {
-				nctx.typeOf(d);
-				nctx.declareValue(d.name.content, d);
-			});
-
-			o.Stmt.forEach(nctx.typeOf, nctx); // eval type of statements
-
-			let returns = o.getReturnPaths();
-			if(!returns)
-				throw "No returns detected";
-			let retTypes = filterUndef([...returns.concl, ...returns.maybe].map(o => o.exp ? nctx.typeOf(o.exp) : undefined)).map(([a,b]) => a);
-
-			t = <FunctionType>t.replace(t.output, retTypes[0]);
+			// *** just unify begin
+				let returns = o.getReturnPaths();
+				if(!returns)
+					throw o.error("No any return statment found");
+				let retTypes = filterUndef([...returns.concl, ...returns.maybe].map(o => o.exp ? 
+								Let(nctx.typeOf(o.exp), t => t ? Tuple(t, o) : undefined) : undefined))
+										.map(([[a,],b]) => Tuple(a,b));
+				let errUnify = (a: Type, b: Type) => a.internalUnifyWith(b) instanceof ErrorUnifying;
+				let error = retTypes.getPairwise().find(([[a,], [b,]]) => errUnify(a, b) || errUnify(b, a));
+				if(error)
+					throw Let(error, ([[t1,f],[t2,]]) => f.error("Can't unify return type "+t1+" with "+t2));
+				t = <FunctionType>t.replace(t.output, retTypes.sort(([a,],[b,]) => ordLexOrder(a.lexOrder(), b.lexOrder())).reverse()[0][0]);
+				t = nctx.replacements.reduce((t, [a,b]) => <FunctionType>t.replace(a, b), t);
+			// *** just unify end
+			debugger;
 
 			return [t, nctx, []];
 		}
