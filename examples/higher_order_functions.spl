@@ -1,0 +1,45 @@
+main() {
+	var hey = [];
+	printList(lst) :: [Int] -> Int {
+		if (empty(lst))
+			return 0;
+		print(lst.hd);
+		return lst.hd + printList(lst.tl);
+	}
+
+	map(f, list) :: (a -> b) [a] -> [b]
+	{
+	  if( empty(list) )
+	    return [];
+	  else
+	    return f(list.hd) : map(f, list.tl);
+	}
+
+	foldl(f, z, list) :: (a b -> b) b [a] -> b
+	{
+	  if( empty(list) )
+	    return z;
+	  else
+	    return foldl(f, f(z, list.hd), list.tl);
+	}
+
+	// Some operators wrapped in a function.
+	plus(x, y) { return x + y; }
+	and(b, c) { return b && c; }
+	gexx(x) { return x >= 18; }
+
+	// Sums all the elements of an Int list.
+	sum(list) { return foldl(plus, 0, list); }
+
+	// Checks whether all elements in a list of Booleans are True
+	all(list) { return foldl(and, True, list); }
+
+	// Checks whether in a list of numbers everybody is older than 18
+	allOlderThan18(list) { return all(map(gexx, list)); }
+
+	hey = sum(1:[2]);
+	printList(hey);
+
+	return 0;
+}
+var rien = main();

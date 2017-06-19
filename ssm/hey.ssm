@@ -1,138 +1,67 @@
 bra fetchOutsideVars_after
-fetchOutsideVars: ldc 0
-ldc 0
-lds -2
+fetchOutsideVars: lds 0
 lds 0
-lda 0
-ldr SP
-ldc 5
-sub
-str SP
-finVal: lds 4
-lds 4
-brf afterVal
-lds 1
-sub
-lda 0
-annote SP 0 0 red "From F-Struct"
-lds 1
+sts -1
+sts -1
+
 ldc 1
 sub
-sts 4
-ldc 0
-ldc 0
-lds 1
-sts 1
-sts 0
-sts 0
-bra finVal
-afterVal: sts 0
+lds 2
+lda 0
+ldc ldmhJump
+ldc 2
+add
+sta 0
+ldmhJump: ldmh 0 0
 ldr RR
 ldc 2
 add
 str PC
 fetchOutsideVars_after: nop
 link 1
-ldc body_mul_2
-ldc 1
-stmh 2
-annote SP 0 0 green "funDecl mul"
-bra after_mul_3
-body_mul_2: ldl -2
-annote SP 0 0 black "get n"
-ldl -1
-annote SP 0 0 black "get m"
-mul
-str RR
-ldl 1
-str R5
-unlink
-ldr SP
-ldc 2
-sub
-str SP
-ldr R5
-ret
-after_mul_3: nop
 ldc 0
-ldc body_f_4
+sth
+annote SP 0 0 red "refTo c"
+ldl 2
+annote SP 0 0 black "get c"
+ldc body_f
 ldc 2
 stmh 3
-lds 0
-lds 0
-annote HP 0 0 red "Recursive pointer"
-sta -2
 annote SP 0 0 green "funDecl f"
-bra after_f_9
-body_f_4: ldl -3
-annote SP 0 0 black "get n"
+bra after_f
+body_f: ldl -1
+lda 0
+annote SP 0 0 black "get c"
 ldc 1
-lt
-brf endif_5
-ldc 1
-str RR
-ldl 1
-str R5
-unlink
-ldr SP
-ldc 3
-sub
-str SP
-ldr R5
-ret
-bra endelse_6
-endif_5: nop
-endelse_6: nop
-ldl -3
-annote SP 0 0 black "get n"
-ldl -3
-annote SP 0 0 black "get n"
-ldc 1
-sub
-ldl -2
-annote SP 0 0 black "get how"
+add
 ldl -1
-annote SP 0 0 black "get f"
-ldrr RR PC
-bra fetchOutsideVars
-sts 2
-link 0
-ldc after_fc_f_8
-lds 1
-str PC
-after_fc_f_8: ldr RR
-ldl -2
-annote SP 0 0 black "get how"
-ldrr RR PC
-bra fetchOutsideVars
-sts 2
-link 0
-ldc after_fc_how_7
-lds 1
-str PC
-after_fc_how_7: ldr RR
+sta 0
+ldc 0
 str RR
 ldl 1
 str R5
 unlink
 ldr SP
-ldc 3
+ldc 1
 sub
 str SP
 ldr R5
 ret
-after_f_9: nop
-ldc 5
-ldl 2
-annote SP 0 0 black "get mul"
+after_f: nop
 ldl 3
 annote SP 0 0 black "get f"
 ldrr RR PC
 bra fetchOutsideVars
 sts 2
 link 0
-ldc after_fc_f_10
+ldc after_fc_f
 lds 1
 str PC
-after_fc_f_10: ldr RR
+after_fc_f: ldr RR
 annote SP 0 0 red "var a"
+ldl 2
+lda 0
+annote SP 0 0 black "get c"
+trap 0
+ldc 0
+annote SP 0 0 red "var x"

@@ -1,0 +1,18 @@
+var list = [];
+
+f(n) :: Int -> Int {
+	if (n == 0)
+		return 0;
+	list = n:list;
+	return f(n-1);
+}
+
+p(lst) :: [Int] -> Int {
+	if (empty(lst))
+		return 0;
+	print(lst.hd);
+	return lst.hd + p(lst.tl);
+}
+
+f(3);
+p(list);

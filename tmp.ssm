@@ -1,0 +1,464 @@
+bra fetchOutsideVars_after
+fetchOutsideVars: lds 0
+lds 0
+sts -1
+sts -1
+
+ldc 1
+sub
+lds 2
+lda 0
+ldc ldmhJump
+ldc 2
+add
+sta 0
+ldmhJump: ldmh 0 0
+ldr RR
+ldc 2
+add
+str PC
+fetchOutsideVars_after: nop
+link 1
+ldc body_main
+ldc 1
+stmh 2
+annote SP 0 0 green "funDecl main"
+bra after_main
+body_main: ldc 0
+annote SP 0 0 red "var hey"
+ldc body_gexx
+ldc 1
+stmh 2
+annote SP 0 0 green "funDecl gexx"
+bra after_gexx
+body_gexx: ldl -1
+annote SP 0 0 black "get x"
+ldc 18
+ge
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 1
+sub
+str SP
+ldr R5
+ret
+after_gexx: nop
+ldc body_and
+ldc 1
+stmh 2
+annote SP 0 0 green "funDecl and"
+bra after_and
+body_and: ldl -2
+annote SP 0 0 black "get b"
+ldl -1
+annote SP 0 0 black "get c"
+and
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 2
+sub
+str SP
+ldr R5
+ret
+after_and: nop
+ldc body_plus
+ldc 1
+stmh 2
+annote SP 0 0 green "funDecl plus"
+bra after_plus
+body_plus: ldl -2
+annote SP 0 0 black "get x"
+ldl -1
+annote SP 0 0 black "get y"
+add
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 2
+sub
+str SP
+ldr R5
+ret
+after_plus: nop
+ldc 0
+ldc body_foldl
+ldc 2
+stmh 3
+lds 0
+lds 0
+annote HP 0 0 red "Recursive pointer"
+sta -2
+annote SP 0 0 green "funDecl foldl"
+bra after_foldl
+body_foldl: ldl -2
+annote SP 0 0 black "get list"
+ldc 0
+eq
+brf endif
+ldl -3
+annote SP 0 0 black "get z"
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 4
+sub
+str SP
+ldr R5
+ret
+bra endelse
+endif: nop
+ldl -4
+annote SP 0 0 black "get f"
+ldl -3
+annote SP 0 0 black "get z"
+ldl -2
+annote SP 0 0 black "get list"
+lda -1
+ldl -4
+annote SP 0 0 black "get f"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_f
+lds 1
+str PC
+after_fc_f: ldr RR
+ldl -2
+annote SP 0 0 black "get list"
+lda 0
+ldl -1
+annote SP 0 0 black "get foldl"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_foldl
+lds 1
+str PC
+after_fc_foldl: ldr RR
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 4
+sub
+str SP
+ldr R5
+ret
+endelse: nop
+after_foldl: nop
+ldc 0
+ldc body_map
+ldc 2
+stmh 3
+lds 0
+lds 0
+annote HP 0 0 red "Recursive pointer"
+sta -2
+annote SP 0 0 green "funDecl map"
+bra after_map
+body_map: ldl -2
+annote SP 0 0 black "get list"
+ldc 0
+eq
+brf endif_1
+ldc 0
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 3
+sub
+str SP
+ldr R5
+ret
+bra endelse_2
+endif_1: nop
+ldl -2
+annote SP 0 0 black "get list"
+lda -1
+ldl -3
+annote SP 0 0 black "get f"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_f_3
+lds 1
+str PC
+after_fc_f_3: ldr RR
+ldl -3
+annote SP 0 0 black "get f"
+ldl -2
+annote SP 0 0 black "get list"
+lda 0
+ldl -1
+annote SP 0 0 black "get map"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_map
+lds 1
+str PC
+after_fc_map: ldr RR
+stmh 2
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 3
+sub
+str SP
+ldr R5
+ret
+endelse_2: nop
+after_map: nop
+ldc 0
+ldc body_printList
+ldc 2
+stmh 3
+lds 0
+lds 0
+annote HP 0 0 red "Recursive pointer"
+sta -2
+annote SP 0 0 green "funDecl printList"
+bra after_printList
+body_printList: ldl -2
+annote SP 0 0 black "get lst"
+ldc 0
+eq
+brf endif_4
+ldc 0
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 2
+sub
+str SP
+ldr R5
+ret
+bra endelse_5
+endif_4: nop
+endelse_5: nop
+ldl -2
+annote SP 0 0 black "get lst"
+lda -1
+trap 0
+ldc 0
+sts 0
+ldl -2
+annote SP 0 0 black "get lst"
+lda -1
+ldl -2
+annote SP 0 0 black "get lst"
+lda 0
+ldl -1
+annote SP 0 0 black "get printList"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_printList
+lds 1
+str PC
+after_fc_printList: ldr RR
+add
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 2
+sub
+str SP
+ldr R5
+ret
+after_printList: nop
+ldl 6
+annote SP 0 0 black "get and"
+ldl 10
+annote SP 0 0 black "get foldl"
+ldc body_all
+ldc 3
+stmh 4
+annote SP 0 0 green "funDecl all"
+bra after_all
+body_all: ldl -2
+lda 0
+annote SP 0 0 black "get and"
+ldc 1
+ldl -3
+annote SP 0 0 black "get list"
+ldl -1
+annote SP 0 0 black "get foldl"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_foldl_6
+lds 1
+str PC
+after_fc_foldl_6: ldr RR
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 3
+sub
+str SP
+ldr R5
+ret
+after_all: nop
+ldl 8
+annote SP 0 0 black "get plus"
+ldl 10
+annote SP 0 0 black "get foldl"
+ldc body_sum
+ldc 3
+stmh 4
+annote SP 0 0 green "funDecl sum"
+bra after_sum
+body_sum: ldl -2
+lda 0
+annote SP 0 0 black "get plus"
+ldc 0
+ldl -3
+annote SP 0 0 black "get list"
+ldl -1
+annote SP 0 0 black "get foldl"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_foldl_7
+lds 1
+str PC
+after_fc_foldl_7: ldr RR
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 3
+sub
+str SP
+ldr R5
+ret
+after_sum: nop
+ldl 4
+annote SP 0 0 black "get gexx"
+ldl 12
+annote SP 0 0 black "get map"
+ldl 16
+annote SP 0 0 black "get all"
+ldc body_allOlderThan18
+ldc 4
+stmh 5
+annote SP 0 0 green "funDecl allOlderThan18"
+bra after_allOlderThan18
+body_allOlderThan18: ldl -3
+lda 0
+annote SP 0 0 black "get gexx"
+ldl -4
+annote SP 0 0 black "get list"
+ldl -2
+annote SP 0 0 black "get map"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_map_8
+lds 1
+str PC
+after_fc_map_8: ldr RR
+ldl -1
+annote SP 0 0 black "get all"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_all
+lds 1
+str PC
+after_fc_all: ldr RR
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 4
+sub
+str SP
+ldr R5
+ret
+after_allOlderThan18: nop
+ldc 1
+ldc 2
+ldc 0
+stmh 2
+stmh 2
+ldl 18
+annote SP 0 0 black "get sum"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_sum
+lds 1
+str PC
+after_fc_sum: ldr RR
+stl 2
+ldl 2
+annote SP 0 0 black "get hey"
+ldl 14
+annote SP 0 0 black "get printList"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_printList_9
+lds 1
+str PC
+after_fc_printList_9: ldr RR
+sts 0
+ldc 0
+str RR
+ldl 1
+str R5
+unlink
+ldr SP
+ldc 0
+sub
+str SP
+ldr R5
+ret
+after_main: nop
+ldl 2
+annote SP 0 0 black "get main"
+ldrr RR PC
+bra fetchOutsideVars
+sts 2
+link 0
+ldc after_fc_main
+lds 1
+str PC
+after_fc_main: ldr RR
+annote SP 0 0 red "var rien"

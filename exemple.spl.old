@@ -1,0 +1,13 @@
+mul(n, m) :: Int Int -> Int {
+	return n * m;
+}
+f(n, op) :: Int (Int Int -> Int) -> Int {
+	var rrr = 0;
+	if (n < 1) {
+		return 1;
+	}
+	print(n);
+	return op(n, f(n-1, op));
+}
+var a = f(input(), mul);
+var b = print(a) + print(a) + print(a);

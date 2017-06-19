@@ -1,0 +1,703 @@
+import * as colors from 'colors';
+import * as Lexer from './lexer';
+import * as Parser from './parser';
+import * as LexSPL from './spl.lexer';
+import {Let, Tuple, Tuple3, flatten, filterUndef, SimpleUniqueTree} from './tools';
+import * as SSM from './SSM_spec';
+
+// import * as Types from './type';
+import {
+	TypeStorage, ErrorUnifying,Replacement,applyReplacements,Type,UnknownType,FunctionType,ListType,TupleType,UnknownTypeLimited,VariableType, IntegerType, BooleanType,Context,CombinedType,TypeSetParserRule
+} from './type';
+
+import * as T from './type';
+import * as ParserSPL from './spl.parser';
+
+
+let O = {
+	ErrorUnifying,applyReplacements,Type,UnknownType,FunctionType,ListType,TupleType,UnknownTypeLimited,VariableType, IntegerType, BooleanType,Context,CombinedType,TypeSetParserRule
+};
+for(let k in O)
+	(<any>global)[k] = (<any>O)[k];
+
+// let a = ParserSPL.Exp.getPossibleSequence(new Map());
+
+declare var $:any;
+
+(<any>global).ParserSPL = ParserSPL;
+(<any>global).LexSPL = LexSPL;
+
+ParserSPL.SPL_Parser.optimize();
+
+let xxxx = new VariableType([new IntegerType(), new BooleanType()], 'xxxx');
+
+let standartLibrary:{[index: string]: FunctionType} = {
+	'op1_!': new FunctionType([new BooleanType()], new BooleanType()),
+	'op1_-': new FunctionType([new IntegerType()], new IntegerType()),
+	'op2_-': new FunctionType([new IntegerType(),new IntegerType()], new IntegerType()),
+	'op2_+': new FunctionType([new IntegerType(),new IntegerType()], new IntegerType()),
+	'op2_*': new FunctionType([new IntegerType(),new IntegerType()], new IntegerType()),
+	'op2_/': new FunctionType([new IntegerType(),new IntegerType()], new IntegerType()),
+	'op2_%': new FunctionType([new IntegerType(),new IntegerType()], new IntegerType()),
+	'op2_==': new FunctionType([xxxx,xxxx], new BooleanType()),
+	'op2_>=': new FunctionType([new IntegerType(),new IntegerType()], new BooleanType()),
+	'op2_<=': new FunctionType([new IntegerType(),new IntegerType()], new BooleanType()),
+	'op2_>': new FunctionType([new IntegerType(),new IntegerType()], new BooleanType()),
+	'op2_<': new FunctionType([new IntegerType(),new IntegerType()], new BooleanType()),
+	'op2_!=': new FunctionType([new BooleanType(),new BooleanType()], new BooleanType()),
+	'op2_&&': new FunctionType([new BooleanType(),new BooleanType()], new BooleanType()),
+	'op2_||': new FunctionType([new BooleanType(),new BooleanType()], new BooleanType()),
+	'op2_:': Let(new UnknownType(), t => 
+		Let(new ListType(t), lt => new FunctionType([t,lt], lt)))
+};
+let getStdlib = (name: string) => {
+	if(!standartLibrary[name])
+		throw "Can't find standart library function named \"" + name + "\"";
+	return standartLibrary[name];
+};
+let callFunction = (from: Parser.ParserRule, funSignature: Type, call: FunctionType) => {
+	let output = call.output;
+	// let rps = funSignature.internalUnifyWith(call, true);
+	let rps = call.internalUnifyWith(funSignature, true);
+	if(rps instanceof ErrorUnifying){
+		console.log(rps.path);
+		throw from.error("Function call not compatible with function signature");
+	}
+	let fOutput = applyReplacements(output, rps);
+	return Tuple3(fOutput, undefined, rps);
+}
+
+type SSM_resolver = (_: Parser.ParserRule) => string[][];
+type SSM_Function = (o: Parser.ParserRule, g: SSM_resolver, ctx: Context) => string[][];
+type SSM_Functions = Map<typeof Parser.ParserRule, SSM_Function>;
+
+let MM = (_: [typeof Parser.ParserRule, SSM_Function][]) => new Map(_);
+
+/* TODO : use direct instructio to store MP into RR (not here, somewhere else) */
+
+let SSM_getVar =(ref: Parser.ParserRule, id: string, ctx: Context, fetch=true) => {
+	let pos = ctx.getValuePosition(id, ref);
+	let meta = ctx.getValue_raw(id, ref);
+	if(!pos || !meta)
+		throw "Can't get position: variable not found (internal error)";
+	let [,,x] = meta;
+	return flatten([[SSM.ldl(pos)], (x == TypeStorage.Reference && fetch) ? [SSM.lda(0)] : [], [
+			SSM.annote('SP', 0, 0, 'black', '"get '+id+'"')
+		]])
+}
+
+let cache_labels = new Set<string>();
+let cache_labels_uId = 0;
+let getUniqueLabel = (name: string) : string => {
+	if(cache_labels.has(name)){
+		return getUniqueLabel(name+'_'+(++cache_labels_uId));
+	}else{
+		cache_labels.add(name);
+		return name;
+	}
+};
+
+let GetSSM: SSM_Functions = MM([
+	[ParserSPL.ExpPar, (o: ParserSPL.ExpPar, g, ctx) => g(o.exp)],
+	[ParserSPL.ListCst, (o: ParserSPL.ListCst, g, ctx) => o.content ? [...g(o.content), SSM.sth()] : [SSM.ldc(0)]],
+	[ParserSPL.ExpTuple, (o: ParserSPL.ExpTuple, g, ctx) => [...g(o.left), ...g(o.right), SSM.stmh(2)]],
+	[ParserSPL.Exp, (o: ParserSPL.Exp, g, ctx) => g(o.content)],
+	[ParserSPL.ExpNOp2, (o: ParserSPL.ExpNOp2, g, ctx) => 
+		o.content instanceof LexSPL.Integer	? [SSM.ldc(o.content.content)] :
+		o.content instanceof LexSPL.Bool 	? [SSM.ldc(o.content.content == 'True' ? 1 : 0)] :
+											  g(o.content)
+	],
+	[ParserSPL.ExpVar, (o: ParserSPL.ExpVar, g, ctx) => SSM_getVar(o, o.ident.content, ctx)],
+	[ParserSPL.ExpOp2, (o: ParserSPL.ExpOp2, g, ctx) => {
+			let op = o.operator.content;
+			let f:{[index: string]: string[][]} = {
+					'-': 	[SSM.sub()],
+					'+': 	[SSM.add()],
+					'*': 	[SSM.mul()],
+					'/': 	[SSM.div()],
+					'%': 	[SSM.mod()],
+					'==': 	[SSM.eq()],
+					'<=': 	[SSM.le()],
+					'>=': 	[SSM.ge()],
+					'!=': 	[SSM.ne()],
+					'&&': 	[SSM.and()],
+					'||': 	[SSM.or()],
+					'<': 	[SSM.lt()],
+					'>': 	[SSM.gt()],
+					':': 	[SSM.stmh(2)]
+				}
+			return [...g(o.left), ...g(o.right), ...f[op]];
+	}],
+	[ParserSPL.ExpOp1, (o: ParserSPL.ExpOp1, g, ctx) => [...g(o.exp), o.operator.content=='-' ? SSM.sub() : SSM.not()]],
+	[ParserSPL.VarDecl, (o: ParserSPL.VarDecl, g, ctx) => {
+		let meta = ctx.getValue_raw(o.name.content, o);
+		if(!meta)
+			throw 'Err (internal:SSM:VarDecl)';
+		let [,,storage] = meta;
+		let annotR = SSM.annote('SP', 0, 0, 'red', '"refTo '+o.name.content+'"');
+		let annot = SSM.annote('SP', 0, 0, 'red', '"var '+o.name.content+'"');
+		return [
+			...storage==TypeStorage.Normal ? [...g(o.exp), annot] : [...g(o.exp), SSM.sth(), annotR]];
+	}],
+	[ParserSPL.Decl, (o: ParserSPL.Decl, g, ctx) => [...g(o.content)]],
+	[ParserSPL.Stmt, (o: ParserSPL.Decl, g, ctx) => [...g(o.content)]],
+	[ParserSPL.Block, (o: ParserSPL.Block, g, ctx) => [...g(o.content)]],
+	[ParserSPL.BlockAcc, (o: ParserSPL.BlockAcc, g, ctx) => flatten(o.lines.map(o => g(o)))],
+	[ParserSPL.Assign, (o: ParserSPL.Assign, g, ctx) => {
+		let name = o.ident.content;
+		let meta = ctx.getValue_raw(name, o);
+		if(!meta)
+			throw 'Err (internal:SSM:Assign)';
+		let [,,storage] = meta;
+		let pos = ctx.getValuePosition(name, o);
+		if(storage==TypeStorage.Normal)
+			return [...g(o.exp), SSM.stl(pos)];
+		return [...g(o.exp), SSM.ldl(pos), SSM.sta(0)]
+		// return [...g(o.exp), SSM.ldrr('RR', 'MP'), SSM.ldl(pos)/*load pointer*/, 
+		// 				SSM.str('MP'), SSM.stl(0), SSM.ldrr('MP', 'RR')];
+		// return [...g(o.exp), SSM.ldr('MP'), SSM.str('RR'), SSM.ldl(pos)/*load pointer*/, 
+		// 				SSM.str('MP'), SSM.stl(0), SSM.ldr('RR'), SSM.str('MP')];
+	}],
+	[ParserSPL.SPL, (o: ParserSPL.SPL, g, ctx) => {
+		return [SSM.link(1), ...flatten([...o.decls.map(o => g(o))])];
+	}],
+	[ParserSPL.While, (o: ParserSPL.While, g, ctx) => {
+		let labelEnd = getUniqueLabel('end_while');
+		let labelBegin = getUniqueLabel('begin_while');
+		let condition = g(o.cond);
+		condition[0] = SSM.label(labelBegin, condition[0]);
+		return [
+			...condition,
+			SSM.brf(labelEnd),
+			...g(o.block),
+			SSM.bra(labelBegin),
+			SSM.label(labelEnd, SSM.nop())
+		];
+	}],
+	[ParserSPL.If, (o: ParserSPL.If, g, ctx) => {
+		let labelElse = getUniqueLabel('endif');
+		let labelEnd = getUniqueLabel('endelse');
+		return [
+			...g(o.cond),
+			SSM.brf(labelElse),
+			...g(o.block),
+			SSM.bra(labelEnd),
+			SSM.label(labelElse, SSM.nop()),
+			...(o.else ? g(o.else.block) : []),
+			SSM.label(labelEnd, SSM.nop())
+		];
+	}],
+	// TODO: ParserSPL.Field
+	[ParserSPL.FunCall, (o: ParserSPL.FunCall, g, ctx) => {
+		// let inputsType = o.getArgs().map(g);
+		// let f = ctx.getValue(o.funName, o);
+		// if(!f)
+		// 	throw o.error("Cannot find function "+o.funName);
+		// let t = g(f);
+		// if(!(t instanceof FunctionType))
+		// 	throw o.error("Value "+o.funName+" is not a function");
+		// return callFunction(o, t, new FunctionType(inputsType, new UnknownType()));
+		let fundeclPR = ctx.getValue(o.name.content, o);
+		if(!fundeclPR)
+			throw o.error("Function does not exists (internal error)");
+		let objType = ctx.typeOf(fundeclPR);
+		if(!objType || !(objType[0] instanceof FunctionType))
+			throw o.error("ERRR not function type (internal error, client.ts, lookup)");
+		// let meta = ctx.typeOf(fundecl);
+		// if(!meta)
+		// 	throw o.error("Function not registred (internal error)");
+		// let [, nctx] = meta;
+		// // let label = (<any>fundecl)._attached_label;
+		// if(!label)
+		// 	throw "No label attached (internal error)";
+		let address = SSM_getVar(o, o.name.content, ctx, false);
+
+		let label = getUniqueLabel('after_fc_'+o.name.content);
+		return [
+				...flatten(o.inputs.map(o => g(o))),
+				...address,
+				SSM.ldrr('RR', 'PC'),
+				SSM.bra('fetchOutsideVars'),
+				// ...copyArgs,
+				SSM.sts(2),
+				SSM.link(0),
+				SSM.ldc(label),
+				SSM.lds(1),
+				SSM.str('PC'), 
+				// SSM.label(label, SSM.unlink()),
+				SSM.label(label, SSM.ldr('RR'))
+			];
+	}],
+	[ParserSPL.Ret, (o: ParserSPL.Ret, g, ctx) => {
+		if(!o.exp)
+			throw o.error("Returning void: not supported yet");
+
+		return [...g(o.exp),
+			SSM.str('RR'),
+			SSM.ldl(1),/*get previous PC*/
+			SSM.str('R5'),//store it in R5
+			SSM.unlink(),
+			SSM.ldr('SP'),
+			SSM.ldc(ctx.outsideVariables.size + ctx.numArgs),
+			SSM.sub(),
+			SSM.str('SP'),
+			SSM.ldr('R5'),
+			SSM.ret()];
+	}],
+	[ParserSPL.FunDecl, (o: ParserSPL.FunDecl, g, ctx) => {
+		/*
+			Here we want to get a struct in heap where we will get:
+				n fields for: Outside values references (to somewhere in heap then)
+				1 field  for: actual program address
+		*/
+		let parentScope = ctx.parent || <Context>{};
+
+		// let meta = ctx.typeOf(o);
+		// if(!meta) throw "INternal err";
+		// let [,fctx]=meta;
+		let label = (<any>o)._attached_label = getUniqueLabel('body_'+o.name.content);
+		let body = [...flatten([...o.varDecls, ...o.funDecls, ...o.Stmt].map(o => g(o)))];
+
+		body[0] = SSM.label(label, body[0]);
+		// let dbg0 = [...fctx.outsideVariables].map(o => o+' in pos '+(<any>ctx.getValue_raw)(o, null)[1]).join(' | ');
+		// let dbg1 = flatten([...fctx.outsideVariables].map(name => SSM_getVar(o, name, ctx))).map(o => o.join(' '));
+		let ousideVariable: string[][] = [];
+		let indexMe = -1;
+		if(ctx.parent)
+			ousideVariable = flatten([...ctx.outsideVariables].map((name, i) => {
+				if(name==o.name.content){
+					debugger;
+					indexMe = i;
+					return [SSM.ldc(0)];
+				}
+				return SSM_getVar(o, name, parentScope, false);
+			}));
+		else if(ctx.outsideVariables.size)
+			throw "Internal error";
+
+
+		let afterLabel = getUniqueLabel('after_'+o.name.content);
+		return [
+			...ousideVariable,
+			SSM.ldc(label),
+			SSM.ldc(ctx.outsideVariables.size + 1),
+			SSM.stmh(ctx.outsideVariables.size + 2 /*nb + PC*/),
+			...(indexMe==-1 ? [] : [
+					SSM.lds(0),
+					SSM.lds(0),
+					SSM.annote('HP', 0, 0, 'red', '"Recursive pointer"'),
+					SSM.sta(-(ctx.outsideVariables.size+2-indexMe-1))
+				]),
+			SSM.annote('SP', 0, 0, 'green', '"funDecl '+o.name.content+'"'),
+			SSM.bra(afterLabel),
+			...body,
+			SSM.label(afterLabel, SSM.nop())
+		];
+	}]
+	// [ParserSPL.ListCst, (o: ParserSPL.ExpNOp2, g, ctx) => g(o.exp)],
+]);
+let ResolveSSM = (s: Parser.ParserRule, baseContext: Context) => {
+	let fetchFunArgs = `
+		bra fetchOutsideVars_after
+		fetchOutsideVars:	ldc 0
+							ldc 0
+							lds -2 ; addr
+							lds  0 ; addr
+							lda	 0 ; count
+
+							ldr SP
+							ldc 5
+							sub
+							str SP
+
+							finVal: lds 4 ; addr
+									lds 4 ; count
+									brf afterVal
+									lds 1
+									sub
+									lda 0
+									annote SP 0 0 red "From F-Struct"
+
+									lds 1 ; move to count
+									ldc 1
+									sub
+									sts 4
+								
+									ldc 0
+									ldc 0
+									lds 1
+									sts 1
+									sts 0
+									sts 0
+									bra finVal
+
+							afterVal:	sts 0
+										ldr RR
+										ldc 2
+										add
+										str PC
+		fetchOutsideVars_after: nop
+		`.split('\n').filter(o => o.trim()).map(o => o.split(';')[0].trim().split(/[\t ]+/g)
+				.map(o => o.trim()).filter(o => o));
+
+	let getCtxRec = (s: Parser.ParserRule): Context => {
+		let r = s instanceof ParserSPL.SPL ? Tuple(null, baseContext) : baseContext.typeOf(s);
+		let x = r ? r[1] : getCtxRec(s.parent);
+		if(!x) throw "Err";
+		return x;
+	}
+	let g = (s: Parser.ParserRule): string[][] => (GetSSM.get(s.static) || ((_:any) => [['? for '+s.static.name]]))(s, g, getCtxRec(s));
+	return [...fetchFunArgs, ...g(s)];
+};
+
+
+let TSPR = new TypeSetParserRule(
+	[ParserSPL.ExpPar, (o: ParserSPL.ExpPar, g, ctx) => [g(o.exp),, []]],
+	[ParserSPL.ListCst, (o: ParserSPL.ListCst, g, ctx) => [new ListType(o.content ? g(o.content) : new UnknownType()),, []]],
+	[ParserSPL.ExpTuple, (o: ParserSPL.ExpTuple, g, ctx) => [new TupleType(g(o.left), g(o.right)),, []]],
+	[ParserSPL.Exp, (o: ParserSPL.Exp, g, ctx) => [g(o.content),, []]],
+	[ParserSPL.ExpNOp2, (o: ParserSPL.ExpNOp2, g, ctx) => [g(o.content),, []]],
+	[ParserSPL.ExpVar, (o: ParserSPL.ExpVar, g, ctx) => {
+		let v = ctx.getValue(o.ident.content, o);
+		if(!v)
+			throw o.error('Cannot find such identifier in current scope');
+		return [g(v),, []];
+	}],
+	[ParserSPL.ExpOp2, (o: ParserSPL.ExpOp2, g, ctx) => 
+		callFunction(o,
+			getStdlib('op2_'+o.operator.content),
+			new FunctionType([g(o.left),g(o.right)], new UnknownType())
+		)
+	],
+	[ParserSPL.ExpOp1, (o: ParserSPL.ExpOp1, g, ctx) => 
+		callFunction(o,
+			getStdlib('op_'+o.operator.content),
+			new FunctionType([g(o.exp)], new UnknownType())
+		)
+	],
+	// [ParserSPL.VarDecl, (o: ParserSPL.VarDecl, g, ctx) => [...g(o.exp)]],
+	//LexSPL.BasicType | TupleType | ListType | LexSPL.Id
+	[ParserSPL.Type, (o: ParserSPL.Type, g, ctx) => [
+			o.type instanceof LexSPL.BasicType ? (
+					o.type.content=='Bool' 	? new BooleanType() : new IntegerType()) :
+			o.type instanceof LexSPL.Id ? new VariableType([], o.type.content) : g(o.type) 
+		,, []]],
+	[ParserSPL.TupleType, (o: ParserSPL.TupleType, g, ctx) => [new TupleType(g(o.left), g(o.right)),, []]],
+	[ParserSPL.ListType, (o: ParserSPL.ListType, g, ctx) => [new ListType(g(o.type)),, []]],
+	[ParserSPL.VarType, (o: ParserSPL.VarType, g, ctx) => {
+		return [new VariableType(o.inner instanceof LexSPL.Any ? [] : o.inner.couldBe.map(g) as CombinedType[], o.name.content),, []];
+	}],
+	[ParserSPL.FunDeclT, (o: ParserSPL.FunDeclT, g, ctx) => [g(o.type),, []]],
+	[ParserSPL.FunType, (o: ParserSPL.FunType, g, ctx) => {
+		if(o.output.type instanceof LexSPL.Void)
+			throw "Void return not supported yet";
+		return [new FunctionType(o.inputs.map(g), g(o.output.type)),, []];
+	}],
+	[ParserSPL.LambdaType, (o: ParserSPL.LambdaType, g, ctx) => {
+		return [g(o.fun),, []];
+	}],
+	[ParserSPL.Assign, (o: ParserSPL.Assign, g, ctx) => {
+		let name = o.ident.content;
+		let v = ctx.getValue(name, o); /* important: getValue put outside variable if needed */
+		if(!v)
+			throw o.ident.error('Cannot find such identifier in current scope');
+		let t = ctx.typeOf(v);
+		if(!t)
+			throw o.ident.error('No type information found (internal error)');
+		return [t[0], ctx, []];
+	}],
+	[ParserSPL.VarDecl, (o: ParserSPL.VarDecl, g, ctx) => {
+		let name = o.name.content;
+		ctx.declareValue(name, o, TypeStorage.Normal);
+		return [g(o.exp)/* compute inside type */,, []];
+	}],
+	[ParserSPL.If, (o: ParserSPL.If, g, ctx) => {
+		let typeCondition = ctx.typeOf(o.cond);
+		if(!typeCondition)
+			throw o.cond.error("not a boolean");
+
+		let result = typeCondition[0].internalUnifyWith(new BooleanType());
+		if(result instanceof ErrorUnifying)
+			throw o.cond.error("not a boolean");
+
+		return [,,[]];
+	}],
+	[ParserSPL.While, (o: ParserSPL.While, g, ctx) => {
+		let typeCondition = ctx.typeOf(o.cond);
+		if(!typeCondition)
+			throw o.cond.error("not a boolean");
+
+		let result = typeCondition[0].internalUnifyWith(new BooleanType());
+		if(result instanceof ErrorUnifying)
+			throw o.cond.error("not a boolean");
+
+		return [,,[]];
+	}],
+	[ParserSPL.FunCall, (o: ParserSPL.FunCall, g, ctx) => {
+		let inputsType = o.getArgs().map(g);
+		let f = ctx.getValue(o.funName, o);
+		if(!f)
+			throw o.error("Cannot find function "+o.funName);
+		let t = g(f);
+		if(!(t instanceof FunctionType))
+			throw o.error("Value "+o.funName+" is not a function");
+		return callFunction(o, t, new FunctionType(inputsType, new UnknownType()));
+	}],
+	[ParserSPL.FunDecl, (o: ParserSPL.FunDecl, g, ctx) => {
+			ctx.declareValue(o.name.content, o); // TODO
+			let t = o.type ? g(o.type) as FunctionType
+					: new FunctionType(o.args.map(o => new UnknownType('?'+o.content)), new UnknownType(o.name.content+'_output'));
+			let unknownsNames = new Set((<UnknownType[]>t.search(x => x instanceof UnknownType)).map(o => o.name));
+			let nctx = ctx.child(o, ...unknownsNames.values());
+
+			ctx.cacheTypeParserRules.set(o, [t, nctx]);
+
+			o.argsParserRules.map((j,i) =>
+					nctx.declareValue(j.name.content, j, TypeStorage.Normal, i - o.args.length, t.ctInputs.inside[i])
+				);
+			
+			let args = o.args.map(o => o.content);
+
+			if(t.ctInputs.inside.length > args.length)
+				throw o.name.error('Got '+t.ctInputs.inside.length+' annotations but only '+args.length+' arguments');
+			if(t.ctInputs.inside.length < args.length)
+				throw o.name.error('Got '+args.length+' arguments but only '+t.ctInputs.inside.length+' annotations');
+
+			let dupError = (t:Lexer.Token[]) => {
+				let dup = t.map(o => o.content).duplicates();
+				if(!dup.length)
+					return;
+				let [i,n] = dup[0];
+				let others = dup.slice(1).map(([,n]) => n).join(', ');
+				throw t[i].error(others ? 'Duplicate indentifiers '+n+', '+others : 'Duplicate indentifier '+n);
+			}
+			o.varDecls.forEach(nctx.typeOf, nctx); // eval type and store type informations in context
+			dupError([...[...o.funDecls, ...o.varDecls].map(o => o.name), ...o.args]); // make sure no var/fun have same name
+
+			let dtree = new Map(o.funDecls.map(o => Tuple(o.name.content, o.getReturnPaths())));
+			let indexNoReturns = [...dtree.values()].findIndex(t => !t);
+			if(indexNoReturns!=-1)
+				throw o.funDecls[indexNoReturns].name.error('No return statements found');
+			let dtreeNE = <{maybe: ParserSPL.Ret[], concl: ParserSPL.Ret[]}[]>[...dtree.values()];
+			let indexNoSureReturn = dtreeNE.findIndex(t => !t.concl.length);
+			if(indexNoSureReturn!=-1)
+				throw o.funDecls[indexNoSureReturn].name.error('Not every path leads to a return');
+
+			let findVarsUsed = (o: Parser.ParserRule) : (ParserSPL.ExpVar | ParserSPL.FunCall)[] => 
+				flatten(o.getValuesDirectFlat().map(o => [...(o instanceof ParserSPL.FunCall || o instanceof ParserSPL.ExpVar) ? [o] : [], ...findVarsUsed(o)]));
+
+			let display = (o: SimpleUniqueTree<ParserSPL.FunDecl>, level: number = 0) => {
+				let tabs = () => new Array(level).fill('\t').join('');
+				[...o.data.entries()].forEach(([a,b]) => {
+					console.log(tabs()+a.name.content);
+					display(b, level+1);
+				});
+			}
+
+			let listFunDecls = o.funDecls.filter(o => o.type === undefined);
+			let tree = new SimpleUniqueTree<ParserSPL.FunDecl>();
+
+			let findByName = (n: string) => listFunDecls.find(o => o.name.content==n);
+			let anyCycle = (o: ParserSPL.FunDecl, parent: SimpleUniqueTree<ParserSPL.FunDecl>) => {
+				if(tree.find(o))
+					return;
+				let nParent = parent.addChild(o); // link sub tree if o found (see tools.ts)
+				if(parent.getParents().includes(o))
+					throw o.getFirstToken().error('Cycle detected' + (o.name.content ? ' ('+
+								nParent.getParents().getPairwise().map(([b,a]) => a.name.content+' needs '+b.name.content).join(', ')+')' : '')
+							+ ' : cannot resolve type, please add annotations.');
+				filterUndef(findVarsUsed(o).map(x => x instanceof ParserSPL.FunCall ? findByName(x.name.content) : undefined))
+										   .forEach(x => anyCycle(x, nParent));
+			};
+			listFunDecls.forEach(o => anyCycle(o, tree));
+
+			let funDecls = tree.getOrderedItems().reverse();
+			funDecls.forEach(d => nctx.typeOf(d));
+
+			o.Stmt.forEach(nctx.typeOf, nctx); // eval type of statements
+
+			let returns = o.getReturnPaths();
+			if(!returns)
+				throw "No returns detected";
+			let retTypes = filterUndef([...returns.concl, ...returns.maybe].map(o => o.exp ? nctx.typeOf(o.exp) : undefined)).map(([a,b]) => a);
+
+			t = <FunctionType>t.replace(t.output, retTypes[0]);
+
+			return [t, nctx, []];
+		}
+	]
+);
+// let l = new LexSPL.SPL_Lexer(`
+// 	var v = 1;
+// 	f(nn) :: Int -> Int {
+// 		v = v + 1;
+// 		return nn;
+// 	}
+// 	var a = f(254);
+// `);
+let l = new LexSPL.SPL_Lexer(`
+	mul(n, m) {
+		return n * m;
+	}
+	f(n, how) :: Int (Int Int -> Int) -> Int {
+		if (n < 1) {
+			return 1;
+		}
+		return how(n, f(n-1, how));
+	}
+	var a = f(5, mul);
+`);
+// let l = new LexSPL.SPL_Lexer(`
+// 	f(nn) :: (var n :: Int Bool) -> ( -> Int) {
+// 		a(s) { return b(2); }
+// 		d(s) { return 0; }
+// 		b(s) { return c(1); }
+// 		c(s) { return 3 + s; }
+// 		hey(){ return 12; } 
+// 		a = 2;
+// 		return hey;
+// 	}
+// `);
+
+// console.log(ParserSPL.SPL_Parser.prettyPrintGrammarRule());
+
+// let p = new ParserSPL.SPL_Parser(l.tokenDeck);
+// if(p.result){
+// 	let o = <ParserSPL.SPL>p.result;
+// 	let ctx = new Context(o, TSPR);
+// 	let xx = ctx.typeOf(o);
+// 	console.log({p,o,ctx,xx});
+// 	console.log(ctx.cacheTypeParserRules);
+// 	for(let [key, value] of ctx.cacheTypeParserRules.entries()){
+// 		console.log(key.print());
+// 		console.log(value);
+// 		console.log('');
+// 		console.log('');
+// 	}
+// 	SSM.printConsole(ResolveSSM(o, ctx));
+// 	console.log('--------');
+
+// 	console.log(SSM.toString(ResolveSSM(o, ctx)));
+// 	// console.log(prog);
+// }
+
+// let f = (s:any) => new ParserSPL.SPL_Parser((new LexSPL.SPL_Lexer(s)).tokenDeck);
+// let g = (n:any,s:any) => (new Array(n)).fill('(').join('') + s.toString() + (new Array(n)).fill(')').join('');
+
+
+// let F = (s:any) => (<any>f(s)).result.decls.filter((o:any) => o && o.content instanceof ParserSPL.FunDecl)[0].content.getType(new T.Context());
+
+
+// (<any>global).f = f;
+// (<any>global).F = F;
+// (<any>global).g = g;
+
+
+// function TEST(){
+// 	// f(((<any>global).document).getElementById('inp').value).computeTypes();
+// 	let R = f(((<any>global).document).getElementById('inp').value);
+// 	console.log(R.result);
+// 	R.computeTypes();
+// 	if(R.result)
+// 		console.log('\n\n'+R.result.SSM().join('\n')+'\n\n');
+// }
+// (<any>global).TEST = TEST;
+
+function keyHandler(e: any) {
+	var TABKEY = 9;
+	if (e.keyCode == 9) {
+	e.preventDefault();
+	var start = $(this).get(0).selectionStart;
+	var end = $(this).get(0).selectionEnd;
+
+	// set textarea value to: text before caret + tab + text after caret
+	$(this).val($(this).val().substring(0, start)
+				+ "\t"
+				+ $(this).val().substring(end));
+
+	// put caret at right position again
+	$(this).get(0).selectionStart =
+	$(this).get(0).selectionEnd = start + 1;
+  }
+}
+(<any>global).document.getElementById('inp').onkeydown = keyHandler;
+// (<any>global).TEST = TEST;
+
+let document = (<any>global).document;
+
+function createCookie(name: string,value:string,days=100) {
+	var expires = "";
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days*24*60*60*1000));
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookie(name: string) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+let localStorage = (<any>global).localStorage;
+
+document.getElementById('inp').value = localStorage.getItem('prog') || 'hey(a){}';
+document.getElementById('inp').onkeyup = () => localStorage.setItem('prog', document.getElementById('inp').value);
+
+
+
+// F(`
+// 	hey(a){
+// 		a = 3;
+// 		if(a){
+// 			if(a){
+// 				return 23;
+// 			}else{
+// 				if(a){
+// 					return 099;
+// 				}else{
+// 					if(a){
+// 						return 199;
+// 					}else{
+// 						return 299;
+// 					}
+// 				}
+// 			}
+// 		}else{
+// 			if(a){
+// 				return 1;
+// 			}else{
+// 				if(a){
+// 					return 0;
+// 				}else{
+// 					if(a){
+// 						return 1;
+// 					}else{
+// 						return 2;
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// `);
+
+// let b = root.add(2);
+// let c = root.add(3);
+// let d = root.add(4);
+// a.add(2, root);
+// a.add('hey');
+
+// (<any>root).get(1).get(1).get(1).add(145); representNum(root);
+// (<any>root).get(1).get(1).get(1).add(145, root); representNum(root);
+
+// representNum(root);
+
+// console.log('ROOT=',root);
+

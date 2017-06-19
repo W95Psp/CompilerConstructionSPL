@@ -185,7 +185,9 @@ export class ParserRule {
 		if(steps.matchingItem) return {deck: steps.matchingItem.r.deck.preserveError(input_tokens.noMatchWith(this))}
 		result = result || new this();
 		steps.listNotMatching.forEach(({s,r}) => s instanceof ParserRuleComplexStep && (typeof r.result=='boolean' || (<ParserRule>result).set(s.name, r.result)));
-		console.log(result);
+		// console.log('--------------------------');
+		// console.log(result.print());
+		// console.log(result);
 		return parser.setCache(this, bpos, {deck: input_tokens.clone(), result});
 	}
 
@@ -251,7 +253,7 @@ export abstract class ParserRuleStep {
 	abstract generateRand(depth: number) : undefined | ParserRule | Token | (ParserRule | Token)[];
 	abstract getPossibles(): tokenOrRule[];
 	private _classes?: mapToken;
-	private get classes() { this._classes || this.optimize(); return <mapToken>this._classes; }
+	get classes() { this._classes || this.optimize(); return <mapToken>this._classes; }
 	optimize() {
 		let c = this._classes = <mapToken>new Map();
 		let add = (t: typeof Token, o: true | typeof ParserRule) => 

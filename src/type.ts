@@ -2,77 +2,7 @@ import {Let, Tuple, Tuple3, CatTuple, flatten, filterUndef} from './tools';
 import {ParserRule} from './parser';
 import {Token} from './lexer';
 import {Integer, Bool} from './spl.lexer';
-// import * as SPLParser from './spl.parser';
-// import * as ReflectMetadata from 'reflect-metadata';
-
-// export class Context {
-// 	protected idents: Map<string, Type> = new Map();
-// 	parent?: Context;
-// 	functionSealed = false;
-// 	protected numberArgs = 0;
-// 	protected parentPositionsGetter?: Map<string, [number, number]>;
-// 	sealFunctions() {
-// 		this.functionSealed = true;
-// 	}
-// 	get(ident: string) : Type | undefined {
-// 		return this.idents.get(ident) || (this.parent ? this.parent.get(ident) : undefined);
-// 	}
-// 	hasLocal(ident: string) {
-// 		return this.idents.has(ident);
-// 	}
-// 	getTypes(){
-// 		return [...this.idents.values()].map(o => o);
-// 	}
-// 	getPositionsGetter(){
-// 		let vars = [...this.idents.entries()].filter(([name, o]) => !(o instanceof FunctionType));
-// 		let map = new Map(<[string, [number, number]][]>vars.map(([name, decl], i) => {
-// 			let position = vars.length - i - 1 - this.numberArgs;
-// 			if(position >= 0)
-// 				position += 1; // skip previous MP and ref to parent context
-// 			else{
-// 				position = i - vars.length - 1; // skip return address
-// 			}
-// 			return [name, [position, 0]];
-// 		}));
-// 		if(this.parentPositionsGetter)
-// 			for(let [key, [n, level]] of this.parentPositionsGetter)
-// 				map.has(key) || map.set(key, [n, level + 1]);
-// 		return map;
-// 	}
-// 	getLocalOrder(ident: string) : number {
-// 		let vars = [...this.idents.entries()].filter(([name, o]) => !(o instanceof FunctionType));
-// 		let i = vars.findIndex(([name, o]) => name == ident);
-// 		if(i==-1)
-// 			throw "XXX";
-// 		return vars.length - i - 2;
-// 		// return this.idents.get(ident) || (this.parent ? this.parent.get(ident) : undefined);
-// 	}
-// 	set(ident: string, type: Type, isArg = false) {
-// 		(this.getContext(ident) || this).idents.set(ident, type);
-// 		this.numberArgs += +isArg;
-// 	}
-// 	private getContext(ident: string) : Context | undefined {
-// 		return this.idents.has(ident) ? this : (this.parent ? this.parent.getContext(ident) : undefined);
-// 	}
-// 	constructor(parent?: Context){
-// 		this.parent = parent;
-// 		if(this.parent)
-// 			this.parentPositionsGetter = this.parent.getPositionsGetter();
-// 	}
-// 	child(){
-// 		return new Context(this);
-// 	}
-
-// 	HP: number;
-// 	SP: number;
-// }
-
-// interface TypeChecker {
-// 	(c: ParserRule): boolean
-// }
-// let f:TypeChecker = (c: FunCall) => true;
-
-// Reflect.getMetadata("design:type", f);
+import {FunDecl} from './spl.parser';
 
 
 export type Replacement = [UnknownType|VariableType, Type];
@@ -82,7 +12,6 @@ export let applyReplacements = (o: Type, rl: Replacement[]) : Type => {
 	return res;
 };
 
-// last boolean means ""
 type TypeRule = (o: ParserRule, getType: (_:ParserRule|Token) => Type, ctx: Context) => [Type|undefined, Context|undefined, Replacement[]];
 let emptyTypeRule:TypeRule = (a,b,ctx) => [,, []];
 
@@ -120,9 +49,11 @@ export class TypeSetParserRule {
 export enum TypeStorage{ Normal, Reference }
 
 export class Context{
-	protected identifiers: Map<string, [ParserRule, number, TypeStorage]> = new Map();
-	protected variableType: Map<string, Type> = new Map();
+	identifiers: Map<string, [ParserRule, number, TypeStorage]> = new Map();
+	variableType: Map<string, Type> = new Map();
 	protected typeSPR: TypeSetParserRule;
+
+	standartLibrary: Map<string, [Type, (..._: Type[]) => string[][]]> = new Map();
 
 	outsideVariables: Set<string> = new Set();
 	cacheTypeParserRules: Map<ParserRule, [Type, Context] | undefined>;
@@ -132,8 +63,9 @@ export class Context{
 
 	attachedParserRule: ParserRule;
 
-	constructor(attachedParserRule: ParserRule, typeSPR: TypeSetParserRule, parent?: Context, cacheTypeParserRules?: Map<ParserRule, [Type, Context] | undefined>){
+	constructor(attachedParserRule: ParserRule, typeSPR: TypeSetParserRule, std:Map<string, [Type, (..._: Type[]) => string[][]]>, parent?: Context, cacheTypeParserRules?: Map<ParserRule, [Type, Context] | undefined>){
 		this.attachedParserRule = attachedParserRule;
+		this.standartLibrary = std;
 		this.typeSPR = typeSPR;
 		this.parent = parent;
 		this.cacheTypeParserRules = cacheTypeParserRules || new Map();
@@ -143,14 +75,26 @@ export class Context{
 								.filter(([,i,ts]) => i>=0 && ts==typeStorage)
 								.reduce((n,[,i,]) => Math.max(i), -1)+1;
 	}
+	maxPositionOfAll () {
+		return [...this.identifiers.values()]
+								.filter(([,i,ts]) => i>=0)
+								.reduce((n,[,i,]) => Math.max(i), -1)+1;
+	}
 	getValue(id: string, from: ParserRule){
 		let r = this.getValue_raw(id, from);
 		return r ? r[0] : undefined;
 	}
 	getValue_raw(id: string, from: ParserRule){
 		let ctx = this.getStrictContextOf(true, id);
-		if(!ctx)
+		if(!ctx){
+			if(this.standartLibrary.has(id)){
+				let fake = new ParserRule();
+				(<any>fake)._stdlib = true;
+				(<any>fake)._stdlibName = id;
+				return Tuple3(fake, -Infinity, TypeStorage.Normal);
+			}
 			return undefined;
+		}
 		let r = ctx.identifiers.get(id);
 		if(ctx != this){
 			this.outsideVariables.add(id);
@@ -165,6 +109,8 @@ export class Context{
 		if(!r || !ctx)
 			throw "Cannot fetch variable "+id;
 		let [rule, num, storage] = r;
+		if(num==Infinity)
+			return Infinity;
 		if(ctx==this){ // either local either param (=local, kind of)
 			// we make some room for outside variables !
 			return num>=0 ? num + 2 /* MP and PC */ : num - this.outsideVariables.size /*  */;
@@ -184,7 +130,8 @@ export class Context{
 		this.identifiers.set(id, [v, position, typeStorage]);
 	}
 	declareValue(id: string, v: ParserRule, typeStorage: TypeStorage = TypeStorage.Normal, order?: number, type?: Type){
-		let cOrder = order!==undefined ? order : this.maxPositionOf(typeStorage);
+		let cOrder = order!==undefined ? order : this.maxPositionOfAll();
+
 		if(cOrder<0 && !this.identifiers.has(id))
 			this.numArgs++;
 		this.identifiers.set(id, [v, cOrder, typeStorage]);
@@ -196,9 +143,15 @@ export class Context{
 	declareVType(id: string, t:Type){			this.variableType.set(id,t);					}
 
 	typeOf(o: ParserRule) : [Type, Context] | undefined{
+		if((<any>o)._stdlib){
+			let x = this.standartLibrary.get((<any>o)._stdlibName);
+			if(!x)
+				throw "Internal error: non typed standart lib";
+			return Tuple(x[0], this); // create fake tuple
+		}
 		if(this.cacheTypeParserRules.has(o))
 			return this.cacheTypeParserRules.get(o);
-		console.log(o.print());
+		
 		let r = this.typeSPR.typeOf(o, this);
 		this.cacheTypeParserRules.set(o, r);
 		return r;
@@ -210,9 +163,12 @@ export class Context{
 	}
 	applyReplacement([fromType, toType]: Replacement){
 		let ctx = this.getStrictContextOf(false, fromType.name);
+		// if(toType instanceof IntegerType)
+		// 	debugger;
 		// if(!ctx)
 		// 	throw "Cannot find variable type named \""+fromType.name+"\"";
 		if(!ctx){
+			// return;
 			let gParent = (o:Context) : Context => o.parent ? gParent(o.parent) : o;
 			ctx = gParent(this);
 		}
@@ -222,11 +178,18 @@ export class Context{
 					let r = this.cacheTypeParserRules.get(o);
 					if(r){
 						let [type, context] = r;
+						// if((<any>o).name && (<any>o).name.content=='foldl')
+						// 	return;
 						if(o instanceof Context && context!=o)
 							applyToSub(context);
 						this.cacheTypeParserRules.set(o, Tuple(applyReplacements(type, [[fromType, toType]]), context));
 					}
 				}
+				// if(o instanceof Context){
+				// 	if((fromType instanceof VariableType || fromType instanceof UnknownType) && [...o.variableType.keys()].includes(fromType.name)){
+				// 		return;
+				// 	}
+				// }
 				(o instanceof Context ? o.attachedParserRule : o)
 					.getValuesDirectFlat().forEach(v => applyToSub(v));
 			}
@@ -242,11 +205,11 @@ export class Context{
 	getStrictContextOf(isValue: boolean, id: string) : Context | undefined{
 		if((isValue ? this.identifiers : this.variableType).has(id))
 			return this;
-		return this.parent ? this.parent.getContextOf(isValue, id) : undefined;
+		return this.parent ? this.parent.getStrictContextOf(isValue, id) : undefined;
 	}
 	child(attachedParserRule: ParserRule, ...localVTypes: string[]){
 		localVTypes.forEach(tname => this.declareVType(tname, new UnknownType(tname)));
-		return new Context(attachedParserRule, this.typeSPR, this, this.cacheTypeParserRules);
+		return new Context(attachedParserRule, this.typeSPR, this.standartLibrary, this, this.cacheTypeParserRules);
 	}
 }
 
@@ -275,7 +238,14 @@ export class ErrorUnifying{
 
 export abstract class Type {
 	//instanciateVT is used on function calls
-	abstract internalUnifyWith(type: Type, instanciateVT?: Boolean) : ErrorUnifying | Replacement[]; //If 'this' is more specialized than 'type', undefined
+	internalUnifyWith(type: Type, instanciateVT?: Boolean) : ErrorUnifying | Replacement[]{
+		if(!((<any>this) instanceof UnknownType) && type instanceof UnknownType)
+			return type.internalUnifyWith(this, instanciateVT);
+		if(instanciateVT && !(((<any>this) instanceof VariableType || (<any>this) instanceof UnknownType)) && type instanceof VariableType)
+			return type.internalUnifyWith(this, instanciateVT);
+		return this.internalUnifyWith_sub(type, instanciateVT);
+	}; //If 'this' is more specialized than 'type', undefined
+	abstract internalUnifyWith_sub(type: Type, instanciateVT?: Boolean) : ErrorUnifying | Replacement[]; //If 'this' is more specialized than 'type', undefined
 																		//else return replacements to make this like type
 	unifyWith(type: Type) {
 		let rp = this.internalUnifyWith(type);
@@ -296,6 +266,9 @@ let flattenFilterUndef = <T>(l: ((T[])|undefined)[]) => flatten(filterUndef(l));
 
 export abstract class CombinedType extends Type {
 	readonly inside: Type[] = [];
+	toString() {
+		return this.constructor.name + this.inside ? ('{'+this.inside.map(o => o.toString()).join(' ; ')+'}') : '';
+	}
 	constructor(...inside: Type[]){
 		super();
 		this.inside.push(...inside);
@@ -303,9 +276,7 @@ export abstract class CombinedType extends Type {
 	search(f: (_: Type) => boolean) : Type[]{
 		return [...f(this) ? [this] : [], ...flatten(this.inside.map(o => o.search(f)))];
 	}
-	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
-		if(type instanceof UnknownType)
-			return type.internalUnifyWith(this);
+	internalUnifyWith_sub(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
 		if(!(type instanceof CombinedType && this instanceof type.constructor) || this.inside.length != type.inside.length)
 			return new ErrorUnifying(this, type, 'Not same kind of CombinedType (cannot unify '+this.cons_name+' and '+type.cons_name+')');
 
@@ -352,11 +323,17 @@ export abstract class CombinedType extends Type {
 	}
 }
 export class TupleType extends CombinedType {
+	toString() {
+		return '('+this.inside.map(o => o.toString()).join(', ')+')';
+	}
 	constructor(left: Type, right: Type){
 		super(left, right);
 	}
 }
 export class ListType extends CombinedType {
+	toString() {
+		return '['+this.inside.map(o => o.toString()).join('')+']';
+	}
 	constructor(inner: Type){
 		super(inner);
 	}
@@ -364,6 +341,9 @@ export class ListType extends CombinedType {
 class FunctionType_UnderlyingType extends CombinedType {}
 
 export class FunctionType extends Type {
+	toString() {
+		return this.inputs.map(o => o.toString()).join(' ')+' -> '+this.output.toString();
+	}
 	readonly inputs: Type[];
 	readonly output: Type;
 	readonly ctFull: CombinedType;
@@ -379,7 +359,7 @@ export class FunctionType extends Type {
 		this.ctFull = new FunctionType_UnderlyingType(...this.inputs, this.output);
 		this.ctInputs = new FunctionType_UnderlyingType(...this.inputs);
 	}
-	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[]{
+	internalUnifyWith_sub(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[]{
 		this.outputErrorFlag = false;
 		if(type instanceof UnknownType)
 			return type.internalUnifyWith(this);
@@ -390,8 +370,8 @@ export class FunctionType extends Type {
 		if(rps instanceof ErrorUnifying)
 			return rps.comesFrom(this, type);
 		let out = applyReplacements(type.output, rps);
-		if(out.equal(type.output) && type.output.lexOrder()[0] != Infinity)
-			return new ErrorUnifying(this, type, 'Wasn\'t able to figure out the type');
+		// if(out.equal(type.output) && type.output.lexOrder()[0] != Infinity)
+		// 	return new ErrorUnifying(this, type, 'Wasn\'t able to figure out the type');
 		let unifiedOne = new FunctionType_UnderlyingType(...this.inputs, out);
 		let rpsNew = this.ctFull.internalUnifyWith(unifiedOne, instanciateVT);
 		if(rpsNew instanceof ErrorUnifying){
@@ -420,6 +400,9 @@ export class BooleanType extends CombinedType {
 }
 let idCounter = 0;
 export class UnknownType extends Type {
+	toString() {
+		return '?'+this.name;
+	}
 	search(f: (_: Type) => boolean) : Type[]{
 		return f(this) ? [this] : [];
 	}
@@ -435,13 +418,16 @@ export class UnknownType extends Type {
 	replace(needle: Type, replace: Type) : Type {
 		return this.equal(needle) ? replace : this;
 	}
-	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+	internalUnifyWith_sub(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
 		if(type.equal(this))
 			return [];
 		return [[this, type]];
 	}
 }
 export class UnknownTypeLimited extends UnknownType {
+	toString() {
+		return '?'+this.name+':{'+this.possibles.map(o => o.toString()).join(' ; ')+'}';
+	}
 	lexOrder(){ return Tuple(1, this.possibles.length - 0.1); }
 	readonly name: string;
 	readonly possibles: Type[];
@@ -453,7 +439,7 @@ export class UnknownTypeLimited extends UnknownType {
 		super(name);
 		this.possibles = possibles;
 	}
-	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+	internalUnifyWith_sub(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
 		if(type instanceof UnknownType)
 			return [[this, type]];
 		if(type instanceof UnknownTypeLimited){ // we want to take the types in common and 
@@ -478,7 +464,7 @@ export class UnknownTypeLimited extends UnknownType {
 			return [[this, type]];
 		}
 		if(type instanceof CombinedType){
-			let replacers = this.possibles.map(possible => ({possible, replacers: <Replacement[]>possible.internalUnifyWith(type)})).filter(o => o.replacers).pop();
+			let replacers = this.possibles.map(possible => ({possible, replacers: <Replacement[]>possible.internalUnifyWith_sub(type)})).filter(o => o.replacers).pop();
 			if(!replacers)
 				return new ErrorUnifying(this, type);
 			return [[this, replacers.possible], ...replacers.replacers]
@@ -488,6 +474,9 @@ export class UnknownTypeLimited extends UnknownType {
 }
 
 export class VariableType extends Type {
+	toString() {
+		return 'VT:'+this.name+':{'+this.possibles.map(o => o.toString()).join(' ; ')+'}';
+	}
 	lexOrder(){ return Tuple(1, this.possibles.length); }
 	readonly possibles: CombinedType[];
 	readonly name: string;
@@ -496,7 +485,10 @@ export class VariableType extends Type {
 	}
 	constructor(possibles: CombinedType[], name?: string){
 		super();
-		this.name = name || 'v'+(idCounter++);
+		if(name)
+			this.name = name//+(idCounter++);
+		else
+			this.name = 'v'+(idCounter++);
 		this.possibles = possibles;
 	}
 	equal(type: Type) : boolean {
@@ -505,13 +497,15 @@ export class VariableType extends Type {
 	replace(needle: Type, replace: Type) : Type {
 		return this.equal(needle) ? replace : this;
 	}
-	internalUnifyWith(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
+	internalUnifyWith_sub(type: Type, instanciateVT=false) : ErrorUnifying | Replacement[] {
 		if(instanciateVT){
-			if(this.possibles.some.length){
-				let o = this.possibles.find(x => x.internalUnifyWith(type) instanceof Array);
+			if(this.possibles.length){
+				let o = this.possibles.find(x => x.internalUnifyWith_sub(type) instanceof Array);
 				if(!o)
 					return new ErrorUnifying(this, type);
 			}
+			if(type instanceof UnknownType)
+				return [];
 			return [[this, type]];
 		}
 		if(!(type instanceof VariableType) || type.possibles.length != this.possibles.length)
@@ -526,7 +520,7 @@ export class VariableType extends Type {
 			for(let i in list)
 				list[i] = Tuple(applyReplacements(list[i][0], replacers), list[i][1]);
 		}
-		// let result = this.possibles.map((o, i) => o.internalUnifyWith(type) || [undefined]).reduce((p, c) => p.concat(c), <(undefined | Replacement)[]>[]);
+		// let result = this.possibles.map((o, i) => o.internalUnifyWith_sub(type) || [undefined]).reduce((p, c) => p.concat(c), <(undefined | Replacement)[]>[]);
 		// if(result.some(o => !o))
 		// 	return undefined;
 		return allReplacers;

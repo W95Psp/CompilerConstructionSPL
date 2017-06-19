@@ -109,6 +109,10 @@ export class SimpleUniqueTree<T> {
 		let p = this.parents[0];
 		return p ? p.getRoot() : this;
 	}
+	addChildRaw(t: T, r: SimpleUniqueTree<T>){
+		this.data.set(t, r);
+		return r;
+	}
 	addChild(t: T){
 		let r = this.find(t) || new SimpleUniqueTree<T>();
 
@@ -125,5 +129,12 @@ export class SimpleUniqueTree<T> {
 	getOrderedItems() : T[] {
 		let r = [...this.data.entries()].map(([obj, tree]) => Tuple(obj, tree.getOrderedItems()));
 		return flatten(r.map(([o,l]) => [o, ...l]));
+	}
+	print(d=0) {
+		let disp = (...l:string[]) => console.log((new Array(d)).fill('  ').join('')+l.join('\t'));
+		[...this.data.entries()].map(([a,b]) => {
+			disp((<any>a).name.content);
+			b.print(d+1);
+		})
 	}
 }
