@@ -124,7 +124,10 @@ export let TSPR = new TypeSetParserRule(
 		let t = ctx.typeOf(v);
 		if(!t)
 			throw o.ident.error('No type information found (internal error)');
-		return [t[0], ctx, []];
+		let unify = t[0].internalUnifyWith(g(o.exp));
+		if(unify instanceof ErrorUnifying)
+			throw o.exp.error("Try to assign expression of type "+g(o.exp)+" to a variable of type "+t[0]);
+		return [t[0], ctx, unify];
 	}],
 	[ParserSPL.VarDecl, (o: ParserSPL.VarDecl, g, ctx) => {
 		let name = o.name.content;
@@ -157,6 +160,8 @@ export let TSPR = new TypeSetParserRule(
 	}],
 	[ParserSPL.FunCall, (o: ParserSPL.FunCall, g, ctx) => {
 		let inputsType = o.getArgs().map(g);
+		if(o.prettyPrintString=='foldl ( f , f ( z , list . hd ) , list . tl )')
+			debugger;
 		let f = ctx.getValue(o.funName, o);
 		let m;
 		if(!f && (m=ctx.standartLibrary.get(o.funName)))
@@ -195,7 +200,6 @@ export let TSPR = new TypeSetParserRule(
 					nctx.declareValue(j.name.content, j, TypeStorage.Normal, i - o.args.length, t.ctInputs.inside[i])
 				);
 
-			debugger;
 			
 			// ************************************ (Non nctx altering part /begin)
 				// get args
@@ -253,29 +257,53 @@ export let TSPR = new TypeSetParserRule(
 								let [la, lb] = [treeA.getOrderedItems().length, treeB.getOrderedItems().length];
 								return la==lb ? 0 : la>lb ? -1 : 1;
 							}));
+				
+
 				let map = new Map(listFunDecls.map((a) => {
 					let treeA = new SimpleUniqueTree<ParserSPL.FunDecl>();
 					anyCycle(a, treeA, treeA);
-					return Tuple(a, treeA.getOrderedItems());
+					let list = treeA.getOrderedItems();
+					
+					if((list.indexOf(a)>0 || treeA.rec) && !o.type){
+						throw a.error("Recursion detected. You need to add type annotations.");
+					}
+					return Tuple(a, list);
 				}));// b in map[a] means 'a' needs to be before 'b'
+
+				[...map.entries()].forEach(([a,l]) => console.log(a.name.content, l.map(l => l.name.content)))
+
+				// [...map].find([o] => true);
 
 				listFunDecls = listFunDecls.sort((a,b) => {
 					let [A, B] = [map.get(a),map.get(b)];
 					if(!A || !B) throw "NOPE";
+					if(A.includes(b) && B.includes(a) && (!a.type && !b.type))
+						throw a.error("Recursion detected. You need to add type annotations.");
 					return A.includes(b) ? 1 : B.includes(a) ? -1 : 0;
 				});
 			// ************************************ (Non nctx altering part /end)
 
-			debugger;
 			// ************ type and declare everything (fun decl, var decl, statements)
 				o.varDecls.forEach(nctx.typeOf, nctx);
+				let funDeclsInGoodOrder:ParserSPL.FunDecl[] = [];
+				let annotatedFunDecls = listFunDecls.filter(o => o.type);
+				annotatedFunDecls.forEach(d => {
+					funDeclsInGoodOrder.push(d);
+					d.type && nctx.declareValue(d.name.content, d, TypeStorage.Normal, undefined, g(d.type));
+				});
+				debugger;
 				listFunDecls.reverse().forEach(d => {
+					if(d.type)
+						return;
+					funDeclsInGoodOrder.push(d);
 					nctx.typeOf(d);
 					nctx.declareValue(d.name.content, d);
 				});
+				annotatedFunDecls.forEach(o => nctx.typeOf_raw(o, true));
+				// IMPORTANT: re order function for SSM generation
+				o.funDecls = funDeclsInGoodOrder;
 				o.Stmt.forEach(nctx.typeOf, nctx); // eval type of statements
 			// ************ end type and delcare...
-			debugger;
 
 			// *** just unify begin
 				let returns = o.getReturnPaths();
@@ -284,6 +312,8 @@ export let TSPR = new TypeSetParserRule(
 				let retTypes = filterUndef([...returns.concl, ...returns.maybe].map(o => o.exp ? 
 								Let(nctx.typeOf(o.exp), t => t ? Tuple(t, o) : undefined) : undefined))
 										.map(([[a,],b]) => Tuple(a,b));
+				if(!retTypes.length)
+					throw o.error("No any return statment found");
 				let errUnify = (a: Type, b: Type) => a.internalUnifyWith(b) instanceof ErrorUnifying;
 				let error = retTypes.getPairwise().find(([[a,], [b,]]) => errUnify(a, b) || errUnify(b, a));
 				if(error)
@@ -291,7 +321,10 @@ export let TSPR = new TypeSetParserRule(
 				t = <FunctionType>t.replace(t.output, retTypes.sort(([a,],[b,]) => ordLexOrder(a.lexOrder(), b.lexOrder())).reverse()[0][0]);
 				t = nctx.replacements.reduce((t, [a,b]) => <FunctionType>t.replace(a, b), t);
 			// *** just unify end
-			debugger;
+			// debugger;
+
+			if(t.output instanceof UnknownType)
+				throw retTypes.sort(([a,],[b,]) => ordLexOrder(a.lexOrder(), b.lexOrder())).reverse()[0][1].error("Error, could not figure out return type.");
 
 			return [t, nctx, []];
 		}

@@ -12,6 +12,7 @@ export let applyReplacements = (o: Type, rl: Replacement[]) : Type => {
 	return res;
 };
 
+
 type TypeRule = (o: ParserRule, getType: (_:ParserRule|Token) => Type, ctx: Context) => [Type|undefined, Context|undefined, Replacement[]];
 let emptyTypeRule:TypeRule = (a,b,ctx) => [,, []];
 
@@ -100,8 +101,10 @@ export class Context{
 		let r = ctx.identifiers.get(id);
 		if(ctx != this){
 			this.outsideVariables.add(id);
-			if(r && r[2]==TypeStorage.Normal)
+			if(id=='printList') debugger;
+			if(r && r[2]==TypeStorage.Normal){
 				ctx.identifiers.set(id, [r[0], r[1], TypeStorage.Reference]);
+			}
 		}
 		return r;
 	}
@@ -134,6 +137,13 @@ export class Context{
 	declareValue(id: string, v: ParserRule, typeStorage: TypeStorage = TypeStorage.Normal, order?: number, type?: Type){
 		let cOrder = order!==undefined ? order : this.maxPositionOfAll();
 
+		let bef:[ParserRule, number, TypeStorage]|undefined;
+		let xctx = this.getStrictContextOf(true, id);
+		if(xctx && (bef = xctx.identifiers.get(id))){
+			cOrder = bef[1];
+			typeStorage = bef[2];
+		}
+
 		if(cOrder<0 && !this.identifiers.has(id))
 			this.numArgs++;
 		this.identifiers.set(id, [v, cOrder, typeStorage]);
@@ -144,19 +154,22 @@ export class Context{
 	getVType(id: string){						return this.variableType.get(id);				}
 	declareVType(id: string, t:Type){			this.variableType.set(id,t);					}
 
-	typeOf(o: ParserRule) : [Type, Context] | undefined{
+	typeOf_raw(o: ParserRule, force=false) : [Type, Context] | undefined{
 		if((<any>o)._stdlib){
 			let x = this.standartLibrary.get((<any>o)._stdlibName);
 			if(!x)
 				throw "Internal error: non typed standart lib";
 			return Tuple(x[0], this); // create fake tuple
 		}
-		if(this.cacheTypeParserRules.has(o))
+		if(this.cacheTypeParserRules.has(o) && !force)
 			return this.cacheTypeParserRules.get(o);
 		
 		let r = this.typeSPR.typeOf(o, this);
 		this.cacheTypeParserRules.set(o, r);
 		return r;
+	}
+	typeOf(o: ParserRule) : [Type, Context] | undefined{
+		return this.typeOf_raw(o);
 	}
 
 	applyReplacements(rs: Replacement[]){
@@ -166,10 +179,6 @@ export class Context{
 	applyReplacement([fromType, toType]: Replacement){
 		this.replacements.push([fromType, toType]);
 		let ctx = this.getStrictContextOf(false, fromType.name);
-		// if(toType instanceof IntegerType)
-		// 	debugger;
-		// if(!ctx)
-		// 	throw "Cannot find variable type named \""+fromType.name+"\"";
 		if(!ctx){
 			// return;
 			let gParent = (o:Context) : Context => o.parent ? gParent(o.parent) : o;

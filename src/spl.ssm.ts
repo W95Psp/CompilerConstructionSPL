@@ -26,6 +26,8 @@ let SSM_getVar =(ref: Parser.ParserRule, id: string, ctx: Context, fetch=true) =
 	if(!pos || !meta)
 		throw "Can't get position: variable not found (internal error)";
 	let [,,x] = meta;
+	// let thing = x == TypeStorage.Reference && fetch;
+	// fetch = true;
 	return flatten([[SSM.ldl(pos)], (x == TypeStorage.Reference && fetch) ? [SSM.lda(0)] : [], [
 			SSM.annote('SP', 0, 0, 'black', '"get '+id+'"')
 		]])
@@ -56,7 +58,7 @@ export let GetSSM: SSM_Functions = MM([
 	[ParserSPL.Exp, (o: ParserSPL.Exp, g, ctx) => g(o.content)],
 	[ParserSPL.ExpNOp2, (o: ParserSPL.ExpNOp2, g, ctx) => 
 		o.content instanceof LexSPL.Integer	? [SSM.ldc(o.content.content)] :
-		o.content instanceof LexSPL.Bool 	? [SSM.ldc(o.content.content == 'True' ? 1 : 0)] :
+		o.content instanceof LexSPL.Bool 	? [SSM.ldc(o.content.content == 'True' ? -1 : 0)] :
 											  g(o.content)
 	],
 	[ParserSPL.ExpVar, (o: ParserSPL.ExpVar, g, ctx) => [...SSM_getVar(o, o.ident.content, ctx), ...SSM_resolve_field(o.field)]],
@@ -165,7 +167,8 @@ export let GetSSM: SSM_Functions = MM([
 			];
 		}
 
-		let address = SSM_getVar(o, o.name.content, ctx, false);
+		// let address = SSM_getVar(o, o.name.content, ctx, false);
+		let address = SSM_getVar(o, o.name.content, ctx);
 
 		let label = getUniqueLabel('after_fc_'+o.name.content);
 		return [
@@ -211,7 +214,6 @@ export let GetSSM: SSM_Functions = MM([
 		if(ctx.parent)
 			ousideVariable = flatten([...ctx.outsideVariables].map((name, i) => {
 				if(name==o.name.content){
-					debugger;
 					indexMe = i;
 					return [SSM.ldc(0)];
 				}
@@ -219,6 +221,17 @@ export let GetSSM: SSM_Functions = MM([
 			}));
 		else if(ctx.outsideVariables.size)
 			throw "Internal error";
+
+		if(o.name.content=='foldl')
+			debugger;
+
+		if(!ctx.parent)
+			throw "XXX";
+		let meta = ctx.parent.identifiers.get(o.name.content);
+		if(!meta)
+			throw o.error("FunDecl not typed (internal error)");
+		let typeStorage = meta[2];
+			
 
 		let afterLabel = getUniqueLabel('after_'+o.name.content);
 		return [
@@ -228,11 +241,18 @@ export let GetSSM: SSM_Functions = MM([
 			SSM.stmh(ctx.outsideVariables.size + 2 /*nb + PC*/),
 			...(indexMe==-1 ? [] : [
 					SSM.lds(0),
-					SSM.lds(0),
+					...(typeStorage==TypeStorage.Normal ? [['HEYHEY']] : [SSM.ldc(1), SSM.add()]),
+					SSM.lds(-1),
 					SSM.annote('HP', 0, 0, 'red', '"Recursive pointer"'),
 					SSM.sta(-(ctx.outsideVariables.size+2-indexMe-1))
 				]),
 			SSM.annote('SP', 0, 0, 'green', '"funDecl '+o.name.content+'"'),
+			...(typeStorage==TypeStorage.Normal ? [] :
+				[
+					SSM.sth(),
+					SSM.annote('SP', 0, 0, 'green', '"ref funDecl '+o.name.content+'"')
+				]
+				),
 			SSM.bra(afterLabel),
 			...body,
 			SSM.label(afterLabel, SSM.nop())

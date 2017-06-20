@@ -96,6 +96,8 @@ export class SimpleTree<T> {
 export class SimpleUniqueTree<T> {
 	data: Map<T, SimpleUniqueTree<T>> = new Map();
 	parents: SimpleUniqueTree<T>[] = [];
+	rec=false;
+
 	getValueFor(st: SimpleUniqueTree<T>) : T|undefined {
 		let x = [...this.data.entries()].find(([obj, tree]) => tree == st);
 		if(!x)
@@ -114,6 +116,9 @@ export class SimpleUniqueTree<T> {
 		return r;
 	}
 	addChild(t: T){
+		if(this.getRoot().data.has(t))
+			this.getRoot().rec = true;
+		
 		let r = this.find(t) || new SimpleUniqueTree<T>();
 
 		r.parents = [...new Set([...r.parents, this])];

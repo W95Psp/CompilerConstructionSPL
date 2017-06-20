@@ -67,9 +67,38 @@ export let SPL_compile = (source: string):string => {
 		let types = decls.map(o => <[Type, Context]>ctx.cacheTypeParserRules.get(o)).filter(o => o).map(o => o[0])
 		return types;
 	};
+	let printFuns = (<any>global).printFuns = () => {
+		// let decls = <ParserSPL.FunDecl[]>[...ctx.cacheTypeParserRules.values()].filter(o => o).map(o => (<[Type, Context]>o)[1])
+		// 						.map(c => <[Parser.ParserRule, number, TypeStorage]>c.identifiers.get(s)).filter(o => o).map(o => o[0]).getUniqueValues()
+		// 						.filter(o => o instanceof ParserSPL.FunDecl);
+		let decls = <ParserSPL.FunDecl[]>[...ctx.cacheTypeParserRules.keys()].filter(o => o instanceof ParserSPL.FunDecl);
+		console.log('######## BEGIN Debug: print functions with types'.bgGreen);			
+		filterUndef(decls.map(o => Let(ctx.cacheTypeParserRules.get(o), x=>x ? Tuple(x, o) : undefined))).forEach(([[t, fctx], o]) => {
+			console.log('');
+			let realCtx = fctx.getStrictContextOf(true, o.name.content);
+			if(!realCtx)
+				throw o.error("In Debugger: NO META");
+			let meta = realCtx.identifiers.get(o.name.content);
+			if(!meta)
+				throw o.error("In Debugger: NO META");
 
+			console.log(('## '+o.name.content).bgWhite.black+(meta[2]==TypeStorage.Normal ? '' : ' (by reference)').red);
+			console.log('\t'+o.print().magenta.replace(/\n/gm, '\n\t'));
+			console.log('\tType := '+t);
+		});
+		console.log('######## END Debug: print functions with types'.bgGreen);			
+	};
+
+	console.log(printFuns());
+
+	console.log('========================================');
+	console.log('========================================');
+	console.log('========================================');
+	console.log('========================================');
 
 	let SSM_output = ResolveSSM(o, ctx);
+
+	console.log(printFuns());
 
 	return SSM.toString(SSM_output);
 };

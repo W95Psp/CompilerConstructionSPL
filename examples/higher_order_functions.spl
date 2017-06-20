@@ -6,6 +6,12 @@ main() {
 		print(lst.hd);
 		return lst.hd + printList(lst.tl);
 	}
+	boolToInt(b) {
+		if (b==True) {
+			return 1;
+		}
+		return 0;
+	}
 
 	map(f, list) :: (a -> b) [a] -> [b]
 	{
@@ -14,6 +20,10 @@ main() {
 	  else
 	    return f(list.hd) : map(f, list.tl);
 	}
+	// Some operators wrapped in a function.
+	plus(x, y) { return x + y; }
+	and(b, c) { return b && c; }
+	ge18(x) { return x >= 18; }
 
 	foldl(f, z, list) :: (b a -> b) b [a] -> b
 	{
@@ -23,10 +33,6 @@ main() {
 	    return foldl(f, f(z, list.hd), list.tl);
 	}
 
-	// Some operators wrapped in a function.
-	plus(x, y) { return x + y; }
-	and(b, c) { return b && c; }
-	gexx(x) { return x >= 18; }
 
 	// Sums all the elements of an Int list.
 	sum(list) { return foldl(plus, 0, list); }
@@ -35,10 +41,10 @@ main() {
 	all(list) { return foldl(and, True, list); }
 
 	// Checks whether in a list of numbers everybody is older than 18
-	allOlderThan18(list) { return all(map(gexx, list)); }
+	allOlderThan18(list) { return all(map(ge18, list)); }
 
-	hey = sum(1:[2]);
-	printList(hey);
+	hey = 19:22:[22];
+	print(boolToInt(allOlderThan18(hey)));
 
 	return 0;
 }

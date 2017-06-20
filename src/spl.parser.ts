@@ -2,7 +2,7 @@ import {Token, EOF, DeterministicToken} from './lexer';
 import * as LexSPL from './spl.lexer';
 import * as T from './type';
 import {Let, SimpleTree, flatten, filterUndef} from './tools';
-import {ParserRule, Parser, ppIdent, ppNewLine, ppPutVal} from './parser';
+import {ParserRule, Parser, ppIdentProps, ppNewLineProps} from './parser';
 
 export class SPL_Parser extends Parser {}
 
@@ -12,6 +12,7 @@ export abstract class FunCallLike extends ParserRule {
 	abstract get funName() : string;
 }
 
+@ppNewLineProps('decls')
 export class SPL extends ParserRule{
 	@SPL_Parser.addOptStep() 		decls: Decl[];
 	@SPL_Parser.addStep() 		_eof: EOF;
@@ -23,8 +24,8 @@ export class Decl extends ParserRule{
 	@SPL_Parser.addStep() 		content: (VarDecl | FunDecl);
 	get name() { return this.content.name; }
 }
-@ppIdent
-@ppNewLine
+// @ppIdent
+// @ppNewLine
 export class VarDecl extends ParserRule{
 	@SPL_Parser.addStep() 		type: LexSPL.Var | Type;
 	@SPL_Parser.addStep() 		name: LexSPL.Id;
@@ -46,7 +47,7 @@ type ReturnPaths = {complete: boolean, list: ParserRule[]};
 let filterUndefined = <T>(l: (T|undefined)[]) => <T[]>l.filter(o => o !== undefined);
 
 
-@ppNewLine
+@ppIdentProps('varDecls', 'funDecls', 'Stmt')
 export class FunDecl extends ParserRule{
 	@SPL_Parser.addStep() 		name: LexSPL.Id;
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.OpeningParenthesis )
@@ -163,7 +164,6 @@ export class FArgs extends ParserRule{
 		return [...this._args.map(o => o), this];
 	}
 }
-@ppNewLine
 export class Else extends ParserRule{
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.Else )
 			   .addStep() 		block: Block;
@@ -171,7 +171,8 @@ export class Else extends ParserRule{
 }
 let measureProg = (p: string[]) => 
 	p.map(o => (o.trim().match(/ +/g)||[]).length + 1).reduce((count, o) => count + o, 0);
-@ppNewLine
+// @ppNewLine
+@ppIdentProps('block')
 export class If extends ParserRule{
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.If )
 			   .addIgnoreTokenStep( LexSPL.OpeningParenthesis )
@@ -180,12 +181,13 @@ export class If extends ParserRule{
 			   .addStep() 		block: Block;
 	@SPL_Parser.addOptStep() 	else?: Else;
 }
-@ppNewLine
+// @ppIdentProps('content')
 export class Block extends ParserRule{
 	@SPL_Parser.addStep() 		content: BlockAcc | Stmt;
 	lines() { return this.content instanceof Stmt ? [this.content] : this.content.lines; }
 }
-@ppNewLine
+// @ppNewLine
+@ppIdentProps('lines')
 export class BlockAcc extends ParserRule{
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.OpeningCurlyBracket )
 			   .addOptStep() 	lines: Stmt[];
@@ -193,7 +195,8 @@ export class BlockAcc extends ParserRule{
 	_: void;
 }
 
-@ppNewLine
+// @ppNewLine
+@ppIdentProps('lines')
 export class While extends ParserRule{
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.While )
 			   .addIgnoreTokenStep( LexSPL.OpeningParenthesis )
@@ -203,7 +206,7 @@ export class While extends ParserRule{
 }
 
 
-@ppNewLine
+// @ppNewLine
 export class Assign extends ParserRule{
 	@SPL_Parser.addStep() 		ident: LexSPL.Id;
 	@SPL_Parser.addOptStep() 	field?: Field;
@@ -218,15 +221,15 @@ export class Call extends ParserRule{
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.Semicolon )
 	_: void;
 }
-@ppNewLine
+// @ppNewLine
 export class Ret extends ParserRule{
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.Return )
 			   .addOptStep()	exp?: Exp;
 	@SPL_Parser.addIgnoreTokenStep( LexSPL.Semicolon )
 	_: void;
 }
-@ppNewLine
-@ppIdent
+// @ppNewLine
+// @ppIdent
 export class Stmt extends ParserRule {
 	@SPL_Parser.addStep() 		content: Assign | If | While | Call | Ret;
 }

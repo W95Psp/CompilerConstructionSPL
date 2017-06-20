@@ -1,0 +1,21 @@
+// Generates a list of zeros and ones
+
+main() {
+
+
+	flop(n, l) :: Int [Int] -> [Int]
+	{
+	  return flip(n, 1:l);
+	}
+
+	flip(n, l) :: Int [Int] -> [Int]
+	{
+	  if( n <= 0 )
+	    return l;
+	  else
+	    return flop(n-1, 0:l);
+	}
+	return 0;
+}
+
+var hey = main();

@@ -1,0 +1,17 @@
+// At this point you maybe don't see what the problem is.
+// Wait until you try to implement your code generator.
+
+main(){
+	equal(x, y)
+	{
+	  return x == y;
+	}
+	boolToInt(v){
+		if(v==True)
+			return 1;
+		return 0;
+	}
+	print(boolToInt(equal(8, 8)));
+	return 1;
+}
+var hey = main();

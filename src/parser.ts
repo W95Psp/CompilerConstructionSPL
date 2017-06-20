@@ -1,6 +1,6 @@
 import {Token, EOF, DeterministicToken} from './lexer';
 import * as LexSPL from './spl.lexer';
-import {Let,Tuple,Predicate,rnd,isChildOf, SimpleTree, flatten} from './tools';
+import {Let,Tuple,Predicate,rnd,isChildOf, SimpleTree, flatten, filterUndef} from './tools';
 import {TokenDeck} from './tokenDeck';
 import * as Type from './type';
 
@@ -219,6 +219,12 @@ export class ParserRule {
 	getValues() : (string | tPart)[] { // (<any>this)[s.name] can also return undefined, that's why filter is there
 		return this.getSteps().map(s => s instanceof ParserRuleComplexStep ? this.get(s.name) || '' : (<any>s).content).filter(o => o);
 	}
+	getValuesKeys() : [tPart, string][] { // (<any>this)[s.name] can also return undefined, that's why filter is there
+		let list = filterUndef(this.getSteps().map(s => 
+				s instanceof ParserRuleComplexStep ? Let(this.get(s.name), x => x ? Tuple(x, s.name) : undefined)
+												   : Tuple((<any>s).content, '')));
+		return list;
+	}
 	getKeys() {
 		return this.getSteps().map(s => <string>(s instanceof ParserRuleComplexStep ? s.name : undefined)).filter(o => o);
 	}
@@ -228,26 +234,47 @@ export class ParserRule {
 								.reduce((p, c) => p.concat(c)).map(({v,k}) => Tuple(v, k), []);
 		return new Map(map);
 	}
-	static prettyPrint_indent = false;	static prettyPrint_after = '';
-	static prettyPrint_newLine = false;	static prettyPrint_before = '';
+	static prettyPrint_to_indent: string[] = [];
+	static prettyPrint_to_newLine: string[] = [];
 	print(i=0) : string {
-		let indent = i + +this.static.prettyPrint_indent;
-		let identStr = new Array(indent+1).join('\t');
-		let before = this.static.prettyPrint_before + (this.static.prettyPrint_newLine ? '\n'+identStr : '');
-		let after = this.static.prettyPrint_after + (this.static.prettyPrint_newLine ? '\n' : '');
-		return (before + this.getValues().map(o => 
+		// let indent = i + +this.static.prettyPrint_indent;
+		// let identStr = new Array(indent+1).join('\t');
+		// let before = this.static.prettyPrint_before + (this.static.prettyPrint_newLine ? '\n'+identStr : '');
+		// let after = this.static.prettyPrint_after + (this.static.prettyPrint_newLine ? '\n' : '');
+		let replaceRepeat = (s: string) => { // take a string and indent one more
+			let strip = Math.min(...s.split('\n').map(o => (o.match(/^\t+/)||[''])[0].length));
+			if(strip==Infinity)
+				strip = 0;
+			s = s.replace(new RegExp("^"+(new Array(strip).fill('\t').join('')), 'gm'), '');
+
+			let old = '';
+			while(old!=s){
+				old = s;
+				s = s.replace(/\n+(\t*)\n+/g, (_,a) => '\n'+a);
+			}
+			s = s.replace(/\n(\t*)/g, (_,a) => '\n'+a+'\t');
+			return s;
+			// return s.split('\n').map(o => o.replace(/^ +/, '')).join('\n');
+		};
+		let print = (value: string, name: string) =>
+							this.static.prettyPrint_to_indent.includes(name) ? replaceRepeat('\n'+value)+'\n' :
+							this.static.prettyPrint_to_newLine.includes(name) ? '\n'+value+'\n' : value;
+		return this.getValuesKeys().map(([o, s]) => 
 						o instanceof Token 	? o.content :
-						o instanceof ParserRule ? o.print(indent) :
-						o instanceof Array 		? o.map(x => x instanceof ParserRule ? x.print() : x.content).join(' ')
+						o instanceof ParserRule ? print(o.print(0), s) :
+						o instanceof Array 		? o.map(x => x instanceof ParserRule ? print(x.print(), s) : print(x.content, s)).join(' ')
 												: o
-					).join(' ') + after).replace(/\n(\t*)\n/g, (_,a) => '\n'+a).replace(/\n(\t*)\n/g, (_,a) => '\n'+a);
+					).join(' ').replace(/\n\s+\n/g, '\n').replace(/  +/g, ' ').replace(/^(\t*) +/gm, (_,a) => a);
 	}
 	SSM() { return ['error in '+this.static.name]; };
 }
 
-export let ppNewLine = (f: typeof ParserRule) => {f.prettyPrint_newLine = true};
-export let ppIdent = (f: typeof ParserRule) => {f.prettyPrint_indent = true};
-export let ppPutVal = (before: string, after: string) => (f: typeof ParserRule) => {f.prettyPrint_after = after;f.prettyPrint_before = before;};
+export let ppIdentProps = (...str: string[]) => (f: typeof ParserRule) => {f.prettyPrint_to_indent.push(...str)};
+export let ppNewLineProps = (...str: string[]) => (f: typeof ParserRule) => {f.prettyPrint_to_newLine.push(...str)};
+
+// export let ppNewLine = (f: typeof ParserRule) => {f.prettyPrint_newLine = true};
+// export let ppIdent = (f: typeof ParserRule) => {f.prettyPrint_indent = true};
+// export let ppPutVal = (before: string, after: string) => (f: typeof ParserRule) => {f.prettyPrint_after = after;f.prettyPrint_before = before;};
 type mapToken = Map<typeof Token, (typeof ParserRule[]) | true>;
 export abstract class ParserRuleStep {
 	abstract generateRand(depth: number) : undefined | ParserRule | Token | (ParserRule | Token)[];
